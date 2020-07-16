@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Q_in_O</title>
+        <!-- <script src="jatos.js"></script> -->
+        <script src="jquery/jquery.min.js"></script>
+        <script src="jspsych-6.1.0/jspsych.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-preRNG.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-fullscreen.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-disc.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-p5card.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-p5text.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-call-function.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-survey-text.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-survey-multi-choice.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-external-html.js"></script>
+        <script src="p5/p5.min.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Corben&family=Quicksand&display=swap" rel="stylesheet">
+        <link href="style.css" rel="stylesheet" type="text/css"></link>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+        <script src="mersenne-twister.js"></script>
+    </head>
+    <body></body>
+    <script>
+
+    // window.SOA = 100
+    // window.last_two_trials = [false, false] //for online calibration
+    // const calibration_factor = 0.9
+    // window.i_task = 0
+    //
+    // // These variables count the number of times the participant has visited
+    // // the practice loop
+    // window.disc_loop = 0;
+    // window.Q_in_O_loop = 0;
+    // window.O_in_Q_loop = 0;
+    // window.followed_instructions = true;
+    //
+    // function makeTimeline() {
+    //
+      timeline = [];
+    //
+       // timeline.push({
+       //   type: 'fullscreen',
+       //   fullscreen_mode: true
+       // });
+
+       timeline.push({
+         type: 'p5card'
+       })
+
+
+       // var wellcome = {
+       //     type: "p5Text",
+       //     title: 'Wellcome' ,
+       //     text: "This experiment investigates how you make quick decisions about what you see, "+
+       //    "and what makes you feel more or less confident in your decisions. It copmprises of three challenges. "+
+       //   "Together, they should take about 10 minutes to complete."
+       //   };
+       // timeline.push(wellcome)
+    //
+    //    const order = ['first', 'second', 'third']
+    //
+    //
+    //    // We create a new 'main_timeline' variable in order to later shuffle the elements
+    //    // in this timeline only
+    //    main_timeline = []
+    //
+    //    var disc_timeline = []
+    //
+    //    var introduce_disc = {
+    //        type: "p5Text",
+    //        title: function() {if (window.disc_loop==0) {
+    //          return 'Your '+ order[window.i_task]+ ' challenge'
+    //        } else {
+    //          return 'Let\'s try again'
+    //        }
+    //      },
+    //        text: "In this challenge we will quickly flash pairs of letters on the screen. "+
+    //      "The first letter will be 'O' on half "+
+    //      "of the trials and 'Q' on the other half. The second letter will always be 'X'. Pay close attention and press 'Q' if the "+
+    //      "first letter was a 'Q' or 'W' if it was an 'O'.\nLet's start with four practice trials."
+    //      };
+    //
+    //   // A generic function the outputs a function that prints a letter to the screen
+    //      function drawLetter(letter) {
+    //        return function(p,t,du) {
+    //          p.textAlign(p.CENTER,p.CENTER);
+    //          p.fill(255)
+    //          p.textStyle(p.BOLD)
+    //          p.textSize(30)
+    //          p.textFont('arial')
+    //          p.stroke(128)
+    //          p.text(letter,0,0)
+    //        }
+    //      }
+    //
+    //    // A discrimination trial: was the first letter's identity
+    //    // Q or O?
+    //       var disc_trial = {
+    //        type: 'disc',
+    //        stimulus1_function: drawLetter('Q'),
+    //        stimulus2_function: drawLetter('O'),
+    //        mask_function: drawLetter('X'),
+    //        choices:['q','w'],
+    //        which_stimulus: jsPsych.timelineVariable('which_stimulus'),
+    //        data: jsPsych.timelineVariable('data'),
+    //        SOA: function() {return window.SOA},
+    //        rate_confidence: jsPsych.timelineVariable('rate_confidence'),
+    //        on_finish: function(data){
+    //          data.correct = data.response == data.correct_response;
+    //          if (!data.correct) {
+    //            window.SOA /= calibration_factor
+    //            window.last_two_trials = [false, false]
+    //          } else if (last_two_trials[1]) {
+    //            window.SOA *= calibration_factor
+    //            window.last_two_trials = [false, false]
+    //          } else {
+    //            window.last_two_trials = [window.last_two_trials[1],
+    //                                        data.correct]
+    //          }
+    //          console.log(window.SOA)
+    //        }
+    //       }
+    //
+    //    // Discrimination parameters: two trial types. Q and O.
+    //      var disc_practice_vars = [
+    //        {which_stimulus:1,
+    //         rate_confidence: false,
+    //         data: {
+    //           correct_response:'q',
+    //           test_part: 'disc_practice'}},
+    //        {which_stimulus:2,
+    //         rate_confidence: false,
+    //         data: {
+    //           correct_response:'w',
+    //           test_part: 'disc_practice'}}
+    //      ]
+    //
+    //
+    //      var feedback = {
+    //        type: 'html-keyboard-response',
+    //        stimulus: function(){
+    //          var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+    //          if(last_trial_correct){
+    //            return "<div style=\"width:150px;height:56px;font-size:30px;text-align:center;\">correct!</div>";
+    //          } else {
+    //            return "<div style=\"width:150px;height:56px;border:0px;font-size:30px;text-align:center\">wrong.</div>"
+    //          }
+    //        },
+    //        trial_duration: function(){
+    //          var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+    //          if(last_trial_correct){
+    //            return 1000;
+    //          } else {
+    //            return 1500
+    //          }
+    //        },
+    //        response_ends_trial: false
+    //      }
+    //
+    //      var disc_practice_procedure = {
+    //        timeline: [disc_trial, feedback],
+    //        timeline_variables: disc_practice_vars,
+    //        repetitions: 2,
+    //        randomize_order: true
+    //      }
+    //
+    //      var disc_practice_loop_node = {
+    //          timeline: [introduce_disc,disc_practice_procedure],
+    //          loop_function: function(data){
+    //              // get the data from the previous trial,
+    //              // and check which key was pressed
+    //              var num_correct = data.filter({correct: true}).count();
+    //              window.disc_loop+=1
+    //              if(num_correct==4){
+    //                 window.SOA=30
+    //                  return false;
+    //              } else {
+    //                  return true;
+    //              }
+    //          }
+    //      }
+    //      disc_timeline.push(disc_practice_loop_node)
+    //
+    //      var lets_practice_confidence = {
+    //          type: "p5Text",
+    //          title: 'Confidence Ratings',
+    //          text: "Immediately after deciding which was the second letter " +
+    //          "you will indicate your confidence in your decision. You will do " +
+    //          "this by controlling the size of a colored circle with your mouse: "+
+    //          "a large circle means you are certain that you got it right, and a small "+
+    //          "circle means there's a good chance you might be wrong.\n"+
+    //          "Let's practice this."
+    //        };
+    //        disc_timeline.push(lets_practice_confidence)
+    //
+    //
+    //    // Discrimination parameters: two trial types. Q and O.
+    //      var disc_conf_vars = [
+    //        {which_stimulus:1,
+    //         rate_confidence: true,
+    //         data: {
+    //           correct_response:'q',
+    //           test_part: 'disc_practice_conf'}},
+    //        {which_stimulus:2,
+    //        rate_confidence: true,
+    //         data: {
+    //           correct_response:'w',
+    //           test_part: 'disc_practice_conf'}}
+    //      ]
+    //
+    //     var disc_vars = [
+    //        {which_stimulus:1,
+    //         rate_confidence: true,
+    //         data: {
+    //           correct_response:'q',
+    //           test_part: 'disc'}},
+    //        {which_stimulus:2,
+    //        rate_confidence: true,
+    //         data: {
+    //           correct_response:'w',
+    //           test_part: 'disc'}}
+    //      ]
+    //
+    //       //
+    //      var disc_conf_procedure = {
+    //        timeline: [disc_trial, feedback],
+    //        timeline_variables: disc_conf_vars,
+    //        repetitions: 2,
+    //        randomize_order: true
+    //      }
+    //      disc_timeline.push(disc_conf_procedure)
+    //
+    //      var multichoice_discrimination = {
+    //        type: 'survey-multi-choice',
+    //        questions: [{
+    //        prompt: "If I pressed Q and made the circle very large, it means that I am:",
+    //        options: ['1. very confident that the two letters were O and X',
+    //                  '2. guessing that the two letters were O and X',
+    //                  '3. very confident that two letters were Q and X',
+    //                  '4. guessing that the two letters were Q and X'],
+    //        name: 'multichoice_discrimination'
+    //      }],
+    //      on_finish: function(data){
+    //        if (window.followed_instructions) {
+    //          window.followed_instructions =
+    //          JSON.parse(data.responses)['multichoice_discrimination'][0][0]==3
+    //        }
+    //      }
+    //      }
+    //      disc_timeline.push(multichoice_discrimination)
+    //
+    //      var start_discrimination = {
+    //            type: "p5Text",
+    //            title: function() {return 'Starting the ' + order[window.i_task]+ ' challenge'},
+    //            text: "This part will comprise 36 repetitions of the Q or O challenge. "+
+    //                  "You will get a break after you finish 20 repetitions." +
+    //                  "\nThis time you will not get any feedback about your accuracy."
+    //          };
+    //      disc_timeline.push(start_discrimination)
+    //
+    //      var disc_procedure = {
+    //        timeline: [disc_trial],
+    //        timeline_variables: disc_vars,
+    //        repetitions: 9,
+    //        randomize_order: true
+    //      }
+    //
+    //      var take_a_break = {
+    //          type: "p5Text",
+    //          title: 'Time to take a break',
+    //          text: "Rest your eyes, breathe deep, and press the space bar when " +
+    //          "you are ready to finish this challenge :)"
+    //        };
+    //
+    //    var debrief_disc = {
+    //        type: "p5Text",
+    //        text: function() {
+    //
+    //          var trials = jsPsych.data.get().last(18).filter({test_part: 'disc'});
+    //          var correct_trials = trials.filter({correct: true});
+    //          var incorrect_trials = trials.filter({correct: false});
+    //          var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
+    //          var confidence_correct = Math.round(correct_trials.select('confidence').mean()*100);
+    //          var confidence_incorrect = Math.round(incorrect_trials.select('confidence').mean()*100);
+    //
+    //          if (isNaN(confidence_incorrect)) {
+    //            incorrect_string=''
+    //          } else {
+    //            incorrect_string = "When you were wrong, your average confidence level was "
+    //               + confidence_incorrect+" on a scale of 0 "
+    //               + "to 100."
+    //          }
+    //
+    //          return "You responded correctly on "+accuracy+"% of the trials.\n" +
+    //          "When you were correct, your average confidence level was "+confidence_correct+" on a scale of 0 " +
+    //          "to 100. "+incorrect_string+" \nYou can now take a short break before we continue."
+    //        }
+    //      };
+    //
+    //   disc_timeline.push(disc_procedure, debrief_disc, take_a_break, disc_procedure, debrief_disc)
+    //
+    //   var update_i_task = {
+    //      type: 'call-function',
+    //      func: function() {
+    //      window.i_task++
+    //      }
+    //    }
+    //
+    //   disc_timeline.push(update_i_task)
+    //
+    //   main_timeline.push({timeline: disc_timeline})
+    //
+    //
+    //      var Q_in_O_timeline = []
+    //      var introduce_Q_in_O = {
+    //        type: "p5Text",
+    //        title: function() { if (window.Q_in_O_loop==0) {
+    //          return 'Your '+ order[window.i_task] +' Challenge'
+    //        } else {
+    //          return 'Let\s try again'
+    //        }
+    //      },
+    //        text: function() {return "In the " + order[window.i_task] + " part of the experiment, you will decide "  +
+    //        "whether the letter Q appears inside a square or not. press 'J' "+
+    //        "for 'yes' and 'F' for 'no'. You will only use your keyboard for this challenge, so "+
+    //        "we recommend placing your right and left index fingers on the 'J' and 'F' keys.\n"
+    //        "Be accurate and quick. We'll do 36 repetitions of this challenge, with one break after 20 repetitions."}
+    //      };
+    //
+    //
+    //      var vs_trial = {
+    //        type: "p5vs_yn",
+    //        target_function:jsPsych.timelineVariable('target_function'),
+    //        distractor_function:jsPsych.timelineVariable('distractor_function'),
+    //        set_size:jsPsych.timelineVariable('set_size'),
+    //        target_present: jsPsych.timelineVariable('target_present'),
+    //        set_size:jsPsych.timelineVariable('set_size'),
+    //          on_finish: function(data){
+    //          data.correct = data.response == data.correct_response;
+    //        },
+    //        data: jsPsych.timelineVariable('data')
+    //      };
+    //
+    //      var presence_array = [[false,'f'],[true,'j']]
+    //
+    //      Q_in_O_practice_vars = [
+    //
+    //        {target_present:true,
+    //        set_size: 3,
+    //        target_function: drawLetter('Q'),
+    //        distractor_function: drawLetter('O'),
+    //        data: {correct_response: 'j',
+    //              test_part: 'practice_Q_in_O'},
+    //              target: 1
+    //        },
+    //         {target_present:false,
+    //        set_size: 3,
+    //        target_function: drawLetter('Q'),
+    //        distractor_function: drawLetter('O'),
+    //        data: {correct_response: 'f',
+    //              test_part: 'practice_Q_in_O'},
+    //              target: 1
+    //        }
+    //      ]
+    //
+    //      var Q_in_O_vars = [];
+    //
+    //      for (p=0;p<2;p++){
+    //        for (ss=1;ss<9;ss*=2) {
+    //          Q_in_O_vars.push({
+    //            target_present:presence_array[p][0],
+    //            set_size:ss,
+    //            target_function: drawLetter('Q'),
+    //            distractor_function: drawLetter('O'),
+    //            data: {correct_response:presence_array[p][1],
+    //                  test_part:'Q_in_O_vs'},
+    //                  target: 1
+    //          })
+    //        }
+    //      }
+    //
+    //      var Q_in_O_practice = {
+    //        timeline: [vs_trial, feedback],
+    //        timeline_variables: Q_in_O_practice_vars,
+    //        repetitions: 2,
+    //        randomize_order: true
+    //      }
+    //
+    //      var Q_in_O_practice_loop_node = {
+    //          timeline: [introduce_Q_in_O, Q_in_O_practice],
+    //          loop_function: function(data){
+    //              // get the data from the previous trial,
+    //              // and check which key was pressed
+    //              var num_correct = data.filter({correct: true}).count();
+    //              if(num_correct==4){
+    //                  return false;
+    //              } else {
+    //                 window.Q_in_O_loop++
+    //                 return true;
+    //              }
+    //          }
+    //      }
+    //
+    //      Q_in_O_timeline.push(Q_in_O_practice_loop_node)
+    //
+    //      var debrief_Q_in_O = {
+    //          type: "p5Text",
+    //          text: function() {
+    //
+    //            var trials = jsPsych.data.get().last(16).filter({test_part: 'Q_in_O_vs'});
+    //            var correct_trials = trials.filter({correct: true});
+    //            var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
+    //            var RT = (correct_trials.select('RT').mean()/1000).toPrecision(2);
+    //
+    //            return "In the last 16 trials, you responded correctly on "+accuracy+"% of the trials.\n" +
+    //            "On average, it took you "+RT+" seconds to respond." +
+    //            "\nYou can now take a short break before we continue."
+    //          }
+    //        };
+    //
+    //      var Q_in_O_procedure = {
+    //        timeline: [vs_trial, feedback],
+    //        timeline_variables: Q_in_O_vars,
+    //        repetitions: 2,
+    //        randomize_order: true
+    //      }
+    //      Q_in_O_timeline.push(Q_in_O_procedure, debrief_Q_in_O, take_a_break, Q_in_O_procedure, debrief_Q_in_O)
+    //
+    //      Q_in_O_timeline.push(update_i_task)
+    //
+    //      main_timeline.push({timeline: Q_in_O_timeline})
+    //
+    //      var O_in_Q_timeline = [];
+    //
+    //      var introduce_O_in_Q = {
+    //        type: "p5Text",
+    //        title: function() { if (window.O_in_Q_loop==0) {
+    //            return 'Your '+ order[window.i_task] +' Challenge'
+    //          } else {
+    //            return 'Let\'s try again'
+    //          }
+    //        },
+    //        text: function() {return "In the " + order[window.i_task] + " part of the experiment, you will decide "  +
+    //        "whether the letter O appears inside a square or not. press 'J' "+
+    //        "for 'yes' and 'F' for 'no'. You will only use your keyboard for this challenge, so "+
+    //        "we recommend placing your right and left index fingers on the 'J' and 'F' keys.\n"
+    //        "Be accurate and quick. We'll do 32 repetitions of this challenge."}
+    //      };
+    //
+    //      O_in_Q_practice_vars = [
+    //
+    //          {target_present:true,
+    //          set_size: 3,
+    //          target_function: drawLetter('O'),
+    //          distractor_function: drawLetter('Q'),
+    //          data: {correct_response: 'j',
+    //                test_part: 'practice_O_in_Q',
+    //                target: 2}
+    //          },
+    //           {target_present:false,
+    //          set_size: 3,
+    //          target_function: drawLetter('O'),
+    //          distractor_function: drawLetter('Q'),
+    //          data: {correct_response: 'f',
+    //                test_part: 'practice_O_in_Q',
+    //                target:2}
+    //          }
+    //        ]
+    //
+    //      var O_in_Q_vars = [];
+    //
+    //        for (p=0;p<2;p++){
+    //          for (ss=1;ss<9;ss*=2) {
+    //            O_in_Q_vars.push({
+    //              target_present:presence_array[p][0],
+    //              set_size:ss,
+    //              target_function: drawLetter('O'),
+    //              distractor_function: drawLetter('Q'),
+    //              data: {correct_response:presence_array[p][1],
+    //                    test_part:'O_in_Q_vs',
+    //                    target: 2}
+    //            })
+    //          }
+    //        }
+    //
+    //
+    //      var O_in_Q_practice = {
+    //        timeline: [vs_trial, feedback],
+    //        timeline_variables: O_in_Q_practice_vars,
+    //        repetitions: 2,
+    //        randomize_order: true
+    //      }
+    //
+    //        var O_in_Q_practice_loop_node = {
+    //          timeline: [introduce_O_in_Q, O_in_Q_practice],
+    //          loop_function: function(data){
+    //              // get the data from the previous trial,
+    //              // and check which key was pressed
+    //              var num_correct = data.filter({correct: true}).count();
+    //              if(num_correct==4){
+    //                  return false;
+    //              } else {
+    //                 window.O_in_Q_loop++
+    //                 return true;
+    //              }
+    //          }
+    //      }
+    //
+    //      O_in_Q_timeline.push(O_in_Q_practice_loop_node)
+    //
+    //     var debrief_O_in_Q = {
+    //      type: "p5Text",
+    //      text: function() {
+    //
+    //        var trials = jsPsych.data.get().last(16).filter({test_part: 'O_in_Q_vs'});
+    //        var correct_trials = trials.filter({correct: true});
+    //        var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
+    //        var RT = (correct_trials.select('RT').mean()/1000).toPrecision(2);
+    //
+    //        return "In the last 16 trials, you responded correctly on "+accuracy+"% of the trials.\n" +
+    //        "On average, it took you "+RT+" seconds to respond." +
+    //        "\nYou can now take a short break before we continue."
+    //      }
+    //    };
+    //
+    //      var O_in_Q_procedure = {
+    //        timeline: [vs_trial, feedback],
+    //        timeline_variables: O_in_Q_vars,
+    //        repetitions: 2,
+    //        randomize_order: true
+    //      }
+    //      O_in_Q_timeline.push(O_in_Q_procedure, debrief_O_in_Q,take_a_break, O_in_Q_procedure, debrief_O_in_Q)
+    //
+    //      O_in_Q_timeline.push(update_i_task)
+    //
+    //      main_timeline.push({timeline: O_in_Q_timeline})
+    //
+    //    /**
+    //   * Randomly shuffle an array
+    //   * https://stackoverflow.com/a/2450976/1293256
+    //   * @param  {Array} array The array to shuffle
+    //   * @return {String}      The first item in the shuffled array
+    //   */
+    //   var shuffle = function (array) {
+    //
+    //    var currentIndex = array.length;
+    //    var temporaryValue, randomIndex;
+    //
+    //    // While there remain elements to shuffle...
+    //    while (0 !== currentIndex) {
+    //      // Pick a remaining element...
+    //      randomIndex = Math.floor(Math.random() * currentIndex);
+    //      currentIndex -= 1;
+    //
+    //      // And swap it with the current element.
+    //      temporaryValue = array[currentIndex];
+    //      array[currentIndex] = array[randomIndex];
+    //      array[randomIndex] = temporaryValue;
+    //    }
+    //
+    //    return array;
+    //
+    //   };
+    //
+    //
+    //   shuffle(main_timeline)
+    //   timeline = timeline.concat(main_timeline)
+    //
+    //
+    //      var worker_comments = {
+    //        type: 'survey-text',
+    //        preamble: '<h1>Your Thoughts<h1>',
+    //        questions: [{
+    //        prompt: "Before we thank you, we would appreciate if you could share " +
+    //        "any thoughts you had about the experiment, or anything we should "+
+    //        "take into account when analyzing your data.",
+    //        pleaceholder: "your comments here",
+    //        rows:8,
+    //        columns:60,
+    //        name: 'worker_comments'
+    //      }]
+    //      }
+    //      timeline.push(worker_comments)
+    //
+    //      var thank_you = {
+    //        type: 'p5Text',
+    //        title: "Thank you!",
+    //        text: "Thanks for your time and effort. Your contribution will help us " +
+    //              "learn about the way people make and form confidence " +
+    //              "in their decisions."
+    //      };
+    //
+    //      timeline.push(thank_you)
+    //       return timeline
+    //     }
+    //
+    //     function hexToBytes(hex) {
+    //         for (var bytes = [], c = 0; c < hex.length; c += 2)
+    //         bytes.push(parseInt(hex.substr(c, 2), 16));
+    //         return bytes;
+    //     }
+
+      // /* start the experiment */
+      // jatos.onLoad(function () {
+      //   console.log('version 1')
+      //   var m = new MersenneTwister();
+      //   Math.random = function() {return m.random()};
+      //   var protocol_sum = 'f078aa2862041786868ef9f2ad23336df49386eb98fe8259951830bdf7c3dbfd'
+      //   var subject_identifier = jatos.urlQueryParameters.PROLIFIC_PID
+      //   subject_sum = hexToBytes(
+      //     CryptoJS.SHA256(
+      //       protocol_sum+subject_identifier).toString()
+      //     )
+      //   m.init_by_array(subject_sum, subject_sum.length)
+      //   jsPsych.data.addProperties({'protocol_sum':protocol_sum,
+      //   'subject_identifier':subject_identifier, 'subject_sum':subject_sum});
+      //   timeline=makeTimeline()
+      //     jsPsych.init({
+      //         timeline: timeline,
+      //         on_finish: function() {
+      //             jsPsych.data.addProperties(jatos.urlQueryParameters);
+      //             jsPsych.data.addProperties({followed_instructions: window.followed_instructions});
+      //             var resultJson = jsPsych.data.get().json();
+      //             jatos.submitResultData(resultJson, jatos.startNextComponent);
+      //         }
+      //     });
+      // });
+      jsPsych.init({
+          timeline: timeline,
+          on_finish: function() {
+              // jsPsych.data.addProperties(jatos.urlQueryParameters);
+              // jsPsych.data.addProperties({followed_instructions: window.followed_instructions});
+              var resultJson = jsPsych.data.get().json();
+              // jatos.submitResultData(resultJson, jatos.startNextComponent);
+          }
+      });
+    </script>
+</html>
