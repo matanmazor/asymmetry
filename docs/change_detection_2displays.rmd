@@ -1,0 +1,151 @@
+---
+title: "change detection - pilot"
+author: "Matan Mazor"
+date: "06/07/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library("papaja")
+library("tidyverse")
+library("broom")
+library("cowplot")
+library('MESS') # for AUCs
+library('lsr') # for effect sizes
+library('pwr') # for power calculations
+library('brms') # for mixed effects modeling
+library('BayesFactor')
+library('afex') # for anova
+```
+
+
+```{r pilot1, echo=FALSE, cache=TRUE, include=FALSE}
+cd_df_unfiltered1 <- read_csv('../Experiments/change_detection/results/pilot4/jatos_results_batch1.csv') %>%
+  rename('subj_id' = 'PROLIFIC_PID') %>%
+  mutate(subj_id=factor(subj_id),
+         num_items = 1)
+
+cd_df_unfiltered2 <- read_csv('../Experiments/change_detection/results/pilot1/jatos_results_batch1.csv') %>%
+  rename('subj_id' = 'PROLIFIC_PID') %>%
+  mutate(subj_id=factor(subj_id),
+         num_items = 1)
+
+cd_df_unfiltered = bind_rows(cd_df_unfiltered1,cd_df_unfiltered2)
+
+Ntotal <- cd_df_unfiltered %>%
+  summarise(N = subj_id %>%
+              unique() %>%
+              length())
+
+# # PAY BONUS
+# cd_df_unfiltered %>%
+#   select(c(subj_id,bonus)) %>%
+#   group_by(subj_id) %>%
+#   summarise(bonus=mean(bonus)) %>%
+#   write.table('../Experiments/change_detection/results/pilot4/bonus_batch1.csv', sep=',', row.names=FALSE, col.names=FALSE,quote=F)
+
+# filter
+cd_df <- cd_df_unfiltered%>%
+  filter(test_part=='test') %>%
+  select(c('trial_index','subj_id','bonus','RT','response','correct','num_items', 'addition', 'change', 'set_size')) %>%
+  group_by(subj_id) %>%
+  mutate(
+    'include'=RT>250 & RT<5000,
+    'correct1' = ifelse(set_size==1,correct,NA),
+    'include_s'=mean(include)>0.75 & mean(correct1,na.rm=TRUE)>0.8,
+    'condition'=case_when(
+      addition==1 ~ 'add',
+      addition==0  ~ 'del'),
+    'response'=ifelse(response=='j','Y','N')
+  ) %>%
+  filter(include_s) %>%
+  ungroup()
+
+Nincluded <- cd_df %>%
+  summarise(N = subj_id %>%
+              unique() %>%
+              length())
+
+
+##  accuracy
+
+acc_df <- cd_df %>%
+  filter(set_size %in% c(3,5,9)) %>%
+  group_by(subj_id,condition) %>%
+  summarise(acc=mean(correct,na.rm=TRUE)) %>%
+  spread(condition,acc) %>%
+  mutate(acc=(add+del)/2)
+
+accxchange_df <- cd_df %>%
+  filter(set_size %in% c(3,5,9))%>%
+  group_by(subj_id,condition,change,set_size) %>%
+  summarise(acc=mean(correct,na.rm=TRUE)) 
+
+acc_anova <- afex::aov_ez(
+  data=accxchange_df,
+  dv='acc',
+  id='subj_id',
+  within=c('change','condition','set_size')
+  )
+
+
+RT_df <- cd_df %>%
+  filter(set_size %in% c(3,5,9)) %>%
+  group_by(subj_id,response) %>%
+  summarise(RT=mean(RT,na.rm=TRUE)) %>%
+  spread(response,RT)
+
+av_bonus = cd_df %>%
+  group_by(subj_id) %>%
+  summarise(bonus = mean(bonus)) %>%
+  summarise(bonus=mean(bonus))
+
+accuracy_by_ss_df <- cd_df %>%
+  filter(set_size %in% c(3,5,9)) %>%
+  group_by(subj_id,set_size,condition) %>%
+  summarise('meancorrect'=mean(correct)) %>%
+  group_by(set_size,condition)%>%
+  summarise(acc= mean(meancorrect), sem_acc=se(meancorrect)) 
+
+```
+
+# Methods
+
+## Participants
+
+A total of `r Ntotal$N` participants were recruited from Prolific. Participants were Native English Speakers and had a minimum approval rate of 0.95. They were paid £0.63 for their participation, in addition to a bonus payment of up to £0.32 (average bonus paid: £`r printnum(av_bonus$bonus)`). The experiment took 5 minutes to complete.
+
+## Experimental design
+
+On each trial, participants were presented with an array of randomly positioned stimuli (500 ms). All stimuli belonged to one of two classes (for example, the letters 'O' and 'Q'). The array reappeared after an interval of 900 ms. On half of the trials, the array was the same as in the first presentation, and on the other half one stimulus changed between the first and second arrays. Participants were instructed to press 'J' if they detected a change, or 'F' if they believed no change has taken place. There was no time pressure on making a response. Points were awarded for correct responses, and points were later translated to a bonus payment with a conversion rate of £0.005 per point. 
+
+After Reading the information sheet and signing the consent form, participants were instructed about the task. A practice part included 4 trials in which participants detected a change in an array of 3 *X*s and *W*s (two *X*s and one *W* or vice versa). The practice part ended once three out of four trials were answered correctly, otherwise an additional practice block was delivered. The practice block was followed by an explanation about the scoring system and bonus payment. Then, the main part of the experiment started.
+
+The main task consisted of 64 trials, separated into four blocks of 16 trials each. The two stimulus classes used for the main experiment were the letters *Q* (feature positive) and *O* (feature negative). Thus, change trials were classified into two conditions: feature addition (O to Q) and deletion (Q to O). No-change trials were classified into the same two classes based on the identity of the probe. The trial was classified as a deletion trial for 'O' probes and as an addition trial for 'Q' probes. Each block included all possible combinations of our three experimental factors: change (yes or no), condition (addition or deletion), and set-size (1,3,5,7,9 or 11). 
+
+
+## Exclusion
+
+Participants were excluded for performing below chance, or for responding too quickly (RT<250 ms) or too slowly (RT>5 sec) in more than 25% of the trials. After exclusion, we had datasets from `r Nincluded$N` participants. 
+
+## Results
+
+Overall accuracy was high (`r apa_print(t.test(acc_df$acc))$estimate`).
+Accuracy was significantly higher for addition trials than for deletion trials (`r apa_print(t.test(acc_df$add,acc_df$del,paired=TRUE))$full_result`). 
+
+```{r cd-pilot, echo=FALSE, fig.cap="A: Median search time by distractor set size for the two search tasks and two responses. Correct responses only. Error bars represent the standard error of the median. B: mean search slope per target (Q or O) and response (present or absent). Error bars represent the standard error of the mean. "}
+
+ggplot(data=accuracy_by_ss_df, 
+       aes(x=set_size, y=acc, group=condition, color=condition)) +
+  geom_line(aes(linetype = condition),size=1) +
+  geom_point(aes(shape = condition), size=4) +
+  geom_errorbar(aes(ymin=acc-sem_acc,ymax=acc+sem_acc)) +
+  labs(x='set size',y='accuracy', title='Change detection accuracy') + 
+  theme_bw()+ 
+  scale_x_continuous(breaks = c(3,5,9))+
+  theme(legend.position=c(0.15, 0.15),
+        legend.background = element_rect(fill=NA))+
+  guides(color = FALSE, linetype=FALSE)  
+
+```

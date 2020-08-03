@@ -1,0 +1,124 @@
+---
+title: "go/no-go - pilot"
+author: "Matan Mazor"
+date: "06/07/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library("papaja")
+library("tidyverse")
+library("broom")
+library("cowplot")
+library('MESS') # for AUCs
+library('lsr') # for effect sizes
+library('pwr') # for power calculations
+library('brms') # for mixed effects modeling
+library('BayesFactor')
+library('afex') # for anova
+```
+
+
+```{r pilot1, echo=FALSE, cache=TRUE, include=FALSE}
+gng_df_unfiltered <- read_csv('../Experiments/go-no-go/results/pilot1/jatos_results_batch1.csv') %>%
+  rename('subj_id' = 'PROLIFIC_PID') %>%
+  mutate(subj_id=factor(subj_id),
+         num_items = 1)
+
+Ntotal <- gng_df_unfiltered %>%
+  summarise(N = subj_id %>%
+              unique() %>%
+              length())
+
+# PAY BONUS
+gng_df_unfiltered %>%
+  select(c(subj_id,bonus)) %>%
+  group_by(subj_id) %>%
+  summarise(bonus=mean(bonus)) %>%
+  write.table('../Experiments/go-no-go/results/pilot1/bonus_batch1.csv', sep=',', row.names=FALSE, col.names=FALSE,quote=F)
+
+# filter
+gng_df <- gng_df_unfiltered%>%
+  filter(test_part=='test' & trial_part=='main') %>%
+  select(c('trial','block','trial_index','subj_id','bonus','rt','key_press','correct','shape_array', 'respond')) %>%
+  group_by(subj_id) %>%
+  mutate(
+    'include_s'=(mean(correct)>0.5),
+    'condition' = case_when(
+      shape_array=="['stimuli/O.png', 'stimuli/Q.png']" ~ 'FP',
+      shape_array=="['stimuli/Q.png', 'stimuli/O.png']" ~ 'FN'
+    ),
+    'first_block'=ifelse(
+      shape_array[1]=="['stimuli/O.png', 'stimuli/Q.png']",'FP','FN'
+      ),
+    'trial_type'=ifelse(respond==0,'no-go','go')
+  ) %>%
+  filter(include_s) %>%
+  ungroup()
+
+Nincluded <- gng_df %>%
+  summarise(N = subj_id %>%
+              unique() %>%
+              length())
+
+
+##  accuracy
+
+acc_df <- gng_df %>%
+  group_by(subj_id,condition) %>%
+  summarise(acc=mean(correct,na.rm=TRUE)) %>%
+  spread(condition,acc) %>%
+  mutate(acc=(FP+FN)/2)
+
+accxresp_df <- gng_df %>%
+  group_by(subj_id,condition,trial_type) %>%
+  summarise(acc=mean(correct,na.rm=TRUE)) 
+
+acc_anova <- afex::aov_ez(
+  data=accxresp_df,
+  dv='acc',
+  id='subj_id',
+  within=c('trial_type','condition')
+  )
+
+
+RT_df <- gng_df %>%
+  group_by(subj_id,condition) %>%
+  summarise(RT=mean(rt,na.rm=TRUE)) %>%
+  spread(condition,RT)
+
+```
+
+# Methods
+
+## Participants
+
+A total of `r Ntotal$N` participants were recruited from Prolific. Participants were Native English Speakers and had a minimum approval rate of 0.9. They were paid £0.50 for their participation, in addition to a bonus payment of up to £0.32. The experiment took 4 minutes to complete.
+
+## Experimental design
+
+On each trial, participants were presented with a fixation cross (500 ms) followed by one of two shapes (500 ms). They were asked to respond with a key press within 500 ms to one shape ('go' trials), but not to the other ('no-go' trials). Participants were awarded a point for responding on 'go' trials and for not responding on 'no-go' trials. Points were later translated to a bonus payment with a conversion rate of £0.0025 per point. . 
+
+After Reading the information sheet and signing the consent form, participants were instructed about the task. In the following practice part, participants had 8 practice trials in which they responded to a club, but not to a heart. The practice block was followed by a verbal comprehension test ('Please describe the task in your own words'), which was followed by the main task.
+
+The main task consisted of 128 trials, separated into four blocks of 32 trials each. In two blocks, participants responded to the appearance of a ring intersected by a line, but not to the appearance of a ring. In the other two blocks, participants responded to the appearance of a ring, but not to the appearance of a ring intersected by a line. The order of blocks was interleaved. The first block was chosen at random with 50% probability. 
+
+## Exclusion
+
+Participants were excluded for performing below chance. After exclusion, we had datasets from `r Nincluded$N` participants. 
+
+## Results
+
+Overall accuracy was very high (`r apa_print(t.test(acc_df$acc))$estimate`).
+
+Accuracy was higher for blocks in which a response was required for feature presence (FP blocks; `r apa_print(t.test(acc_df$FP))$estimate`) than for feature absence (FN blocks; `r apa_print(t.test(acc_df$FN))$estimate`; `r apa_print(t.test(acc_df$FP,acc_df$FN, paired=TRUE))$full_result`). 
+
+No difference was observed between the reaction times for the two block types (median reaction time in FP blocks: `r printnum(median(RT_df$FP, na.rm=TRUE))`; median reaction time in FN blocks: `r printnum(median(RT_df$FN, na.rm=TRUE))`; t-test on the log-transformed reaction times: `r apa_print(ttestBF(log(RT_df$FN),log(RT_df$FP),paired=TRUE))$full_result`). 
+
+```{r fig_accuracy, echo=FALSE, fig.cap='Accuracy as a function of block and trial'}
+ggplot(accxresp_df,aes(fill=trial_type,y=acc,x=condition))+
+  geom_boxplot()+
+  labs(y='accuracy',x='block type')
+```
+

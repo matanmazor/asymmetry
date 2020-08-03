@@ -15,38 +15,32 @@ library('MESS') # for AUCs
 library('lsr') # for effect sizes
 library('pwr') # for power calculations
 library('brms') # for mixed effects modeling
+library('BayesFactor')
 ```
 
 
 ```{r pilot1, echo=FALSE, cache=TRUE, include=FALSE}
-Lotz_FP <- read_csv('../Experiments/Lotz/results/pilot_FP/jatos_results_batch1.csv') %>%
-  rename('subj_id' = 'PROLIFIC_PID') %>%
-  mutate(subj_id=factor(subj_id),
-         num_items = 1)
-FP_N <- Lotz_FP$subj_id%>%unique()%>%length()
-
-# PAY BONUS
-Lotz_FP %>%
-  select(c(subj_id,bonus)) %>%
-  group_by(subj_id) %>%
-  summarise(bonus=mean(bonus)) %>%
-  write.table('../Experiments/Lotz/results/pilot_FP/bonus_batch1.csv', sep=',', row.names=FALSE, col.names=FALSE,quote=F)
-
-Lotz_FN <- read_csv('../Experiments/Lotz/results/pilot_FN/jatos_results_batch1.csv') %>%
+Lotz_df_unfiltered <- read_csv('../Experiments/Lotz/results/pilot_rand_assign/jatos_results_batch1.csv') %>%
   rename('subj_id' = 'PROLIFIC_PID') %>%
   mutate(subj_id=factor(subj_id),
          num_items = 1)
 
-FN_N <- Lotz_FN$subj_id%>%unique()%>%length()
+Ntotal <- Lotz_df_unfiltered %>%
+  group_by(FP )%>%
+  summarise(N = subj_id %>%
+              unique() %>%
+              length()) %>%
+  spread(FP,N)
+
 # PAY BONUS
-Lotz_FN %>%
+Lotz_df_unfiltered %>%
   select(c(subj_id,bonus)) %>%
   group_by(subj_id) %>%
   summarise(bonus=mean(bonus)) %>%
-  write.table('../Experiments/Lotz/results/pilot_FN/bonus_batch1.csv', sep=',', row.names=FALSE, col.names=FALSE,quote=F)
+  write.table('../Experiments/Lotz/results/pilot_rand_assign/bonus_batch1.csv', sep=',', row.names=FALSE, col.names=FALSE,quote=F)
 
 # Concatenate the two dfs
-Lotz_df <- rbind(Lotz_FP,Lotz_FN)%>%
+Lotz_df <- Lotz_df_unfiltered%>%
   filter(test_part=='test' & trial_part=='main') %>%
   select(c('trial_index','subj_id','FP','bonus','effect','rt','key_press','correct','trial_name')) %>%
   group_by(subj_id) %>%
@@ -61,16 +55,18 @@ Lotz_df <- rbind(Lotz_FP,Lotz_FN)%>%
            trial_name == 'EF+' | trial_name =='E-'   ~ 'EF_E'
          ),
          'include'=ifelse(is.na(include),FALSE, include),
-         'include_s'=(sum(include)>50 & trial_name%>%is.na()%>%sum()==0)
+         'include_s'=(sum(include)>25 & trial_name%>%is.na()%>%sum()==0)
   ) %>%
   filter(include_s) %>%
   ungroup()
 
-totalN <- Lotz_df %>%
+Nincluded <- Lotz_df %>%
   group_by(FP )%>%
   summarise(N = subj_id %>%
               unique() %>%
-              length())
+              length()) %>%
+  spread(FP,N)
+
 
 ## Overall accuracy
 
@@ -112,17 +108,41 @@ accuracy_anova <- aov(accuracy ~ stimulus_pair+block+subj_id, data=accuracy_df) 
 
 accuracy_by_pair <- Lotz_df %>%
   group_by(subj_id, stimulus_pair) %>%
-  summarise(accuracy = mean(correct, na.rm=TRUE))%>%
+  summarise(accuracy = mean(correct, na.rm=TRUE),
+            FP=FP[1])%>%
   spread(stimulus_pair,accuracy)
 
-abp_t1 <- t.test(accuracy_by_pair$B_A,
-                (accuracy_by_pair$EF_E+
-                   accuracy_by_pair$C_CD)/2,
+accuracy_FN_last_block <- Lotz_df %>%
+  filter(block==4 & stimulus_pair=='C_CD') %>%
+  group_by(subj_id) %>%
+  summarise(acc=mean(correct, na.rm=TRUE))
+
+#FN against FP
+abp_t1 <- t.test(accuracy_by_pair$C_CD,
+                accuracy_by_pair$EF_E,
                 paired=TRUE)
 
-abp_t2 <- t.test(accuracy_by_pair$EF_E,
-                accuracy_by_pair$C_CD,
+#FN against symmetric
+abp_t2 <- t.test(accuracy_by_pair$C_CD,
+                accuracy_by_pair$B_A,
                 paired=TRUE)
+
+#FN against 0.5, Bayesian
+abp_t3 <- ttestBF(accuracy_by_pair$C_CD,mu=0.5)
+
+#FN against 0.5, last block only, Bayesian
+abp_t4 <- ttestBF(accuracy_FN_last_block$acc,mu=0.5)
+
+#QP against QN
+abp_t5 <- t.test(accuracy_by_pair$Q_O,
+                accuracy_by_pair$O_Q, 
+                na.rm=TRUE,
+                paired=FALSE)
+
+#FN against FP, between_ss
+abp_t6 <- t.test(accuracy_by_pair%>%filter(FP==FALSE)%>%'$'(C_CD),
+                accuracy_by_pair%>%filter(FP==TRUE)%>%'$'(EF_E),
+                paired=FALSE)
 
 #   spread(stimulus_pair, accuracy)%>%
 #   mutate(norm_C_CD=C_CD/B_A,
@@ -141,7 +161,7 @@ abp_t2 <- t.test(accuracy_by_pair$EF_E,
 
 ## Participants
 
-A total of `r FN_N+ FP_N` participants were recruited from Prolific. Participants were Native English Speakers and had a minimum approval rate of 0.9. They were paid £0.80 for their participation, in addition to a bonus payment of up to £0.64. The experiment took 7 minutes to complete.
+A total of `r Ntotal['TRUE']+Ntotal['FALSE']` participants were recruited from Prolific. Participants were Native English Speakers and had a minimum approval rate of 0.9. They were paid £0.50 for their participation, in addition to a bonus payment of up to £0.32. The experiment took 4 minutes to complete.
 
 ## Experimental design
 
@@ -160,12 +180,12 @@ The main task consisted of 64 trials, separated into two parts of 32 trials each
 
 Stimuli A-F were randomly sampled, without replacement, from the remaining shapes that were not used as example stimuli in the practice phase.
 
-For `r FN_N` of the participants (Q positive group), the two remaining trial-types were:
+For `r Ntotal['TRUE']` of the participants (Q positive group), the two remaining trial-types were:
 
 7. A ring intersected by a line (Q), coupled with cat presence.
 8. A ring (O), coupled with cat absence.
 
-For the remaining `r FP_N` participants (Q negative group), the two remaining trial-types were:
+For the remaining `r Ntotal['FALSE']` participants (Q negative group), the two remaining trial-types were:
 
 7. A ring (O), coupled with cat presence.
 8. A ring intersected by a ling (Q), coupled with cat absence.
@@ -174,28 +194,24 @@ Trial types 1 and 2 formed the symmetric learning condition, where one stimulus 
 
 ## Exclusion
 
-Participants were excluded for responding too quickly (RT<250) in more than 14 trials. After exclusion, we had datasets from `r totalN[1,2]` participants in the Q positive and `r totalN[2,2]` in the Q negative groups, respectively. 
+Participants were excluded for failing to respond within the two-second window, or for responding too quickly (RT<250) in more than 14 trials. After exclusion, we had datasets from `r Nincluded['TRUE']` participants in the Q positive and `r Nincluded['FALSE']` in the Q negative groups, respectively. 
 
 ## Results
 
-Overall accuracy was high (`r apa_print(t.test(acc_df$acc))$estimate`). 
-Analysis of variance was applied to the data from trial-types 1-6 (not including the test stimuli), with the dependent variable accuracy and independent variables block number, stimulus pair, and participant. As expected, block number had a significant effect on accuracy, suggesting that participants learned to associate stimuli with outcome over the course of the experiment (`r apa_print(accuracy_anova)$statistic$block`). Furthermore, accuracy was significantly different for the different stimulus pairs (`r apa_print(accuracy_anova)$statistic$stimulus_pair`; see Fig. \ref{fig:learning_curves}).
+Overall accuracy was above chance (`r apa_print(t.test(acc_df$acc))$estimate`). 
+Analysis of variance was applied to the data from trial-types 1-6 (not including the test stimuli), with the dependent variable accuracy and independent variables block number, stimulus pair, and participant. As expected, block number had a significant effect on accuracy, suggesting that participants learned to associate stimuli with outcome over the course of the experiment (`r apa_print(accuracy_anova)$statistic$block`). Furthermore, accuracy was significantly different for the different stimulus pairs (`r apa_print(accuracy_anova)$statistic$stimulus_pair`; see Fig. \ref{fig_learning_curves}).
 
-However, this difference was driven by faster learning for the symmetric learning condition (trial types 1 and 2) compared to the other learning conditions (`r apa_print(abp_t1)$full_result`). No significance difference was observed in overall accuracy between the feature-positive and feature-negative learning accuracies (`r apa_print(abp_t2)$full_result`). 
+This difference was driven by slower learning in the feature-negative condition compared to the feature-positive condition (`r apa_print(abp_t1)$full_result`), and to the symmetric condition (`r apa_print(abp_t2)$full_result`). In fact, participants failed to learn the feature-negative association, and were at chance level (`r apa_print(abp_t3)$full_result`), even in the last block (`r apa_print(abp_t4)$full_result`).
+
+Next, we compared accuracy between the Q-positive and Q-negative conditions. Here, no significant difference was observed between the accuracy in the two conditions (`r apa_print(abp_t5)$full_result`). Importantly, unlike the comparison between the feature-positive and feature-negative accuracy that was performed in-subject, this comparison is performed between subjects due to the fact that different participants learned different mappings. To make sure that the absence of an effect is not merely due to this fact, we repeated the comparison between the feature-positive and feature-negative in a between-subject manner, this time limiting ourselves to the feature-positive accuracy of the Q-positive group and the feature-negative accuracy of the Q-negative group. This between subject effect was significant (`r apa_print(abp_t6)$full_result`) 
 
 
 
-```{r fig:learning_curves, echo=FALSE, fig.cap='Learning curves for the three within-participant conditions'}
-ggplot(learning_curves%>%filter(stimulus_pair=='C_CD' | stimulus_pair=='EF_E' | stimulus_pair=='B_A'),
-       aes(x=block, y=accuracy, color=stimulus_pair))+
-  geom_line()+
-  geom_ribbon(aes(ymin=accuracy-se_accuracy, ymax=accuracy+se_accuracy, fill=stimulus_pair), alpha=0.5)
+```{r fig_learning_curves, echo=FALSE, fig.cap='Learning curves for the three within-participant conditions'}
+ ggplot(learning_curves%>%filter(stimulus_pair=='C_CD' | stimulus_pair=='EF_E' | stimulus_pair=='B_A'),
+        aes(x=block, y=accuracy, color=stimulus_pair))+
+   geom_line()+
+   geom_ribbon(aes(ymin=accuracy-se_accuracy, ymax=accuracy+se_accuracy, fill=stimulus_pair), alpha=0.5)
 ```
 
-```{r fig:RT_curves, echo=FALSE, fig.cap='Learning curves for the three within-participant conditions'}
-ggplot(learning_curves%>%filter(stimulus_pair=='C_CD' | stimulus_pair=='EF_E' | stimulus_pair=='B_A'),
-       aes(x=block, y=RT, color=stimulus_pair))+
-  geom_line()+
-  geom_ribbon(aes(ymin=RT-se_RT, ymax=RT+se_RT, fill=stimulus_pair), alpha=0.5)
-```
 

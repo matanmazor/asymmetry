@@ -37,7 +37,7 @@
 \IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
 \IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
 \hypersetup{
-  pdftitle={The relation between search asymmetry and metacognitive asymmetry},
+  pdftitle={Task-invariant and task-specific perceptual asymmetries},
   pdflang={en-EN},
   pdfkeywords={keywords},
   hidelinks,
@@ -127,7 +127,7 @@ Correspondence concerning this article should be addressed to Matan Mazor, 12 Qu
   \usepackage[shorthands=off,main=english]{babel}
 \fi
 
-\title{The relation between search asymmetry and metacognitive asymmetry}
+\title{Task-invariant and task-specific perceptual asymmetries}
 
 \date{}
 
@@ -140,6 +140,8 @@ Subjective confidence judgments are more aligned with objective performance foll
 
 \hypertarget{introduction}{%
 \section{Introduction}\label{introduction}}
+
+go no go asymmetry: Helton and Russell (2011) ({\textbf{???}})
 
 In detection (\emph{Was there a stimulus present or not?}), subjective confidence ratings following \enquote{target absent} judgments are commonly lower, and less correlated with objective accuracy, than following \enquote{target present} judgments (Kanai, Walsh, \& Tseng, 2010; Kellij, Fahrenfort, Lau, Peters, \& Odegaard, 2018; Mazor, Friston, \& Fleming, 2020; Meuwese, Loon, Lamme, \& Fahrenfort, 2014). This \emph{metacognitive asymmetry} is present not only for detection tasks, but also for recognition memory (Higham, Perfect, \& Bruno, 2009) and lexicality judgments (Fleming \& Dolan, 2010) -- both can be described as detection among items in an internal representation space (memory storage, orthographic lexicon). According to one interpretation, this metacognitive asymmetry reflects a qualitative difference between the metacognitive representations of decisions that are driven by the presence or the absence of evidence (Meuwese et al., 2014). One variant of this interpretation posits that the metacognitive evaluation of negative judgments is more computationally demanding because instead of relying on evidence for absence, it relies on the counterfactual likelihood of evidence for presence (contrast ``I saw it was not there'' with ``If it was there I would not have missed it''; Mazor et al., 2020). In contrast, this asymmetry can also be interpreted as reflecting an asymmetry in the perceptual and cognitive uncertainties that are associated with the representations of presence and absence. For example, Kellij et al. (2018) successfully replicated the metacognitive asymmetry effect in a simple Signal Detection Theory (SDT) model with higher signal variance. Their model did not have to posit any asymmetry in higher-order processes in order to fit the empirical data.
 
@@ -155,7 +157,7 @@ Over the years researchers proposed different theoretical accounts for this phen
 
 Treisman and Gormican (1988) interpreted search asymmetries as revealing a categorical difference between pre-attentive parallel search and attention-guided serial search. According to their account, parallel search is not available when searching for a target that is marked by the absence, or the lesser quantity, of a feature, and when searching for a prototypical stimulus among deviant distractors. This is in line with the proposal that the representation of absence is cognitively demanding and is not available without the active engagement of attention. In contrast, probabilistic parallel models of visual search, inspired by Signal Detection Theory, frame search asymmetry effects not as marking a categorical difference between serial and parallel search, but as reflecting the effect of stimulus uncertainty on the noisiness of the search process which is always parallel (Dosher, Han, \& Lu, 2004; Vincent, 2011). Vincent (2011) demonstrated that differences in search efficiency can be accounted for by the \emph{sigma ratio}: the relative difference in internal uncertainty associated with the two stimulus categories. He found support for his sigma-ratio account in the slope of standardized ROC curves, extracted from subjective confidence estimates in a vertical/tilted visual search task. Similarly, reverse correlation analysis revealed higher variability in the internal representation of \emph{Q}, compared to \emph{O}, stimuli (Saiki, 2008). It is important to note here that the parallel/serial account also predicts sensitivity of search slope to variability in internal representations. For example, Treisman and Gormican (1988) relied on Weber's law to show that searching for a target that induces increased activity compared to distractors is more efficient than searching for a target that induces weaker activity, due to differences in the underlying noise level.
 
-In this study, we will compare search- and metacognitive asymmetries across several stimulus features, in order to ask whether the two effects reflect the behavioural signature of identical, partly-overlapping, or completely distinct mechanisms. We will test the hypothesis that the two asymmetries result from differences in the shape of the underlying signal distributions for the two stimulus categories. \emph{MM: I am not sure how to test this hypothesis}
+In this study, we will compare perceptual, cognitive, and metacognitive asymmetries across several stimulus features and four tasks, in order to ask whether these asymmetries reflect the behavioural signature of identical, partly-overlapping, or completely distinct mechanisms. We will test the hypothesis that these four asymmetries result from differences in the shape of the underlying signal distributions for the two stimulus categories.
 
 More specifically, this study is set to test the following hypotheses:
 
@@ -167,6 +169,16 @@ More specifically, this study is set to test the following hypotheses:
 \end{enumerate}
 
 This hypothesis will be tested for the following stimulus features for which search asymmetry has been demonstrated: addition of a stimulus part, open ends, color, curvature, orientation and familiarity. We will test Hypothesis 1 separately for each stimulus feature, by replicating the original search asymmetry (for example, Q-in-O search is more efficient that O-in-Q search) and testing the null hypothesis that metacognitive sensitivity (measured as the area under the response conditional ROC curve) for the efficient target (e.g., \emph{Q}) is equal to or lower than metacognitive sensitivity for the inefficient target (e.g., for the case of \emph{Q}/\emph{O}, \(H_o=auROC_{Q}\leq auROC_O\)).
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  \textbf{Hypothesis 2}: Response-inhibition asymmetry, measured with the Go/No-go task, follows the same direction as search asymmetry.
+\end{enumerate}
+
+This hypothesis will be tested separately for the same six stimulus features. We will test Hypothesis 2 separately for each stimulus feature, by replicating the original search asymmetry (for example, Q-in-O search is more efficient that O-in-Q search) and testing the null hypothesis that response-inhibition (measured as Go/No-go accuracy) when the efficient target (e.g., \emph{Q}) is used as a go-signal, is equal to or lower than response-inhibition for when the inefficient target is used as a go-signal (e.g., for the case of \emph{Q}/\emph{O}, \(H_o=Acc_{Q}\leq Acc_O\)).
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
@@ -236,7 +248,7 @@ We will test the following stimulus features in separate experiments:
 \hypertarget{data-analysis}{%
 \subsection{Data analysis}\label{data-analysis}}
 
-We will use R (Version 3.6.0; R Core Team, 2019) and the R-packages \emph{brms} (Version 2.13.0; Bürkner, 2018), \emph{broom} (Version 0.5.6; Robinson \& Hayes, 2020), \emph{cowplot} (Version 1.0.0; Wilke, 2019), \emph{dplyr} (Version 1.0.0; Wickham et al., 2020), \emph{ggplot2} (Version 3.3.1; Wickham, 2016), \emph{papaja} (Version 0.1.0.9942; Aust \& Barth, 2020), and \emph{tidyr} (Version 1.1.0; Wickham \& Henry, 2020) for all our analyses.
+We will use R (Version 3.6.0; R Core Team, 2019) and the R-packages \emph{BayesFactor} (Version 0.9.12.4.2; Morey \& Rouder, 2018), \emph{brms} (Version 2.13.0; Bürkner, 2018), \emph{broom} (Version 0.5.6; Robinson \& Hayes, 2020), \emph{cowplot} (Version 1.0.0; Wilke, 2019), \emph{dplyr} (Version 1.0.0; Wickham et al., 2020), \emph{ggplot2} (Version 3.3.1; Wickham, 2016), \emph{papaja} (Version 0.1.0.9942; Aust \& Barth, 2020), and \emph{tidyr} (Version 1.1.0; Wickham \& Henry, 2020) for all our analyses.
 
 \hypertarget{rejection-criteria}{%
 \subsubsection{Rejection criteria}\label{rejection-criteria}}
@@ -294,6 +306,9 @@ Fleming, S. M., \& Dolan, R. J. (2010). Effects of loss aversion on post-decisio
 \leavevmode\hypertarget{ref-frith1974acurious}{}%
 Frith, U. (1974). Acurious effect with reversed letters explained by a theory of schema. \emph{Perception \& Psychophysics}, \emph{16}(1), 113--116.
 
+\leavevmode\hypertarget{ref-helton2011feature}{}%
+Helton, W. S., \& Russell, P. N. (2011). Feature absence--presence and two theories of lapses of sustained attention. \emph{Psychological Research}, \emph{75}(5), 384--392.
+
 \leavevmode\hypertarget{ref-higham2009investigating}{}%
 Higham, P. A., Perfect, T. J., \& Bruno, D. (2009). Investigating strength and frequency effects in recognition memory using type-2 signal detection theory. \emph{Journal of Experimental Psychology: Learning, Memory, and Cognition}, \emph{35}(1), 57.
 
@@ -314,6 +329,9 @@ Mazor, M., Friston, K. J., \& Fleming, S. M. (2020). Distinct neural contributio
 
 \leavevmode\hypertarget{ref-meuwese2014subjective}{}%
 Meuwese, J. D., Loon, A. M. van, Lamme, V. A., \& Fahrenfort, J. J. (2014). The subjective experience of object recognition: Comparing metacognition for object detection and object categorization. \emph{Attention, Perception, \& Psychophysics}, \emph{76}(4), 1057--1068.
+
+\leavevmode\hypertarget{ref-R-BayesFactor}{}%
+Morey, R. D., \& Rouder, J. N. (2018). \emph{BayesFactor: Computation of bayes factors for common designs}. Retrieved from \url{https://CRAN.R-project.org/package=BayesFactor}
 
 \leavevmode\hypertarget{ref-pearce2003visual}{}%
 Pearce, J. M., \& George, D. N. (2003). Visual search asymmetry in pigeons. \emph{Journal of Experimental Psychology: Animal Behavior Processes}, \emph{29}(2), 118.
@@ -373,6 +391,9 @@ Wolfe, J. M. (2001). Asymmetries in visual search: An introduction. \emph{Percep
 \hypertarget{pilot-data-and-analysis}{%
 \section{Pilot data and analysis}\label{pilot-data-and-analysis}}
 
+\hypertarget{pilot-experiment-1}{%
+\subsection{Pilot Experiment 1}\label{pilot-experiment-1}}
+
 30 participants were recruited from Prolific for our pilot experiment. We followed the procedure described in the Methods section, using \emph{Q} and \emph{O} as our stimuli. The experiment took about 10 minutes to complete. Subjects were paid £1.25 for their participation.
 
 Mean accuracy was 0.80 in the discrimination task, 0.96 in the Q-in-O search task, and 0.95 in the O-in-Q search task. We excluded participants for performing below 70\% accuracy in one or two of the search tasks, for performing below 60\% accuracy in the discrimination task, for having extremely fast or slow reaction times in one or more of the tasks (below 250 milliseconds or above 5 seconds in more than 25\% of the trials), and for failing the comprehension check. Overall we excluded 0 participants, leaving 30 participants for the main analysis.
@@ -423,6 +444,89 @@ Similar to Vincent (2011), we observed shallow standardized ROC (zROC) curves (\
 \centering
 \includegraphics{asymmetry_files/figure-latex/rc-ROC-pilot-1.pdf}
 \caption{\label{fig:rc-ROC-pilot}response conditional ROC curves for the two discrimination responses. The area under the curve is a measure of metacognitive sensitivity. Bottom right inset: distributions of the area under the curve for the two responses, across participants. Overall, participants had lower metacognitive insight into the accuracy of their \enquote{O} responses.}
+\end{figure}
+
+\hypertarget{pilot-experiment-2}{%
+\subsection{Pilot Experiment 2}\label{pilot-experiment-2}}
+
+\hypertarget{gono-go-task-response-inhibition.}{%
+\subsection{Go/No-go task: response inhibition.}\label{gono-go-task-response-inhibition.}}
+
+\hypertarget{participants-1}{%
+\subsection{Participants}\label{participants-1}}
+
+A total of 30 participants were recruited from Prolific. Participants were Native English Speakers and had a minimum approval rate of 0.9. They were paid £0.50 for their participation, in addition to a bonus payment of up to £0.32. The experiment took 4 minutes to complete.
+
+\hypertarget{experimental-design}{%
+\subsection{Experimental design}\label{experimental-design}}
+
+On each trial, participants were presented with a fixation cross (500 ms) followed by one of two shapes (500 ms). They were asked to respond with a key press within 500 ms to one shape (\enquote{go} trials), but not to the other (\enquote{no-go} trials). Participants were awarded a point for responding on \enquote{go} trials and for not responding on \enquote{no-go} trials. Points were later translated to a bonus payment with a conversion rate of £0.0025 per point. .
+
+After Reading the information sheet and signing the consent form, participants were instructed about the task. In the following practice part, participants had 8 practice trials in which they responded to a club, but not to a heart. The practice block was followed by a verbal comprehension test (\enquote{Please describe the task in your own words}), which was followed by the main task.
+
+The main task consisted of 128 trials, separated into four blocks of 32 trials each. In two blocks, participants responded to the appearance of a ring intersected by a line, but not to the appearance of a ring. In the other two blocks, participants responded to the appearance of a ring, but not to the appearance of a ring intersected by a line. The order of blocks was interleaved. The first block was chosen at random with 50\% probability.
+
+\hypertarget{exclusion}{%
+\subsection{Exclusion}\label{exclusion}}
+
+Participants were excluded for performing below chance and for failing the comprehension check. After exclusion, we had datasets from 30 participants.
+
+\hypertarget{results}{%
+\subsection{Results}\label{results}}
+
+Overall accuracy was very high (\(M = 0.93\), 95\% CI \([0.90\), \(0.96]\)).
+
+Accuracy was higher for blocks in which a response was required for \emph{Q} (\(M = 0.94\), 95\% CI \([0.91\), \(0.98]\)) than for \emph{O} (\(M = 0.92\), 95\% CI \([0.89\), \(0.95]\); \(M_d = 0.02\), 95\% CI \([0.01\), \(0.04]\), \(t(29) = 3.19\), \(p = .003\); see Fig. \ref{fig:gng-accuracy}).
+
+No difference was observed between the reaction times for the two block types (median reaction time in \emph{Q}-target blocks 358.39; median reaction time in \emph{O}-target blocks: 370.75; t-test on the log-transformed reaction times: \(M = 0.00\) 95\% HDI \([-0.02\), \(0.02]\), \(\mathrm{BF}_{\textrm{01}} = 4.53\)).
+
+\begin{figure}
+\centering
+\includegraphics{asymmetry_files/figure-latex/gng-accuracy-1.pdf}
+\caption{\label{fig:gng-accuracy}Accuracy as a function of target in the Go/No-go task.}
+\end{figure}
+
+\hypertarget{pilot-experiment-3}{%
+\subsection{Pilot Experiment 3}\label{pilot-experiment-3}}
+
+\hypertarget{change-detection}{%
+\subsection{Change Detection}\label{change-detection}}
+
+\hypertarget{participants-2}{%
+\subsection{Participants}\label{participants-2}}
+
+A total of 38 participants were recruited from Prolific. Participants were Native English Speakers and had a minimum approval rate of 0.95. They were paid £0.63 for their participation, in addition to a bonus payment of up to £0.32 (average bonus paid: £0.28). The experiment took 5 minutes to complete.
+
+\hypertarget{experimental-design-1}{%
+\subsection{Experimental design}\label{experimental-design-1}}
+
+On each trial, participants were presented with an array of randomly positioned stimuli (500 ms). All stimuli belonged to one of two classes (for example, the letters \enquote{O} and \enquote{Q}). The array disappeared from the screen for an interval of 900 ms, and then reappeared. On half of the trials, the second array was the identical to the first array, and on the other half one stimulus changed between the first and second arrays. Participants were instructed to press \enquote{J} if they detected a change, or \enquote{F} if they believed no change has taken place. There was no time pressure on making a response. Points were awarded for correct responses, and points were later translated to a bonus payment with a conversion rate of £0.005 per point.
+
+After Reading the information sheet and signing the consent form, participants were instructed about the task. A practice part included 4 trials in which participants detected a change in an array of 3 \emph{X}s and \emph{W}s (two \emph{X}s and one \emph{W} or vice versa). The practice part ended once three out of four trials were answered correctly, otherwise an additional practice block was delivered. The practice block was followed by an explanation about the scoring system and bonus payment. Then, the main part of the experiment started.
+
+The main task consisted of 64 trials, separated into four blocks of 16 trials each. The two stimulus classes used for the main experiment were the letters \emph{Q} (feature positive) and \emph{O} (feature negative). The number of stimuli on the screen was odd in all trials, and the difference between the number of \emph{O}s and \emph{Q}s was always one, for both the first and the second display. Change trials were classified into two conditions: feature addition (O to Q) and deletion (Q to O). No-change trials were classified into the same two classes based on the contents of the first display: if the first display contained more \emph{O}s, the trial was classified as a no-addition trial, and if there were more \emph{Q}s, the trial was classified as a no-deletion trial. Each block included all possible combinations of our three experimental factors: change (yes or no), condition (addition or deletion), and set-size. For a first batch of 8 participant, set sizes were 1,3,5,7,9 and 11. For the remaining 30 participants, set sizes were 1,3,5, and 7. Trials with set size 1 were used as attention checks, and were not included in the main analysis.
+
+\hypertarget{exclusion-1}{%
+\subsection{Exclusion}\label{exclusion-1}}
+
+Participants were excluded for performing below 80\% in trials with set size 1, or for responding too quickly (RT\textless250 ms) or too slowly (RT\textgreater5 sec) in more than 25\% of the trials. After exclusion, we had datasets from 38 participants.
+
+\hypertarget{results-1}{%
+\subsection{Results}\label{results-1}}
+
+Overall accuracy was around 75\% (\(M = 0.75\), 95\% CI \([0.72\), \(0.79]\)).
+Accuracy was significantly higher for addition trials than for deletion trials (\(M_d = 0.05\), 95\% CI \([0.01\), \(0.09]\), \(t(37) = 2.65\), \(p = .012\)). Analysis of variance revealed a marginally significant interaction of this effect with set-size (\(F(1.73, 63.87) = 2.97\), \(\mathit{MSE} = 0.05\), \(p = .066\), \(\hat{\eta}^2_G = .011\)). No interaction was observed between addition/deletion and the presence of change (\(F(1, 37) = 0.50\), \(\mathit{MSE} = 0.03\), \(p = .482\)).
+
+\begin{figure}
+\centering
+\includegraphics{asymmetry_files/figure-latex/cd-pilot-1.pdf}
+\caption{\label{fig:cd-pilot}Accuracy in the change detection task as a function of condition (feature addition or deletion) and set size. Error bars represent the standard error of the mean.}
+\end{figure}
+
+\begin{figure}
+\centering
+\includegraphics{asymmetry_files/figure-latex/cd-hit-rate-1.pdf}
+\caption{\label{fig:cd-hit-rate}Hit-rate in the change detection task (accuracy in change trials only) as a function of condition (feature addition or deletion) and set size. Error bars represent the standard error of the mean.}
 \end{figure}
 
 \end{document}
