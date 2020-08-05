@@ -1,0 +1,67 @@
+---
+title: "simulation"
+author: "Matan Mazor"
+date: "04/08/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(brms)
+library(broom)
+library(mvtnorm)
+```
+
+## R Markdown
+
+
+```{r echo=FALSE,cache=TRUE}
+# sample asymmetry means for the four tasks and six stimulus types.
+population_means <- mvtnorm::rmvnorm(6,mean=c(0,0,0,0),sigma=diag(4)*0.1+0.9)
+
+n <- 200
+
+#sample individual data points
+d <-
+  tibble(
+    # Six experiments
+    exp = rep(c(1,2,3,4,5,6), each=n))%>% 
+    group_by(exp) %>% 
+     mutate(
+       # the beta coefficient relating ROC and search asymmetries
+       beta_ROC = rnorm(1,0.3,0.1),
+       #ROC asymmetry is bounded to [-1, 1], so I apply pnorm to squeeze it into this interval.
+       # if bias>0, ROC_asym is closer to 1. If bias <0, closer to 0.
+        ROC_asym = 2*(pnorm(rnorm(n,population_means[exp,1],0.5))-0.5),
+        standardized_ROC_asym=(ROC_asym-mean(ROC_asym))/sd(ROC_asym),
+       # searc_asym is sampled from a normal distribution centred around bias+beta_ROC*standardized ROC_asym
+        search_asym = rnorm(n,population_means[exp,2],1),
+       # go-nogo asym
+       gng_asym = rnorm(n,population_means[exp,3],1),
+       # change detection asym
+       cd_asym = rnorm(n,population_means[exp,4],1),
+       # the correlation is not used anywhere, and is here only as a sanity check. 
+        cor = cor(ROC_asym,search_asym))
+
+summary <- d%>%group_by(exp)%>%summarise(
+  ROC_asym=mean(ROC_asym),
+  search_asym=mean(search_asym),
+  gng_asym=mean(gng_asym),
+  cd_asym=mean(cd_asym))
+
+```
+
+```{r load_pilot_data, echo=FALSE, cache=TRUE}
+
+df <- read_csv('vs_simulation.csv')%>%
+  mutate(target=ifelse(target=='Q',1,2),
+         target=factor(target,levels=c(1,2)),
+         response=factor(response,levels=c(1,2)))
+```
+
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+

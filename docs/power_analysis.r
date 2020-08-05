@@ -10,6 +10,7 @@ library(broom)
 set.seed(1)
 n <- 200
 
+true_cov
 d <-
   tibble(
     # Six experiments
