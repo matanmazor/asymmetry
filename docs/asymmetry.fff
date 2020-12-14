@@ -1,7 +1,0 @@
-\begin{figure*}[hbt]
-\ifnextchar[{\eatarg}{}
-
-\centering
-\includegraphics{docs/wolfeexample.png}
-\caption{It is easier to find the circle with the vertical line among plain circles (left panel) than vice versa. Adapted from ({\textbf{???}})}
-\end{figure*}
