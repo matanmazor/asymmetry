@@ -46,9 +46,9 @@
 
        var wellcome = {
            type: "p5Text",
-           title: 'Wellcome' ,
+           title: 'Welcome' ,
            text: "This experiment investigates how you make decisions about what you see, "+
-          "and what makes you feel more or less confident in your decisions."+
+          "and what makes you feel more or less confident in your decisions. "+
          "The experiment should take about 10 minutes to complete."
          };
        timeline.push(wellcome)
@@ -64,8 +64,8 @@
          },
            text: "In this experiment we will quickly flash pairs of letters on the screen. "+
          "The first letter will be 'O' on half "+
-         "of the trials and 'Q' on the other half. The second letter will always be 'X'. Pay close attention and press 'Q' if the "+
-         "first letter was a 'Q' or 'W' if it was an 'O'.\nLet's start with four practice trials."
+         "of the trials and 'Q' on the other half. The second letter will always be 'X'. Pay close attention and press 'W' if the "+
+         "first letter was a 'Q' or 'E' if it was an 'O'.\nLet's start with four practice trials."
          };
 
       // A generic function the outputs a function that prints a letter to the screen
@@ -88,7 +88,7 @@
            stimulus1_function: drawLetter('Q'),
            stimulus2_function: drawLetter('O'),
            mask_function: drawLetter('X'),
-           choices:['q','w'],
+           choices:['w','e'],
            which_stimulus: jsPsych.timelineVariable('which_stimulus'),
            data: jsPsych.timelineVariable('data'),
            SOA: function() {return window.SOA},
@@ -115,12 +115,12 @@
            {which_stimulus:1,
             rate_confidence: false,
             data: {
-              correct_response:'q',
+              correct_response:'w',
               test_part: 'disc_practice'}},
            {which_stimulus:2,
             rate_confidence: false,
             data: {
-              correct_response:'w',
+              correct_response:'e',
               test_part: 'disc_practice'}}
          ]
 
@@ -188,12 +188,12 @@
            {which_stimulus:1,
             rate_confidence: true,
             data: {
-              correct_response:'q',
+              correct_response:'w',
               test_part: 'disc_practice_conf'}},
            {which_stimulus:2,
            rate_confidence: true,
             data: {
-              correct_response:'w',
+              correct_response:'e',
               test_part: 'disc_practice_conf'}}
          ]
 
@@ -201,12 +201,12 @@
            {which_stimulus:1,
             rate_confidence: true,
             data: {
-              correct_response:'q',
+              correct_response:'w',
               test_part: 'disc'}},
            {which_stimulus:2,
            rate_confidence: true,
             data: {
-              correct_response:'w',
+              correct_response:'e',
               test_part: 'disc'}}
          ]
 
@@ -222,7 +222,7 @@
          var multichoice_discrimination = {
            type: 'survey-multi-choice',
            questions: [{
-           prompt: "If I pressed Q and made the circle very large, it means that I am:",
+           prompt: "If I pressed W and made the circle very large, it means that I am:",
            options: ['1. very confident that the two letters were O and X',
                      '2. guessing that the two letters were O and X',
                      '3. very confident that two letters were Q and X',
