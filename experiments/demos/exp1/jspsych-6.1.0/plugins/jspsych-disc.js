@@ -134,9 +134,9 @@ plugin.trial = function(display_element, trial) {
     p.fill(200)
     p.textSize(15)
     p.translate(-du/3,40)
-    p.text('press Q',0,0)
-    p.translate(du*2/3,0)
     p.text('press W',0,0)
+    p.translate(du*2/3,0)
+    p.text('press E',0,0)
     p.pop()
   }
 
