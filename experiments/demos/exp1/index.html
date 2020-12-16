@@ -28,6 +28,8 @@
     window.last_two_trials = [false, false] //for online calibration
     const calibration_factor = 0.9
     window.block_number=0
+    // response mapping is counterbalanced across participants
+    window.response_mapping = [['w','e'],['e','w']][Math.random()>0.5?1:0];
 
     // These variables count the number of times the participant has visited
     // the practice loop
@@ -49,7 +51,7 @@
            title: 'Welcome' ,
            text: "This experiment investigates how you make decisions about what you see, "+
           "and what makes you feel more or less confident in your decisions. "+
-         "The experiment should take about 10 minutes to complete."
+         "It should take about 10 minutes to complete."
          };
        timeline.push(wellcome)
 
@@ -63,9 +65,12 @@
            }
          },
            text: "In this experiment we will quickly flash pairs of letters on the screen. "+
-         "The first letter will be 'O' on half "+
-         "of the trials and 'Q' on the other half. The second letter will always be 'X'. Pay close attention and press 'W' if the "+
-         "first letter was a 'Q' or 'E' if it was an 'O'.\nLet's start with four practice trials."
+         "\nThe first letter will be 'O' on half "+
+         "of the trials and 'Q' on the other half. \nThe second letter will always be 'X'. \nPay close attention and press '"+
+         window.response_mapping[0].toUpperCase()+
+         "' if the first letter was a 'Q' or '"+
+         window.response_mapping[1].toUpperCase()+
+         "' if it was an 'O'.\nLet's start with four practice trials."
          };
 
       // A generic function the outputs a function that prints a letter to the screen
@@ -88,7 +93,7 @@
            stimulus1_function: drawLetter('Q'),
            stimulus2_function: drawLetter('O'),
            mask_function: drawLetter('X'),
-           choices:['w','e'],
+           choices: window.response_mapping,
            which_stimulus: jsPsych.timelineVariable('which_stimulus'),
            data: jsPsych.timelineVariable('data'),
            SOA: function() {return window.SOA},
@@ -106,7 +111,7 @@
                                            data.correct]
              }
              console.log(window.SOA);
-             window.SOA = Math.min(Math.max(window.SOA,56),100);
+             // window.SOA = Math.min(Math.max(window.SOA,56),100);
            }
           }
 
@@ -115,12 +120,12 @@
            {which_stimulus:1,
             rate_confidence: false,
             data: {
-              correct_response:'w',
+              correct_response: window.response_mapping[0],
               test_part: 'disc_practice'}},
            {which_stimulus:2,
             rate_confidence: false,
             data: {
-              correct_response:'e',
+              correct_response: window.response_mapping[1],
               test_part: 'disc_practice'}}
          ]
 
@@ -188,12 +193,12 @@
            {which_stimulus:1,
             rate_confidence: true,
             data: {
-              correct_response:'w',
+              correct_response: window.response_mapping[0],
               test_part: 'disc_practice_conf'}},
            {which_stimulus:2,
            rate_confidence: true,
             data: {
-              correct_response:'e',
+              correct_response: window.response_mapping[1],
               test_part: 'disc_practice_conf'}}
          ]
 
@@ -201,12 +206,12 @@
            {which_stimulus:1,
             rate_confidence: true,
             data: {
-              correct_response:'w',
+              correct_response: window.response_mapping[0],
               test_part: 'disc'}},
            {which_stimulus:2,
            rate_confidence: true,
             data: {
-              correct_response:'e',
+              correct_response: window.response_mapping[1],
               test_part: 'disc'}}
          ]
 
@@ -222,7 +227,7 @@
          var multichoice_discrimination = {
            type: 'survey-multi-choice',
            questions: [{
-           prompt: "If I pressed W and made the circle very large, it means that I am:",
+           prompt: "If I pressed "+window.response_mapping[0].toUpperCase()+" and made the circle very large, it means that I am:",
            options: ['1. very confident that the two letters were O and X',
                      '2. guessing that the two letters were O and X',
                      '3. very confident that two letters were Q and X',

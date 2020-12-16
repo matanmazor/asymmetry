@@ -123,12 +123,22 @@ plugin.trial = function(display_element, trial) {
 
   // this is here just for good order, basically it's calling presentChoices
   function collectResponse() {
-    p.push()
-    p.translate(-du/3,0)
-    trial.stimulus1_function(p,p.millis(),du)
-    p.translate(du*2/3,0)
-    trial.stimulus2_function(p,p.millis(),du)
-    p.pop()
+    console.log(trial.choices[0])
+    if (trial.choices[0]=='w') {
+      p.push()
+      p.translate(-du/3,0)
+      trial.stimulus1_function(p,p.millis(),du)
+      p.translate(du*2/3,0)
+      trial.stimulus2_function(p,p.millis(),du)
+      p.pop()
+    } else if (trial.choices[0]=='e') {
+      p.push()
+      p.translate(-du/3,0)
+      trial.stimulus2_function(p,p.millis(),du)
+      p.translate(du*2/3,0)
+      trial.stimulus1_function(p,p.millis(),du)
+      p.pop()
+    }
 
     p.push()
     p.fill(200)
