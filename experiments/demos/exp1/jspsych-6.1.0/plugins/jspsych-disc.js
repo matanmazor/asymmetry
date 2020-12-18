@@ -23,7 +23,7 @@ plugin.info = {
     stim_duration: {
       type: jsPsych.plugins.parameterType.FLOAT,
       pretty_name: "stim duration",
-      default: 50,
+      default: 30,
       description: "Duration of stimulus mask in milliseconds"
     },
     SOA: {

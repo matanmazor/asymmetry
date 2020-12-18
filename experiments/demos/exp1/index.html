@@ -111,7 +111,7 @@
                                            data.correct]
              }
              console.log(window.SOA);
-             // window.SOA = Math.min(Math.max(window.SOA,56),100);
+             // window.SOA = Math.min(Math.max(window.SOA,40),100);
            }
           }
 
@@ -166,7 +166,7 @@
                  var num_correct = data.filter({correct: true}).count();
                  window.disc_loop+=1
                  if(num_correct==4){
-                    window.SOA=60
+                    window.SOA=30
                      return false;
                  } else {
                      return true;
