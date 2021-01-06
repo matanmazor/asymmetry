@@ -24,10 +24,11 @@
     <body></body>
     <script>
 
-    window.SOA = 100
-    window.last_two_trials = [false, false] //for online calibration
-    const calibration_factor = 0.9
-    window.block_number=0
+window.SOA = 100;
+    window.last_two_trials = [false, false]; //for online calibration
+    const calibration_factor = 0.9;
+    window.block_number=0;
+
     // response mapping is counterbalanced across participants
     window.response_mapping = [['w','e'],['e','w']][Math.random()>0.5?1:0];
 
@@ -49,11 +50,9 @@
        var wellcome = {
            type: "p5Text",
            title: 'Welcome' ,
-           text: "This experiment investigates how you make decisions about what you see, "+
-          "and what makes you feel more or less confident in your decisions. "+
-         "It should take about 10 minutes to complete."
+           text: `This experiment investigates how you make decisions about what you see, and what makes you feel more or less confident in your decisions.\nIt should take about 10 minutes to complete.`
          };
-       timeline.push(wellcome)
+       timeline.push(wellcome);
 
 
        var introduce_disc = {
@@ -64,14 +63,15 @@
              return 'Let\'s try again'
            }
          },
-           text: "In this experiment we will quickly flash pairs of letters on the screen. "+
-         "\nThe first letter will be 'O' on half "+
-         "of the trials and 'Q' on the other half. \nThe second letter will always be 'X'. \nPay close attention and press '"+
-         window.response_mapping[0].toUpperCase()+
-         "' if the first letter was a 'Q' or '"+
-         window.response_mapping[1].toUpperCase()+
-         "' if it was an 'O'.\nLet's start with four practice trials."
-         };
+           text: function() {
+             console.log(window.response_mapping)
+             if (window.response_mapping[0]=='w') {
+               console.log('b')
+             return `In this experiment we will quickly flash pairs of letters on the screen.\nThe first letter will be 'Q' on half of the trials and 'O' on the other half.\nThe second letter will always be 'X'.\nPay close attention and press 'W' if the first letter was a 'Q' or 'E' if it was an 'O'.\nLet's start with four practice trials.`
+         } else if (window.response_mapping[0]=='e') {
+           console.log('c')
+            return `In this experiment we will quickly flash pairs of letters on the screen.\nThe first letter will be 'O' on half of the trials and 'Q' on the other half.\nThe second letter will always be 'X'.\nPay close attention and press 'W' if the first letter was a 'O' or 'E' if it was an 'Q'.\nLet's start with four practice trials.`}
+        }};
 
       // A generic function the outputs a function that prints a letter to the screen
          function drawLetter(letter) {
@@ -84,7 +84,7 @@
              p.stroke(128)
              p.text(letter,0,0)
            }
-         }
+         };
 
        // A discrimination trial: was the first letter's identity
        // Q or O?
@@ -98,22 +98,25 @@
            data: jsPsych.timelineVariable('data'),
            SOA: function() {return window.SOA},
            rate_confidence: jsPsych.timelineVariable('rate_confidence'),
+
+           //staircasing procedure
            on_finish: function(data){
              data.correct = data.response == data.correct_response;
+             //if error, make SOA longer (calibration factor is <1)
              if (!data.correct) {
                window.SOA /= calibration_factor;
                window.last_two_trials = [false, false]
+            // else, if the last two trials were correct, make SOA shorter
              } else if (last_two_trials[1]) {
                window.SOA *= calibration_factor;
                window.last_two_trials = [false, false]
+            // else (last trial was correct, the one before was error), update last_two_trials
              } else {
                window.last_two_trials = [window.last_two_trials[1],
                                            data.correct]
              }
-             console.log(window.SOA);
-             // window.SOA = Math.min(Math.max(window.SOA,40),100);
            }
-          }
+         };
 
        // Discrimination parameters: two trial types. Q and O.
          var disc_practice_vars = [
@@ -127,7 +130,7 @@
             data: {
               correct_response: window.response_mapping[1],
               test_part: 'disc_practice'}}
-         ]
+         ];
 
 
          var feedback = {
@@ -149,14 +152,14 @@
              }
            },
            response_ends_trial: false
-         }
+         };
 
          var disc_practice_procedure = {
            timeline: [disc_trial, feedback],
            timeline_variables: disc_practice_vars,
            repetitions: 2,
            randomize_order: true
-         }
+         };
 
          var disc_practice_loop_node = {
              timeline: [introduce_disc,disc_practice_procedure],
@@ -172,8 +175,8 @@
                      return true;
                  }
              }
-         }
-         timeline.push(disc_practice_loop_node)
+         };
+         timeline.push(disc_practice_loop_node);
 
          var lets_practice_confidence = {
              type: "p5Text",
@@ -185,7 +188,7 @@
              "circle means there's a good chance you might be wrong.\n"+
              "Let's practice this."
            };
-           timeline.push(lets_practice_confidence)
+           timeline.push(lets_practice_confidence);
 
 
        // Discrimination parameters: two trial types. Q and O.
@@ -200,7 +203,7 @@
             data: {
               correct_response: window.response_mapping[1],
               test_part: 'disc_practice_conf'}}
-         ]
+         ];
 
         var disc_vars = [
            {which_stimulus:1,
@@ -213,7 +216,7 @@
             data: {
               correct_response: window.response_mapping[1],
               test_part: 'disc'}}
-         ]
+         ];
 
           //
          var disc_conf_procedure = {
@@ -221,8 +224,8 @@
            timeline_variables: disc_conf_vars,
            repetitions: 2,
            randomize_order: true
-         }
-        timeline.push(disc_conf_procedure)
+         };
+        timeline.push(disc_conf_procedure);
 
          var multichoice_discrimination = {
            type: 'survey-multi-choice',
@@ -240,8 +243,8 @@
              JSON.parse(data.responses)['multichoice_discrimination'][0][0]==3
            }
          }
-         }
-         timeline.push(multichoice_discrimination)
+       };
+         timeline.push(multichoice_discrimination);
 
          var block_timeline=[];
 
@@ -258,13 +261,9 @@
                },
                text: function() {
                  if (window.block_number==0) {
-                   return("This main part of the experiment will comprise 96 repetitions of the Q or O challenge "+
-                         "in blocks of 16 repetitions, with short breaks in between." +
-                         "\nThis time you will not get any feedback about your accuracy."+
-                         "\nLet's start the first block.")}
+                   return(`This main part of the experiment will comprise 96 repetitions of the Q or O challenge in blocks of 16 repetitions, with short breaks in between.\nThis time you will not get any feedback about your accuracy.\nLet's start the first block.`)}
                  else {
-                   return("Rest your eyes, breath deep, and press the space bar when you are ready to continue "+
-                 "to the "+block_count[window.block_number]+" block out of 6.")}
+                   return(`Rest your eyes, breathe deep, and press the space bar when you are ready to continue to the ${block_count[window.block_number]} block out of 6.`)}
                }
              };
 
@@ -273,7 +272,7 @@
            timeline_variables: disc_vars,
            repetitions: 8,
            randomize_order: true
-         }
+         };
 
        var debrief_disc = {
            type: "p5Text",
@@ -289,14 +288,10 @@
              if (isNaN(confidence_incorrect)) {
                incorrect_string=''
              } else {
-               incorrect_string = "When you were wrong, your average confidence level was "
-                  + confidence_incorrect+" on a scale of 0 "
-                  + "to 100."
+               incorrect_string = `When you were wrong, your average confidence level was ${confidence_incorrect} on a scale of 0 to 100.`
              }
 
-             return "You responded correctly on "+accuracy+"% of the trials.\n" +
-             "When you were correct, your average confidence level was "+confidence_correct+" on a scale of 0 " +
-             "to 100. "+incorrect_string+" \nYou can now take a short break before we continue."
+             return `You responded correctly on ${accuracy}% of the trials.\nWhen you were correct, your average confidence level was ${confidence_correct} on a scale of 0 to 100.\n${incorrect_string}\nYou can now take a short break before we continue.`
            }
          };
 
@@ -311,7 +306,7 @@
                return false;
              }
            }
-         }
+         };
 
          timeline.push(loop_node);
 
@@ -319,28 +314,25 @@
            type: 'survey-text',
            preamble: '<h1>Your Thoughts<h1>',
            questions: [{
-           prompt: "Before we thank you, we would appreciate if you could share " +
-           "any thoughts you had about the experiment, or anything we should "+
-           "take into account when analyzing your data.",
+           prompt: `Before we thank you, we would appreciate if you could share any thoughts you had about the experiment, or anything we should take into account when analyzing your data.`,
            pleaceholder: "your comments here",
            rows:8,
            columns:60,
            name: 'worker_comments'
          }]
          }
-         timeline.push(worker_comments)
+         timeline.push(worker_comments);
 
          var thank_you = {
            type: 'p5Text',
            title: "Thank you!",
-           text: "Thanks for your time and effort. Your contribution will help us " +
-                 "learn about the way people make and form confidence " +
-                 "in their decisions."
+           text: `Thanks for your time and effort. Your contribution will help us learn about the way people make and form confidence in their decisions.`
          };
 
          timeline.push(thank_you)
           return timeline
-        }
+        };
+
 
         function hexToBytes(hex) {
             for (var bytes = [], c = 0; c < hex.length; c += 2)

@@ -1,0 +1,446 @@
+---
+title             : "Metacognitive asymmetries in visual perception"
+shorttitle        : "asymmetry"
+
+author: 
+  - name          : "Matan Mazor"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    address       : "12 Queen Square, London WC1N 3BG"
+    email         : "mtnmzor@gmail.com"
+  - name          : "Rani Moran"
+    affiliation   : "2"
+  - name          : "Stephen M. Fleming"
+    affiliation   : "1,2,3"
+
+affiliation:
+  - id            : "1"
+    institution   : "Wellcome Centre for Human Neuroimaging, UCL"
+  - id            : "2"
+    institution   : "Max Planck UCL Centre for Computational Psychiatry and Ageing Research"
+  - id            : "3"
+    institution   : "Department of Experimental Psychology, UCL"
+
+    
+
+abstract: |
+ People have better metacognitive sensitivity for decisions about the presence compared to the absence of objects. However, it is not only objects themselves that can be present or absent, but also parts of objects and other visual features. Asymmetries in visual search indicate that a disadvantage for representing absence may operate at these levels as well. Furthermore, a processing advantage for surprising signals suggests that a presence/absence asymmetry may be explained by absence being passively represented as a default state, and presence as a default-violating surprise. It is unknown whether metacognitive asymmetry for judgements about presence and absence extend to these different levels of representation (object, feature, and default-violation). To address this question and test for a link between the representation of absence and default reasoning more generally, here we measure metacognitive sensitivity for discrimination judgments between stimuli that are identical except for the presence or absence of a distinguishing feature, and for stimuli that differ in their compliance with an expected default state.    
+  
+  
+  <!-- https://tinyurl.com/ybremelq -->
+  
+keywords          : "absence, presence, metacognition"
+wordcount         : "4131"
+
+bibliography      : ["r-references.bib"]
+# csl               : nature.csl
+
+floatsintext      : yes
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+linenumbers       : yes
+mask              : no
+draft             : no
+header-includes:
+  - \usepackage{setspace}
+  - \captionsetup[figure]{font={stretch=1,scriptsize}}
+
+documentclass     : "apa6"
+classoption       : "man"
+output            : papaja::apa6_word
+---
+
+```{r setup, include = FALSE}
+library("papaja")
+r_refs("r-references.bib")
+
+
+library('tidyverse')
+library('broom')
+library('cowplot')
+library('MESS') # for AUCs
+library('pracma') # for AUCs
+library('lsr') # for effect sizes
+library('BayesFactor') # for Bayesian t test
+library('pwr') # for power calculations
+library('reticulate') #for json to csv conversion which is simpler in python
+```
+
+
+```{r analysis-preferences}
+# Seed for random number generation
+set.seed(42)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed, warning = FALSE)
+```
+
+
+## Pilot Experiment
+
+```{python, include=FALSE}
+import json
+import pandas as pd
+import numpy as np
+from os import path as path
+
+def to_csv(filename):
+    dfs=[]
+    with open(filename+'.txt') as json_file:
+        for i,line in enumerate(json_file):
+            if line[0:14]!='Consent given.':
+                dfs.append(pd.read_json(line))
+            
+
+    group_df = pd.concat(dfs)
+    group_df.to_csv(filename+'.csv', index=False)
+    return(group_df)
+    
+group_df = to_csv(path.join('..','experiments','Experiment1','data','jatos_results_all_batches'))
+group_df[group_df.trial_type=='survey-text'].responses
+
+```
+
+```{r load_pilot_data, echo=FALSE, cache=TRUE}
+
+df <- read_csv('../experiments/Experiment1/data/jatos_results_all_batches.csv') %>%
+  rename('subj_id' = 'subject_identifier') %>%
+  mutate(subj_id=factor(subj_id))
+
+N_total <- df$subj_id%>%unique()%>%length()
+
+
+disc_df <- df %>%
+  filter((test_part=='disc')) %>%
+  select('subj_id','which_stimulus','SOA','SOA_frames','correct','RT','confidence','conf_RT') %>%
+  mutate(response = ifelse(correct==1, which_stimulus, 3-which_stimulus)) %>%
+  mutate(response= factor(response, levels=c(1,2)),
+         which_stimulus = factor(which_stimulus, levels=c(1,2))) %>%
+  group_by(subj_id) %>%
+  mutate(trial=row_number())
+
+minRT <- 250
+maxRT <- 5000
+min_acc_search <- 0.7
+min_acc_disc <- 0.6
+
+##exclude subjects
+
+bad_disc <- disc_df %>%
+  group_by(subj_id) %>%
+  summarise(acc = mean(correct),
+            RTlow = quantile(RT,0.25),
+            RThigh = quantile(RT,0.75))%>%
+  filter(acc<min_acc_disc | RTlow<minRT| RThigh>maxRT) %>%
+  select('subj_id')
+
+failed_test <- df %>%
+  group_by(subj_id) %>%
+  summarise(fi=all(followed_instructions)) %>%
+  filter(fi==FALSE) %>%
+  select('subj_id')
+
+excluded <- union(failed_test,bad_disc)
+ N <- N_total-length(excluded$subj_id)
+```
+
+`r N_total` participants were recruited from Prolific for our pilot experiment. We followed a similar procedure to the one described in the Methods section, using *Q* and *O* as our stimuli. In this pilot study we also replicated the visual-search asymmetry for these stimuli. To keep the experiment short and participants engaged, participants only completed 32 discrimination trials. The experiment took about 13.5 minutes to complete. Subjects were paid £1.25 for their participation. 
+
+Mean accuracy was `r disc_df$correct%>%mean()` in the discrimination task, `r search_df%>%filter(target==1)%$%correct%>%mean()` in the Q-in-O search task, and `r search_df%>%filter(target==2)%$%correct%>%mean()` in the O-in-Q search task. We excluded participants for performing below `r min_acc_search*100`% accuracy in one or two of the search tasks, for performing below `r min_acc_disc*100`% accuracy in the discrimination task, for having extremely fast or slow reaction times in one or more of the tasks (below `r minRT` milliseconds or above `r maxRT/1000` seconds in more than 25% of the trials), and for failing the comprehension check. Overall we excluded `r nrow(excluded)` participants, leaving `r N` participants for the main analysis.
+
+## Visual search task: search asymmetry replication
+Search time analysis was performed on correct trials with reaction time between `r minRT` and `r maxRT` milliseconds. Search slopes for the response time/set size function were extracted for each participant, task and response, and then subjected to a two-way analysis of variance. As expected, we observed significant effects for target identity (mean search slope  for *Q-in-O* search: `r slopes_by_target$Q` ms/item; mean search slope  for *O-in-Q* search: `r slopes_by_target$O` ms/item; `r apa_print(anv)$statistic$target`) and response (mean search slope for target absent responses: `r slopes_by_response$absent`; mean search slope for target present responses: `r slopes_by_response$present`; `r apa_print(anv)$statistic$response`; see Figure \ref{fig:RT-pilot}). An interaction  effect was also significant (`r apa_print(anv)$statistic$target_response`). These results match previous reports of steeper search slopes for searching a circle among circles crossed by a line than for the inverse search [e.g., @treisman1985search]. 
+
+<!-- `r apa_table(apa_print(anv)$table, caption = 'Search time ANOVA results')` -->
+
+
+
+```{r extract_confidence_distributions, echo=FALSE, cache=TRUE}
+
+disc_df <- disc_df %>%
+  filter(!subj_id%in%excluded$subj_id & 
+           RT>minRT & 
+           RT<maxRT &
+           trial>16) %>%
+  group_by(subj_id) %>%
+  mutate(
+    conf_discrete = ntile(confidence,20) %>%
+      factor(levels=1:21),
+    correct = factor(correct, levels=c(0,1)),
+    conf_bi = ifelse(
+      response==1, 
+      as.numeric(confidence),
+      -1*as.numeric(confidence)),
+    logRT = log(RT)
+    )
+
+# GENERAL STATS
+disc_subj_stats <- disc_df %>%
+  group_by(subj_id) %>%
+  summarise(
+    bias = mean(ifelse(response==1,1,0)),
+    acc = mean(ifelse(correct==1,1,0)),
+    hit_rate = sum(correct==1 & which_stimulus==1)/sum(which_stimulus==1),
+    false_alarm_rate=sum(correct==0 & which_stimulus==2)/sum(which_stimulus==2),
+    dprime=qnorm(hit_rate)-qnorm(false_alarm_rate),
+    conf=mean(confidence))
+
+# TO REPORT SOA ON FINAL TRIAL
+final_trial <- disc_df%>%filter(trial==96);
+
+# STATS AS A FUNCTION OF ACCURACY
+disc_df_by_acc <-
+  disc_df %>%
+  group_by(subj_id, correct) %>%
+  summarise(
+    RT = mean(RT),
+    conf = mean(confidence),
+    conf_RT = mean(conf_RT)
+  )
+
+conf_by_acc <-
+  t.test(
+    disc_df_by_acc %>%
+      filter(correct==1) %>%
+      "$"(conf),
+    disc_df_by_acc %>%
+      filter(correct==0) %>%
+      "$"(conf),
+    paired=TRUE)
+
+# STATS PER RESPONSE
+disc_df_by_response <-
+  disc_df %>%
+  group_by(subj_id, response) %>%
+  summarise(
+    RT = mean(RT),
+    logRT = mean(logRT),
+    conf = mean(confidence),
+    conf_RT = mean(conf_RT),
+    count = n()
+  )
+
+# HYPOTHESIS 1
+conf_by_resp <-
+  t.test(
+    disc_df_by_response %>%
+      filter(response==1) %>%
+      "$"(conf),
+    disc_df_by_response %>%
+      filter(response==2) %>%
+      "$"(conf),
+    paired=TRUE)
+
+conf_by_resp_d <-
+  cohensD(
+    disc_df_by_response %>%
+      filter(response==1) %>%
+      "$"(conf),
+    disc_df_by_response %>%
+      filter(response==2) %>%
+      "$"(conf),
+    method='paired')
+
+# HYPOTHESIS 2
+
+enough_errors <- disc_df %>%
+  group_by(subj_id, response, correct,.drop=FALSE) %>%
+  tally() %>%
+  group_by(subj_id) %>%
+  summarise(enough=min(n)>1) %>%
+  filter(enough) 
+
+eps <- 10^-10;
+
+conf_counts <- disc_df %>%
+  filter(subj_id%in%enough_errors$subj_id) %>%
+  mutate(subj_id=factor(subj_id)) %>%
+  group_by(subj_id, response, correct, confidence, .drop=FALSE) %>%
+  tally() %>%
+  spread(correct, n, sep='', fill=0) %>%
+  merge(disc_subj_stats%>%select(subj_id,dprime, hit_rate, false_alarm_rate))%>%
+  arrange(desc(confidence), by_group=TRUE) %>%  
+  group_by(subj_id, response)%>%
+  mutate(cs_correct=cumsum(correct1)/sum(correct1),
+         cs_incorrect=cumsum(correct0)/sum(correct0),
+         miss_rate=1-hit_rate,
+         cr_rate=1-false_alarm_rate,
+         cs_correct_from_sdt= ifelse(response==1,
+           pnorm(qnorm(false_alarm_rate*cs_incorrect), mean=-dprime)/hit_rate,
+           pnorm(qnorm(miss_rate*cs_incorrect), mean=-dprime)/cr_rate),
+         epsilon=eps, # for ROC analysis
+         epsilon = cumsum(epsilon),
+         cs_incorrect=cs_incorrect+epsilon)
+
+AUC <- conf_counts %>%
+  group_by(subj_id, response,.drop=TRUE) %>%
+  summarise(AUC = auc(cs_incorrect, cs_correct)) %>%
+  spread(response, AUC, sep='')%>%
+  mutate(metacognitive_asymmetry=(response1-response2))
+
+sdtAUC <- conf_counts %>%
+  group_by(subj_id, response,.drop=TRUE) %>%
+  summarise(AUC = auc(cs_incorrect, cs_correct_from_sdt)) %>%
+  spread(response, AUC, sep='')%>%
+  mutate(metacognitive_asymmetry_from_sdt=(response1-response2))
+
+AUC <- AUC %>%
+  merge(sdtAUC%>%select(subj_id,metacognitive_asymmetry_from_sdt)) %>%
+          mutate(metacognitive_asymmetry_control = metacognitive_asymmetry-metacognitive_asymmetry_from_sdt)
+
+disc_subj_stats <-merge( disc_subj_stats,
+                         AUC) %>%
+  mutate(bias=bias-0.5)
+
+# HYPOTHESIS 3
+RT_by_resp <-
+  t.test(
+    disc_df_by_response %>%
+      filter(response==1) %>%
+      "$"(RT),
+    disc_df_by_response %>%
+      filter(response==2) %>%
+      "$"(RT),
+    paired=TRUE);
+
+logRT_by_resp <-
+  t.test(
+    disc_df_by_response %>%
+      filter(response==1) %>%
+      "$"(logRT),
+    disc_df_by_response %>%
+      filter(response==2) %>%
+      "$"(logRT),
+    paired=TRUE);
+
+
+logRT_by_resp_d <-
+  cohensD(
+    disc_df_by_response %>%
+      filter(response==1) %>%
+      "$"(logRT),
+    disc_df_by_response %>%
+      filter(response==2) %>%
+      "$"(logRT),
+     method='paired')
+
+```
+
+## Discrimination task: metacognitive asymmetry
+
+Mean accuracy in the discrimination task was `r mean(disc_subj_stats$acc)` (`r apa_print(disc_subj_stats$acc%>%t.test())$estimate`). mean SOA in the 32th trial was `r apa_print(t.test(final_trial$SOA))$estimate`. Participants showed no consistent bias in their responses (`r apa_print(disc_subj_stats$bias%>%t.test())$estimate`). On a scale of 0 to 1, mean confidence level was `r mean(disc_subj_stats$conf)` (`r apa_print(disc_subj_stats$conf%>%t.test())$estimate`). Confidence was higher for correct than for incorrect responses (`r apa_print(conf_by_acc)$full_result`). 
+
+*Hypothesis 1*: In line with our hypothesis, confidence was generally higher for *Q* (feature present) responses than for *O* (feature absent) responses (`r apa_print(conf_by_resp)$full_result`; Cohen's d = `r printnum(conf_by_resp_d)`).
+
+*Hypothesis 2*: In order to measure metacognitive asymmetry, we extracted the response-conditional type-2 ROC (rc-ROC) curves for the two responses (*Q* and *O*) in the discrimination task. This was done by plotting the cumulative distribution of confidence ratings (high to low) for correct responses against the same distribution for incorrect responses. The area under the rc-ROC curve (auROC) was then taken as a measure of metacognitive sensitivity [@kanai2010subjective; @meuwese2014subjective]. In line with our hypothesis, auROC for *Q* responses (`r apa_print(t.test(AUC$response1))$estimate`) was higher than for *O* responses (`r apa_print(t.test(AUC$response2))$estimate`; `r apa_print(t.test(AUC$response1, AUC$response2, paired=TRUE))$statistic`; Cohen's d = `r printnum(cohensD(AUC$response1, AUC$response2,method='paired'))`; see Figure \@ref(fig:rc-ROC-pilot)), mirroring the metacognitive asymmetry for detection judgments. 
+
+*Hypothesis 3*: Metacognitive asymmetry was significantly higher than what would be expected based on an equal-variance SDT model with the same response bias and sensitivity (`r apa_print(t.test(AUC$metacognitive_asymmetry_control))$statistic`, Cohen's d=`r printnum(cohensD(AUC$metacognitive_asymmetry_control))`).
+
+*Hypothesis 4*: In line with our hypothesis, *Q* responses were faster on average than *O* responses (`r apa_print(logRT_by_resp)$statistic` ; Cohen's d = 
+`r printnum(logRT_by_resp_d)`). 
+
+```{r rc-ROC-pilot, echo=FALSE, fig.cap="Response conditional ROC curves for the two discrimination responses. The area under the curve is a measure of metacognitive sensitivity. Bottom right inset: distributions of the area under the curve for the two responses, across participants. Overall, participants had lower metacognitive insight into the accuracy of their 'O' responses."}
+
+conf_discrete_counts <- disc_df %>%
+  filter(subj_id%in%enough_errors$subj_id & subj_id !='matan') %>%
+  mutate(subj_id=factor(subj_id),
+         conf_discrete = conf_discrete%>% 
+            fct_rev()) %>%
+  group_by(subj_id, response, correct, conf_discrete, .drop=FALSE) %>%
+  tally() %>%
+  spread(correct, n, sep='') %>%
+  arrange(conf_discrete, by_group=TRUE) %>% 
+  group_by(subj_id,response)%>%
+  mutate(cs_correct=cumsum(correct1)/sum(correct1),
+         cs_incorrect=cumsum(correct0)/sum(correct0)) 
+
+conf_discrete_counts_group <- conf_discrete_counts %>%
+  group_by(response, conf_discrete)%>%
+  summarise(conf_incorrect = mean(cs_incorrect, na.rm=TRUE),
+            conf_correct = mean(cs_correct, na.rm=TRUE),
+            conf_incorrect_sem = se(cs_incorrect, na.rm=TRUE),
+            conf_correct_sem  = se(cs_correct, na.rm=TRUE))
+
+
+rcROC <- ggplot(data=conf_discrete_counts_group%>%mutate(response=ifelse(response==1,'Q','O')%>%factor(levels=c('Q','O'))),
+       aes(x=conf_incorrect, y=conf_correct, color=response)) +
+  geom_line(size=1) +
+  geom_point(aes(shape = response))+ 
+  geom_errorbar(aes(ymin = conf_correct-conf_correct_sem,ymax = conf_correct+conf_correct_sem)) + 
+  geom_errorbar(aes(xmin = conf_incorrect-conf_incorrect_sem,xmax = conf_incorrect+conf_incorrect_sem)) + 
+  geom_abline(slope=1)+
+  theme_bw() + coord_fixed() + 
+  labs(x='p(conf | incorrect)', y='p(conf | correct)', title='Response conditional ROC curves')
+
+AUClong <- AUC %>%
+  gather('response','rcAUC',2:3) %>%
+  mutate(response=fct_recode(response,'Q'='response1','O'='response2'))
+
+AUCplot <- ggplot(AUClong,aes(x=response, y=rcAUC,group=subj_id))+
+  geom_line()+geom_point(aes(colour=response), size=2, fill="white", show.legend = FALSE)
+
+ggdraw(rcROC)+draw_plot(AUCplot,0.55,0.13,0.2,0.5,hjust=0, vjust=0)
+
+```
+
+```{r zROC, echo=FALSE}
+# ZROC ANALYSIS
+
+conf_var <- disc_df %>%
+  group_by(subj_id, which_stimulus) %>%
+  summarise(var=var(confidence))%>%
+  group_by(subj_id)%>%
+  summarise(enough=min(var)>0) %>%
+  filter(enough) 
+
+r1_curves <- data_frame(x=c(),y=c(),name=c())
+r2_curves <- data_frame(x=c(),y=c(),name=c())
+
+for (s in conf_counts$subj_id%>%unique()) {
+  r1_conf<-conf_counts%>%filter(subj_id==s && response==1);
+  r1_curve<-approx(c(0,r1_conf$cs_incorrect,1),
+            c(0,r1_conf$cs_correct,1),
+            n=100)
+  r1_curve$subj_id=s;
+  r1_curve$x=linspace(0,1,100)
+  r1_curves <- rbind(r1_curves,data.frame(r1_curve))
+
+  r2_conf<-conf_counts%>%filter(subj_id==s && response==2);
+  r2_curve<-approx(c(0,r2_conf$cs_incorrect,1),
+            c(0,r2_conf$cs_correct,1),
+            n=100)
+  r2_curve$subj_id=s;
+  r2_curve$x=linspace(0,1,100)
+  r2_curves <- rbind(r2_curves,data.frame(r2_curve))
+}
+
+
+conf_bi_counts <- disc_df %>%
+  mutate(subj_id=factor(subj_id)) %>%
+  group_by(subj_id, which_stimulus, conf_bi, .drop=FALSE) %>%
+  tally() %>%
+  spread(which_stimulus, n, sep='', fill=0) %>%
+  arrange(conf_bi) %>%
+  mutate(cs_1=cumsum(which_stimulus1)/sum(which_stimulus1),
+         cs_2=cumsum(which_stimulus2)/sum(which_stimulus2),
+         z_1 = qnorm(cs_1),
+         z_2 = qnorm(cs_2)) %>%
+  ungroup() %>%
+  filter(!is.infinite(rowSums(.[,7])) &
+           !is.infinite(rowSums(.[,8])))
+
+  zROC_slopes <- conf_bi_counts %>%
+    filter(subj_id%in%conf_var$subj_id)%>%
+    group_by(subj_id) %>%
+    do(model=lm(z_2~z_1,data=.)) %>%
+    tidy(model) %>%
+    filter(term=='z_1')%>%
+    mutate(zROC_slope=estimate)%>%
+    select('subj_id','zROC_slope')
+  
+  
+AUC$search_asymmetry <- asymmetry_df%>%filter(subj_id%in%enough_errors$subj_id)%>%"$"(asymmetry)
+AUC <- merge(AUC, zROC_slopes%>%filter(subj_id%in%enough_errors$subj_id))
+```
+<!-- This metacognitive asymmetry was not significantly correlated with the search asymmetry in this sample (`r apa_print(cor.test(AUC$metacognitive_asymmetry,AUC$search_asymmetry))$estimate`). -->
+<!-- Similar to @vincent2011search, we observed shallow standardized ROC (zROC) curves ($M=$ `r printnum(mean(zROC_slopes$zROC_slope))` `r apa_print(t.test(log(zROC_slopes$zROC_slope)))$statistic` for a t test on the log slopes). Shallow zROC curves are typical of situations where the signal distribution for one category is broader than for the other [@vincent2011search;  @kellij2018foundations].   -->
+
