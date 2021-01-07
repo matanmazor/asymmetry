@@ -38,11 +38,11 @@ plugin.info = {
       default: 100,
       description: "Duration of mask in milliseconds"
     },
-    mask_2_duration: {
+    wait_before_hints_duration: {
       type: jsPsych.plugins.parameterType.FLOAT,
-      pretty_name: "mask2 duration",
-      default: 100,
-      description: "Duration of poststimulus mask in milliseconds"
+      pretty_name: "wait_before_hints duration",
+      default: 200,
+      description: "Time to wait before response hints"
     },
     which_stimulus: {
       type: jsPsych.plugins.parameterType.INT,
@@ -122,7 +122,17 @@ plugin.trial = function(display_element, trial) {
 
 
   // this is here just for good order, basically it's calling presentChoices
-  function collectResponse() {
+  function collectResponse(p, trial) {
+    if (p.millis()>=trial.fixation_duration
+           +trial.stim_duration
+           +trial.SOA
+           +trial.mask_duration
+           +trial.wait_before_hints_duration) {
+      presentChoices();
+    }
+  }
+
+  function presentChoices () {
     if (trial.choices[0]=='w') {
       p.push()
       p.translate(-du/3,0)
@@ -269,7 +279,7 @@ plugin.trial = function(display_element, trial) {
       trial.status = 'mask'
       } else if (!trial.hasOwnProperty('response')){
         presentFixationCross()
-        collectResponse()
+        collectResponse(p, trial)
         trial.status = 'collecting response'
       } else if (p.millis()<trial.fixation_duration
                 +p.max(trial.confidence_duration,(trial.conf_time+200)) &&

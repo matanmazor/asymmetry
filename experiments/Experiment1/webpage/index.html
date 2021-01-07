@@ -62,13 +62,10 @@
            }
          },
            text: function() {
-             console.log(window.response_mapping)
              if (window.response_mapping[0]=='w') {
-               console.log('b')
-             return `In this experiment we will quickly flash pairs of letters on the screen.\nThe first letter will be 'Q' on half of the trials and 'O' on the other half.\nThe second letter will always be 'X'.\nPay close attention and press 'W' if the first letter was a 'Q' or 'E' if it was an 'O'.\nLet's start with four practice trials.`
+             return `In this experiment we will quickly flash pairs of letters on the screen.\nThe first letter will be 'Q' on half of the trials and 'O' on the other half.\nThe second letter will always be 'Z'.\nPay close attention and press 'W' if the first letter was a 'Q' or 'E' if it was an 'O'.\nLet's start with four practice trials.`
          } else if (window.response_mapping[0]=='e') {
-           console.log('c')
-            return `In this experiment we will quickly flash pairs of letters on the screen.\nThe first letter will be 'O' on half of the trials and 'Q' on the other half.\nThe second letter will always be 'X'.\nPay close attention and press 'W' if the first letter was a 'O' or 'E' if it was an 'Q'.\nLet's start with four practice trials.`}
+            return `In this experiment we will quickly flash pairs of letters on the screen.\nThe first letter will be 'O' on half of the trials and 'Q' on the other half.\nThe second letter will always be 'Z'.\nPay close attention and press 'W' if the first letter was a 'O' or 'E' if it was an 'Q'.\nLet's start with four practice trials.`}
         }};
 
       // A generic function the outputs a function that prints a letter to the screen
@@ -90,7 +87,7 @@
            type: 'disc',
            stimulus1_function: drawLetter('Q'),
            stimulus2_function: drawLetter('O'),
-           mask_function: drawLetter('X'),
+           mask_function: drawLetter('Z'),
            choices: window.response_mapping,
            which_stimulus: jsPsych.timelineVariable('which_stimulus'),
            data: jsPsych.timelineVariable('data'),
@@ -229,10 +226,10 @@
            type: 'survey-multi-choice',
            questions: [{
            prompt: "If I pressed "+window.response_mapping[0].toUpperCase()+" and made the circle very large, it means that I am:",
-           options: ['1. very confident that the two letters were O and X',
-                     '2. guessing that the two letters were O and X',
-                     '3. very confident that two letters were Q and X',
-                     '4. guessing that the two letters were Q and X'],
+           options: ['1. very confident that the two letters were O and Z',
+                     '2. guessing that the two letters were O and Z',
+                     '3. very confident that two letters were Q and Z',
+                     '4. guessing that the two letters were Q and Z'],
            name: 'multichoice_discrimination'
          }],
          on_finish: function(data){
