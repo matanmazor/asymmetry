@@ -439,11 +439,10 @@
           jsPsych.init({
               timeline: timeline,
               on_finish: function() {
-                  jsPsych.data.addProperties(jatos.urlQueryParameters);
-                  jsPsych.data.addProperties({followed_instructions: window.followed_instructions});
-                  var resultJson = jsPsych.data.get().json();
-                  jatos.submitResultData(resultJson, jatos.startNextComponent);
-		  }
+				  jsPsych.data.addProperties({followed_instructions: window.followed_instructions});
+				  var resultJson = jsPsych.data.get().json();
+				  jsPsych.data.get().localSave('csv','mydata.csv');
+			  }
 	  });
 
     </script>
