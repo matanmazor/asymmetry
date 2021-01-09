@@ -1,6 +1,6 @@
 # Metacognitive asymmetries in visual perception
 
-Full data and code, for a Registered Report about metacognitive asymmetries in visual perception.
+A Registered Report about metacognitive asymmetries in visual perception.
 
 Stage-1 RR is available here:
 
