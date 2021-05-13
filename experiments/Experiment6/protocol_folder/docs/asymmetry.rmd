@@ -1,0 +1,833 @@
+---
+title             : "Metacognitive asymmetries in visual perception"
+shorttitle        : "asymmetry"
+
+author: 
+  - name          : "Matan Mazor"
+    affiliation   : "1"
+    corresponding : yes    # Define only one corresponding author
+    address       : "12 Queen Square, London WC1N 3BG"
+    email         : "mtnmzor@gmail.com"
+  - name          : "Rani Moran"
+    affiliation   : "2"
+  - name          : "Stephen M. Fleming"
+    affiliation   : "1,2,3"
+
+affiliation:
+  - id            : "1"
+    institution   : "Wellcome Centre for Human Neuroimaging, UCL"
+  - id            : "2"
+    institution   : "Max Planck UCL Centre for Computational Psychiatry and Ageing Research"
+  - id            : "3"
+    institution   : "Department of Experimental Psychology, UCL"
+
+    
+
+abstract: |
+ People have better metacognitive sensitivity for decisions about the presence compared to the absence of objects. However, it is not only objects themselves that can be present or absent, but also parts of objects and other visual features. Asymmetries in visual search indicate that a disadvantage for representing absence may operate at these levels as well. Furthermore, a processing advantage for surprising signals suggests that a presence/absence asymmetry may be explained by absence being passively represented as a default state, and presence as a default-violating surprise. It is unknown whether metacognitive asymmetry for judgements about presence and absence extend to these different levels of representation (object, feature, and default-violation). To address this question and test for a link between the representation of absence and default reasoning more generally, here we measure metacognitive sensitivity for discrimination judgments between stimuli that are identical except for the presence or absence of a distinguishing feature, and for stimuli that differ in their compliance with an expected default state.    
+  
+  
+  <!-- https://tinyurl.com/ybremelq -->
+  
+keywords          : "absence, presence, metacognition"
+wordcount         : "4131"
+
+bibliography      : ["r-references.bib"]
+# csl               : nature.csl
+
+floatsintext      : yes
+figurelist        : no
+tablelist         : no
+footnotelist      : no
+linenumbers       : yes
+mask              : no
+draft             : no
+header-includes:
+  - \usepackage{setspace}
+  - \captionsetup[figure]{font={stretch=1,scriptsize}}
+
+documentclass     : "apa6"
+classoption       : "man"
+output            : papaja::apa6_word
+---
+
+```{r setup, include = FALSE}
+library("papaja")
+r_refs("r-references.bib")
+
+
+library('tidyverse')
+library('broom')
+library('cowplot')
+library('MESS') # for AUCs
+library('pracma') # for AUCs
+library('lsr') # for effect sizes
+library('BayesFactor') # for Bayesian t test
+library('pwr') # for power calculations
+```
+
+
+```{r analysis-preferences}
+# Seed for random number generation
+set.seed(42)
+knitr::opts_chunk$set(cache.extra = knitr::rand_seed, warning = FALSE)
+```
+
+# Introduction
+
+At any given moment, there are many more things that are not there than things that are there. As a result, and in order to efficiently represent the environment, perceptual and cognitive systems have evolved to represent presences, and absence is implicitly represented as a default state [@oaksford2002contrast; @oaksford2001probabilistic]. One corollary of this is that presence can be inferred from bottom-up sensory signals, but absence is never explicitly represented in sensory channels and must instead by inferred based on top-down expectations about the likelihood of detecting a hypothetical signal, had it been present. Experiments on human subjects accordingly suggest that representing absence is more cognitively demanding than representing presence, even in simple perceptual tasks, as is evident in slower reactions to stimulus absence than stimulus presence in near-threshold visual detection [@mazor2020distinct], in a general difficulty to form associations with absence [@newman1980feature], and in the late acquisition of explicit representations of absence in development [e.g., @sainsbury1971feature; @coldren2000asymmetries; for a review on the representation of nothing see @hearst1991psychology]. 
+
+<!-- The difficulty in inferring absence from the absence of evidence is common to philosophy [@locke1836essay], statistics [@altman1995statistics] and criminal law [@tuzet2015absence].  -->
+
+An overarching difficulty in representing absence may reflect the metacognitive nature of absence representations; to represent something as absent, one must assume that they would have detected it had it been present. In philosophical writings, this form of higher-order, metacognitive inference-about-absence is known as *argument from epistemic closure*, or *argument from self-knowledge* [*If it was true, I would have known it*; @walton1992nonfallacious; @de1988knowing]. Strikingly, quantitative measures of metacognitive insight are consistently found to be lower for decisions about absence than for decisions about presence. When asked to rate their subjective confidence following near-threshold detection decisions, subjective confidence ratings following 'target absent' judgments are commonly lower, and less aligned with objective accuracy, than following 'target present' judgments [Fig. \@ref(fig:asymmetry); @kanai2010subjective; @meuwese2014subjective; @kellij2018foundations; @mazor2020distinct]. 
+
+Metacognitive asymmetries have not only been observed for judgments about the presence or absence of whole physical objects and stimuli, but also for the presence or absence of cognitive variables such as memory traces. For instance, in recognition memory, subjects typically show poor metacognitive sensitivity for judgments about the absence of memories [such as when judging that they haven’t seen a study item before; @higham2009investigating]. Unlike the absence of a visual stimulus, the absence of a memory is not localized in space and does not correspond with a specific representation of ‘nothing’. 
+
+One way of conceptualizing these findings is that absence asymmetries emerge as a function of default reasoning – absences are considered the “default”, and information about perceptual or mnemonic presence is accumulated and tested against this default. For instance, an asymmetry may emerge in recognition memory because the presence of memories is actively represented, and the absence of memories is assumed as the default unless evidence is available for the contrary. In the same way, other visual features that are not typically treated as presences or absences may still be coded relative to a default – assuming one state unless evidence is available for the contrary (e.g., assuming that a cookie is sweet rather than salty). However, whether a metacognitive asymmetry in processing presence and absence generalizes to these more abstract violations of default expectations remains unknown. Here we set out to map out the structure of absence representations by testing for metacognitive asymmetries in the presence and absence of attributes at different levels of representation – from concrete objects, to visual features, to violations of default expectations.
+
+Our choice of stimuli draws inspiration from visual search – a field where asymmetries are observed for a variety of stimulus types and features. In visual search, participants typically take longer to search for a target that is marked by the presence of a distinguishing feature, as compared to searching for a target that is marked by the absence of a feature relative to distractors [@treisman1985search; @treisman1988feature]. Interestingly, *search asymmetries* have been demonstrated not only for the absence or presence of concrete physical features, but also for the presence or absence of deviations from a more abstract default state, which can be based on experience, culture, and contextual expectations [see methods; @von1994visual; @frith1974acurious; @wang1994familiarity; @gandolfo2020asymmetric]. Of special interest for our study are these latter symmetries due to expectation violations, and their relation with asymmetries induced by the presence or absence of local and global features. Observing a metacognitive asymmetry for expectation violations as well as for the presence and absence of objects features would support a strong link between the representation of absence and default reasoning, where differences in metacognitive sensitivity reflect differences in the processing of information that agrees or contrasts with the expected default state.
+
+```{r asymmetry, echo=FALSE, fig.cap="In visual detection, subjective confidence ratings following judgments about target absence are typically lower, and less correlated with objective accuracy than following judgments about target presence. Top panel: a typical detection experiment. The participant reports whether a visual grating was present or absent, and then rates their subjective decision confidence. Bottom left: typically, mean confidence in 'yes' responses (blue) is higher than in 'no' responses (red). This effect is much more pronounced in correct trials. Bottom right: the interaction between accuracy and response type on confidence (metacognitive asymmetry) manifests as a lower area under the response-conditional ROC curve for 'no' responses compared with 'yes' responses. Plots do not directly correspond to a specific dataset, but portray typical results in visual detection.", out.width = '60%'}
+knitr::include_graphics("figures/asymmetry.png")
+```
+
+
+While traditional accounts interpreted visual search asymmetries as reflecting a qualitative advantage for the cognitive representation of presence [affording a parallel search in the case of feature-present search only; @treisman1988feature], other models attribute the asymmetry to differences in the distributions of perceptual signals already at the sensory level [@vincent2011search; @dosher2004parallel]. Similarly, in the case of metacognitive asymmetries, the idea that decisions about absence are qualitatively different from decisions about presence has been challenged by an excellent fit of simple models that assume unequal variance for the signal-present and signal-absent sensory distributions, a model that does not assume any qualitative difference between the two decisions [@kellij2018foundations]. Deciding between these model families is beyond the scope of this project. However, identifying metacognitive asymmetries for abstract cognitive variables such as familiarity could help refine these models, for instance by revealing that representing deviations from a default state is an overarching principle of cognitive organization, one that goes beyond specific features of visual perception.  
+
+
+<!-- In line with the proposal that an explicit representation of absence is cognitively demanding and is not available without the active engagement of attention, @treisman1988feature interpreted search asymmetries as revealing a categorical difference between pre-attentive parallel search and attention-guided serial search. According to their account, parallel search is not available when searching for a target that is marked by the absence, or the lesser quantity, of a feature, and when searching for a prototypical stimulus among deviant distractors. According to this account, searching for absence always requires the serial deployment of attention. -->
+
+<!-- Context effects have led @treisman1988feature to further propose that search asymmetry may sometimes reflect a deviation from a default state (also termed null, prototypical, or standard state). This default state is partly hard-coded into the wiring of the system, and partly learned and change according to context. For example, the *Q*-in-*O*/*O*-in-*Q* asymmetry is evident already at 3 months of age, suggesting that it corresponds to a core feature of the perceptual system [@colombo1995visual; @adler2014search]. Other aspects of the default state are sensitive to context and prior experience; for example, searching for a tilted line among vertical distractors is easier than the inverse search, but this effect reverses when the search array is displayed inside a tilted frame [@treisman1988feature].  -->
+
+ 
+
+<!-- For example, infants that have been habituated to a display with two *O*s were dishabituated when presented with one *O* and one *Q* (feature addition), but this was not the case for infants that have been habituated to a display of two *Q*s [feature deletion;  -->
+
+<!-- That search asymmetries are observed for deviations from a default state may place the presence/absence asymmetry within a broader default-reasoning framework with enhanced processing of deviating, compared to default-complying signals. In default-reasoning, deviations from a default state are actively represented, but default-compliant signals are only inferred based on the absence of evidencein conjunction with metacognitive self-knowledge [Fig. \@ref(fig:default); @reiter1980logic]. According to this expansive interpretation, object absence is only one feature of a mental default state. Following from this is that an asymmetry for surprising and default-complying stimuli is expected in those cognitive domains and tasks that exhibit presence/absence asymmetries. Alternatively, search asymmetries at the sub-object level may not at all be related to the overarching cognitive asymmetry between the presence and absence of entire objects, and mark instead the behavioural signature of an independent process. These two options, and the gradient of alternatives between them, entail different predictions about which of those asymmetries is expected to generalize to metacognition. To test these predictions, here we compare participants search and metacognitive sensitivities across six stimulus pairs that have been shown to induce search asymmetries at the local, global, and default-compliance levels. -->
+
+<!-- Different patterns of results would lead to different interpretations of the structure of absence representations. At one end of the spectrum, a complete alignment of metacognitive and search asymmetries across all six stimulus pairs and across participants would indicate an expansive default-reasoning interpretation of the presence/absence asymmetry. At the other end of the spectrum, metacognitive asymmetries may be restricted to object-level presence and absence, with a symmetric pattern of metacognitive sensitivity for all of our stimulus pairs. Intermediate patterns may extend the search asymmetry to the metacognitive domain only for local stimulus features, or for spatial (local or global) stimulus features but not to default-compliance asymmetries, suggesting that the presence/absence asymmetry cannot be fully reduced to default-state reasoning.  -->
+
+
+
+
+<!-- Instead of reflecting a higher-order need in counterfactual reasoning for inference about absence, the metacognitive asymmetry can be interpreted as reflecting an asymmetry in the perceptual and cognitive uncertainties that are associated with the representations of presence and absence. For example, @kellij2018foundations successfully replicated the metacognitive asymmetry effect in a simple Signal Detection model with higher variance for the signal distribution. In such Signal Detection models of subjective confidence, decisions are taken based on a single perceptual sample that is drawn from a probability distribution, and confidence is assumed to be proportional to the absolute distance of the perceptual sample from a decision criterion. Assuming unequal variance for the signal and noise distributions, their model did not have to posit any asymmetry in higher-order processes in order to fit the empirical data. -->
+
+<!-- Similarly, probabilistic parallel models of visual search, inspired by Signal Detection Theory, frame search asymmetry effects not as marking a categorical difference between two different search types, but as reflecting the effect of stimulus uncertainty on the noisiness of the search process which is always parallel [@vincent2011search; @dosher2004parallel]. In the context of visual search, participants are assumed to use a noisy perceptual sample to decide whether the visual array included the target stimulus, or not. @vincent2011search demonstrated that differences in search efficiency can be accounted for by the relative difference in internal uncertainty associated with the two stimulus categories. He found support for his unequal-variance account in the slope of standardized ROC curves, extracted from subjective confidence estimates in a vertical/tilted visual search task with briefly presented (94 ms) search arrays. According to his analysis, the advantage for tilted-in-vertical compared with vertical-in-tilted search can reflect the higher perceptual uncertainty that is associated with tilted (feature present) stimuli, compared with vertical (feature absent) ones. Similarly, reverse correlation analysis revealed higher variability in the internal representation of *Q* (feature present), compared to *O* (feature absent) stimuli [@saiki2008stimulus]. In contrast, @dosher2004parallel used a speed accuracy trade-off (SAT) method to compare the predictions of parallel and serial models of visual search asymmetry for *C* and *O*. A model-comparison favored a probabilistic parallel model for both search types, but in contrast with the results of @vincent2011search the error probabilities in the winning model were consistent with an unequal-variance SDT model in which the *C* (feature present) distribution was marked by a *lower* standard deviation than the *O* (feature absent) distribution.  -->
+
+<!-- The unequal variance interpretation may not be mutually exclusive to the proposal that search and metacognitive asymmetries reflect a qualitative difference between feature-positive and feature-negative representations. As pointed out by @treisman1988feature, and in line with Weber's law and with the noise profile of biological neurons, the positive representation of features and objects may be more variable, or noisy, than the representation of their absence. The unequal variance identified by signal detection models may be based in this qualitative difference between the two classes of representation. Furthermore, a parallel search model may account for search asymmetry for presentation times below the time taken to complete a saccade, but an additional level of asymmetry, governed by endogenous attention mechanisms, may be necessary to account for search times in natural displays that are not limited in time. Finally, it is not clear that search asymmetry for different stimulus types originates from the same underlying mechanism. Different mechanisms may explain search asymmetry for local features (e.g., *Q*/*O*), global features (e.g., tilt or curvature), and familiarity-based asymmetries (e.g., inverted letters). Specifically, there is currently no evidence available to support an unequal-variance account for context- and experience-dependent asymmetries, such as the one observed for inverted letters. -->
+
+
+<!-- Second, with confidence ratings in single-item discrimination we will get a measure of the relative variability for the two stimulus types that is independent of visual search. This measure can then inform and constrain theories of search asymmetry, and more specifically support or rule out theories that rely on unequal-variance assumptions to explain search time differences. -->
+
+
+
+<!-- A third interpretation of the search-asymmetry phenomenon is that some asymmetries reflect a confounded asymmetry in the experimental design, rather than a true cognitive asymmetry in the processing of the two stimulus types [@rosenholtz2001search]. One source of experimental asymmetry that is often neglected is that of the background. Rosenholtz pointed to the fact that the background is often more similar to one of the stimulus types (for example, the background is upright and not tilted, or gray and not chromatic). As a result, the background intervenes with the search process more in one condition compared to the other. In other cases, two search tasks may seem symmetric when assuming one representational space, but asymmetry is revealed when considering alternative ones. This is the case of fast and slow oscillating targets: the two are symmetric when represented on a speed/direction coordinate system, but an asymmetry emerges when plotting the distractor and targets in two-dimensional velocity space. -->
+
+
+
+
+<!-- This gradual effect of variance ratio is not specific to parallel models of visual search. Sensitivity of search slope to variability in internal representations is also predicted by two-stage accounts of visual search. For example, @treisman1988feature relied on Weber's law to show that searching for a target that induces increased activity compared to distractors is more efficient than searching for a target that induces weaker activity, due to differences in the underlying noise level.  -->
+
+<!-- This compelling and elegant reduction of visual-search asymmetry to differences in noise-levels between the two perceptual categories has been challenged by participants' subjective ratings of mental effort for feature-positive and feature-negative searches. Subjective global workload ratings were higher when participants searched for an *O* among *Q*s than in the inverse search [@finomore2006effects]. -->
+
+
+
+
+
+
+<!-- decide between two competing models: a first-order model in which asymmetry is the result of differences in signal variance between thw two perceptual categories, and a second-order attention monitoring model in which feature-positive and feature-negative searches are assumed to recruit a different set of cognitive machinery. In the following sections we will describe the two models. We will then describe our proposed tasks, and illustrate the predictions made by the two models for these tasks. -->
+
+<!-- go no go asymmetry: @helton2011feature @stevenson2011search -->
+
+
+<!-- ## Uncertainty-based model -->
+
+<!-- Asymmetries in decision-making can originate from different levels of noise, or uncertainty, associated with different stimulus categories. In perceptual detection for example, signal-present trials are commonly modeled as being noisier than signal-absent trials (in Signal Detection Theory, SDT, this means they are sampled from a wider distribution). This *unequal variance* model is supported by evidence from studies that incorporate subjective confidence judgments or criterion manipulations to reconsruct a receiver operating characteristic (ROC) curve.  -->
+
+<!-- The application of Signal Detection Theory to psychophysics is limited to explain accuracy, bias and subjective confidence, but does not make any predictions about the temporal unfolding of the decision process. In order to account for response-time differences as a function of relative uncertainty, we extend this SDT model to time in a Drift Diffusion Model (DDM) framework. On every time step, a perceptual sample is obtained from a probability distribution, centered at 1 for category A and at -1 for category B. Similar to a standard DDM, over time perceptual samples are accumulated until the overall sum reaches one of two thresholds. The participant responds A if the accumulated evidence had crossed the upper threshold, and B if it was the lower threshold that has been crossed. The position of the threshold affects response speed (a threshold farther away from the starting point will take longer to reach) and accuracy (a threshold farther away from the starting point will be less likely to be crossed by mistake). The position of the starting point affects response bias: starting closer to the upper threshold will make A responses faster and more likely, and starting closer to the lower threshold will make B responses faster and more likely. Importantly, in this unequal-variance drift-diffusion model, the level of noise is dependent on the presented stimulus. For example, stimuli from category A may be associated with a noisier diffusion process than stimuli from category B. -->
+
+<!-- In a standard DDM with equal variance, the error rate is minimized when the starting point (bias) is set to 0, equally distant from the upper and lower thresholds. In contrast, in the unequal-variance drift-diffusion model the error rate is minimized when the starting point is closer to the threshold associated with the high-variance category. This is true for all placements of a threshold. For example, here we simulated a drift diffusion process with a drift rate of 1. The variance for the negative category was set to 0.5, and the variance for the positive category was set to 1. We simulated 10,000 trials for different choices of threshold and starting point. Similar to a standard equal-variance DDM, accuracy is maximized when the threshold is set to high values (showing as bright values at the top of the heat map). However, unlike equal-variance DDM here accuracy is maximized when the accumulation process is biased to start closer to the high-variance (here positive) threshold (showing as more bright values at the right side of the heat map). -->
+
+<!-- ![Left: accuracy as a function of threshold (y axis) and starting point (or bias; x axis) in the unequal-variance DDM. Higher accuracy is obtained when evidence accumulation starts closer to the high-variance threshold (positive bias values). Right: difference in RT (high variance-low variance) as a function of threshold and starting point. High variance responses are faster than low variance responses for accuracy-maximizing choices of starting point, conditioned on a threshold.](figures/simulation_uv.png) -->
+
+<!-- As a result of this systematic shift of the starting point, responses to the high-variance category will be faster on average than responses to the low-variance category. We use this qualitative observation from our model to draw a link between stimulus-specific perceptual uncertainty and the time taken to identify a stimulus. We then apply this drift-diffusion model of perceptual discrimination to out three tasks, to make qualitative predictions. -->
+
+<!-- ### Confidence in discrimination -->
+
+<!-- The basic (non temporal) unequal-variance Signal Detection model predicts a better alignment of subjective confidence with objective accuracy (measured as the area under the response-conditional type-2 ROC curve) for responses in which the stimulus was decided to be of the high-variance compared to the low-variance category. For example, in detection this means that confidence following judgments about stimulus presence will separate hits from false alarms better than confidence following judgments about stimulus absence will separate correct rejections from misses.  -->
+
+<!-- ### Visual search -->
+
+<!-- For simplicity, we model visual search as an exhaustive serial process, where attention is directed to items in random order, without repetition. Once an item reaches attention a drift diffusion process commences, until a threshold is reached. The visual search trial ends with a 'target present' response as soon as an item is identified as target, otherwise a 'target absent' response is given once all items have been identified as distractors. This naive visual search model, in conjunction with the unequal-variance assumption about stimulus-specific uncertainty, predicts a steeper search slope for searching the low-variance stimulus compared to the high-variance stimulus, both for target-present and for target-absent trials. This is true both for target-present and for target-absent trials.  -->
+
+<!-- In our demo simulation, high-variance stimuli are associated with variance of 1, and low variance stimuli are associated with variance 0.8. Our agent positioned their threshold and starting point to minimize average response time, while maintaining accuracy > 0.95. For these stimulus-specific variance values, this means setting the threshold to 0.7 and the bias to 0.3. -->
+
+
+<!-- Over the years researchers proposed different theoretical accounts for this phenomenon. @treisman1985search proposed that visual search is more efficient when searching for the presence, rather than the absence, of a stimulus feature. According to this account, the letter *Q* is marked by an additional feature (a diagonal line) compared to the baseline *O*. Similarly, blue is present in magenta but absent in red. @treisman1988feature then used search-asymmetry as a litmus test for what counts as presence and what counts as absence in early vision. For example, the fact that *C*-in-*O* search is easier than *O*-in-*C* search was used as evidence for that 'free ends', rather than shape-closeness, are positively encoded in vision. Contextual effects have led @treisman1988feature to further propose that search asymmetry can in some cases originate from a deviation from a default state (also termed null, prototypical, or standard state). This standard state is affected by prior knowledge and available context, for example searching for a tilted line among vertical distractors is easier than the inverse search, but this effect reverses when the search array is displayed inside a tilted frame [@treisman1988feature]. The contents of the default state are partly hard-coded into the wiring of the system (like in the case of color) and partly affected by expectations that are sensitive to context and prior experience [like in the cases of viewing direction or familiarity with letters; @von1994visual; @wang1994familiarity].  -->
+
+
+
+
+
+<!-- Search asymmetry has been linked to other perceptual and cognitive asymmetries, such as asymmetric similarity judgments [@rosch1975cognitive], the feature-positive-effect in reinforcement learning [@jenkins1970discrimination], and the addition/deletion asymmetry in change-detection [@agostinelli1986detecting]. Here we wish to examine the relation between search asymmetry and an asymmetry in subjective confidence ratings in detection and detection-like judgments.  -->
+
+<!-- By triangulating the feature-level asymmetry across six features and two tasks, we aim to obtain a better understanding of feature-level asymmetries, and to determine whether these asymmetries originate from identical, partly overlapping, or completely distinct mechanisms. We will test the hypothesis that these asymmetries result from differences in the shape of the underlying signal distributions for the two stimulus categories.  -->
+
+# Methods
+
+We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study. <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) -->
+
+ 
+
+<!-- The Experiment will comprise three parts ("challenges") presented in pseudorandomized order.  -->
+
+<!-- 1. The first part will comprise 32 visual search trials. In these trials participants will search for one '*Q*' in an array of 1, 2, 4 or 8 '*O*' distractors. The target stimulus will be present in half of the trials, and absent in the other half. Participants will be instructed to use their keyboard to indicate whether the target was present (press J) or absent (press F) as quickly and accurately as possible. Each trial will start with an instruction screen, indicating the search target (500-1000 ms), followed by the presentation of the search array. The search array will remain visible until a response is recorded. Feedback about accuracy will be delivered. To motivate accurate responses, the feedback screen will remain for 1000 ms following correct responses and for 4000 ms following incorrect responses. The visual search block will start with four practice trials of distractor set-size 4 that will not be included in the final analysis. The actual block of 32 trials (4 trials of each set size, presented in random order) will start once all four practice trials are answered correctly, otherwise additional practice trials will be delivered. -->
+
+<!-- 2. The second part will be identical to the first part, except for the identity of the target stimulus. Here '*O*' will server as target and '*Q*' as distractor. -->
+We will run six experiments, that will be identical except for the identity of the two stimuli $S_1$ and $S_2$. Our choice of stimuli for this study is based on the visual search literature. For some stimulus pairs $S_1$ and $S_2$, searching for one $S_1$ among multiple $S_2$s is more efficient than searching for one $S_2$ among multiple $S_1$s. Such *search asymmetries* have been reported for stimulus pairs that are identical except for the presence and absence of a distinguishing feature. Importantly, distinguishing features vary in their level of abstraction, from concrete *local features* [finding a Q among Os is easier than the inverse search; @treisman1985search], through *global features* [finding a curved line among straight lines is easier than the inverse search; @treisman1988feature], and up to the presence or absence of abstract *expectation violations* [searching for an upward-tilted cube among downward-tilted cubes is easier than the inverse search, in line with a general expectation to see objects on the ground rather than floating in space; @von1994visual]. We treat these three types of asymmetries as reflecting a default-reasoning mode of representation, where the absence of features and/or the adherence of objects to prior expectations is tentatively accepted as a default by the visual system, unless evidence is available for the contrary [@treisman1985search; @treisman1988feature]. In this study, we will test for metacognitive asymmetries for two stimulus features in each category, in six separate experiments with different participants (Fig. \@ref(fig:trialstructure)). For each of the following stimulus pairs, searching for $S_1$ among multiple instances of $S_2$ has been found to be more efficient than the inverse search:
+
+1. **Local feature: Addition of a stimulus part**. *Q* and *O* will be used as $S_1$ and $S_2$, respectively [@treisman1985search].
+2. **Local feature: Open ends**. *C* and *O* will be used as $S_1$ and $S_2$, respectively [@treisman1985search; @takeda2000inhibitory; @treisman1988feature].
+3. **Global feature: Curvature**. Curved and straight lines will be used as $S_1$ and $S_2$, respectively [@treisman1988feature].
+4. **Global feature: Orientation**. Tilted and vertical lines will be used $S_1$ and $S_2$, respectively [@treisman1988feature].
+5. **Expectation violation: Letter inversion**. Reversed and normal *N* will be used as $S_1$ and $S_2$, respectively [@frith1974acurious; @wang1994familiarity].
+6. **Expectation violation: Viewing angle**. Upward and Downward tilted cubes will be used as $S_1$ and $S_2$, respectively [@von1994visual].
+
+The experiments will quantify participants' metacognitive sensitivity for discrimination judgments between $S_1$ and $S_2$. 
+
+## Participants
+
+The research complies with all relevant ethical regulations, and was approved by the Research Ethics Committee of University College London (study ID number 1260/003). Participants will be recruited via Prolific, and will give informed consent prior to their participation. They will be selected based on their acceptance rate (>95%) and for being native English speakers. For each of the six experiments, we will collect data until we reach 106 included participants (after applying our pre-registered exclusion criteria). The entire experiment will take 15 minutes to complete. Participants will be paid £2 for their participation, equivalent to an hourly wage of £8.
+
+
+<!-- Multi-level MCMC simulations, assuming an average correlation of 0.29 across the six tasks between search and metacognitive asymmetries, indicated a statistical power of 97% to reject the null hypothesis for Hypothesis 2.   -->
+
+
+## Procedure
+
+Experiments were programmed using the jsPsych and P5 JavaScript packages [@de2015jspsych;@mccarthy2015p5], and will be hosted on a JATOS server [@lange2015just].
+
+After instructions, a practice phase, and a multiple-choice comprehension check, the main part of the experiment will start. It will comprise 96 trials separated into 6 blocks. Only the last 5 blocks will be analyzed. 
+
+On each trial, participants will make discrimination judgments on masked stimuli, and rate their subjective decision confidence on a continuous scale. After a fixation cross (500 ms), the target stimulus ($S_1$ or $S_2$) will be presented in the center of the screen for 50 ms, followed by a mask (100 ms). Stimulus onset asynchrony will be calibrated online in a 1-up-2-down procedure [@levitt1971transformed], with a multiplicative step factor of 0.9, and starting at 30 milliseconds. Participants will then use their keyboard to make a discrimination judgment. Stimulus-key mapping will be counterbalanced between participants. Following response, subjective confidence ratings will be given on an analog scale by controlling the size of a colored circle with the computer mouse. High confidence will be mapped to a big, blue circle, and low confidence to a small, red circle. We chose a continuous (rather than a more typical discrete) confidence scale in order to ensure sufficient variation in confidence ratings within the dynamic range of individual participants. This variation is useful for the extraction of response conditional ROC curves. The confidence rating phase will terminate once participants click their mouse, but not before 2000 ms. No trial-specific feedback will be delivered about accuracy. In order to keep participants motivated and engaged, block-wise feedback will be delivered between experimental blocks about overall accuracy, mean confidence in correct responses, and mean confidence in incorrect responses.
+
+```{r trialstructure, echo=FALSE, fig.cap= "Experiment design. Metacognitive asymmetry effects will be tested for six stimulus features in six separate experiments, ecompassing three levels of abstraction: local features, global features, and expectation violations. The presented trial corresponds to the first stimulus pair, were *Q* and *O* are used as stimuli.", out.width = '100%'}
+knitr::include_graphics("figures/trial_structure_noVS.png")
+```
+
+
+### Randomization
+
+The order and timing of experimental events will be determined pseudo-randomly by the Mersenne Twister pseudorandom number generator, initialized in a way that ensures registration time-locking [@mazor2019novel]. 
+
+## Data analysis
+
+We will use `r cite_r("r-references.bib", pkgs=c('broom','ggplot2','cowplot','dplyr','papaja','tidyr','MESS', 'pracma', 'lsr', 'BayesFactor', 'pwr'), withhold=FALSE)` for all our analyses.
+
+
+For each of the six stimulus pairs [$S_1$, $S_2$], will test the following hypotheses: 
+
+<!-- 1. **Hypothesis 1 (REPLICATION)**: For our selected stimulus pairs, visual search is more efficient in one direction compared with the other. -->
+
+<!-- This hypothesis will be tested for the following stimulus features for which search asymmetry has been demonstrated: addition of a stimulus part (visual search is more efficient for Q-in-O than for O-in-Q search), open ends (more efficient for C-in-O than for O-in-C search), orientation (more efficient for tilted-in-vertical than for vertical-in-tilted search), curvature (more efficient for curved-in-straight than for straight-in-curved search), letter inversion (more efficient for inverted-in-canonical than for canonical-in-inverted search), and viewing angle (more efficient for upward-in-downward tilted than for downward-in-upward-tilted search). We will test Hypothesis 1 separately for each stimulus feature, by replicating the original search asymmetry. -->
+
+
+1. **Hypothesis 1**: Subjective confidence is higher for $S_1$ responses than for $S_2$ responses. 
+
+For each of the six stimulus pairs, we will test the null hypothesis that subjective confidence for $S_1$ responses is equal to or lower than subjective confidence for the feature-absent stimulus ($H_o: conf_{S_1}\leq Conf_{S_2}$).
+
+2. **Hypothesis 2**: Metacognitive sensitivity, measured as the area under the response conditional ROC curves, is higher for $S_1$ responses than for $S_2$ responses. 
+
+For each of the six stimulus pairs, we will test the null hypothesis that metacognitive sensitivity for $S_1$ responses is equal to or lower than metacognitive sensitivity for the $S_2$ responses ($H_o: auROC_{S_1}\leq auROC_{S_2}$). 
+
+3. **Hypothesis 3**: Metacognitive sensitivity, measured as the area under the response conditional ROC curves, is higher for $S_1$ responses than for $S_2$ responses, to a greater extent than expected from an equivalent equal-variance SDT model. 
+
+For each of the six stimulus pairs, we will test the null hypothesis that difference between metacognitive sensitivities for $S_1$ and $S_2$ responses is lower than the difference expected from an equivalent equal-variance SDT model  ($H_o: (auROC_{S_1}-auROC_{S_2})\leq (\widehat{auROC}_{S_1}-\widehat{auROC}_{S_2})$). 
+
+4. **Hypothesis 4**: $S_1$ responses are faster on average than $S_2$ responses.
+
+For each of the six stimulus pairs, we will test the null hypothesis that log-transformed response times for $S_1$ responses are equal to or higher than log-transformed response times for $S_2$ responses ($H_o: log(RT_{S_1})\geq log(RT_{S_2})$).
+
+Hypotheses 1 and 2 correspond to the effects of stimulus type on metacognitive bias and metacognitive sensitivity, respectively. Although these two measures are theoretically independent, both bias and sensitivity are found to vary between detection 'yes' and 'no' responses. 
+
+Based on pilot data and previous experiments examining near-threshold perceptual detection and discrimination, we do not expect a response bias (such that the probability of responding $S_1$ is significantly different from 0.5 across participants). However, such a response bias, if found, may bias our metacognitive asymmetry estimate as measured with response-conditional ROC curves. Hypothesis 3 is designed to confirm that metacognitive asymmetry is higher than that expected from an equivalent equal-variance SDT model with the same response bias, sensitivity, and distribution of confidence ratings in incorrect responses as in the actual data. We will interpret conflicting results for Hypotheses 2 and 3 as evidence for a metacognitive asymmetry that is driven or masked by a response bias.
+
+Hypothesis 4 is motivated by two observations from previous studies. First, detection 'yes' responses are faster than detection 'no' responses [@mazor2020distinct]. And second, when participants are not under strict time pressure, reaction time inversely scales with confidence [@henmon1911relation; @calder2020bayesian; @pleskac2010two]. Based on these findings, if $S_1$ and $S_2$ responses are similar to detection 'yes' and 'no' responses not only in explicit confidence judgments, but also in response times, we should also expect a response time difference for these stimulus pairs. 
+
+
+<!-- 2. **Hypothesis 2**: Response-inhibition asymmetry, measured with the Go/No-go task,  follows the same direction as search asymmetry.  -->
+
+<!-- This hypothesis will be tested separately for the same six stimulus features. We will test Hypothesis 2 separately for each stimulus feature, by replicating the original search asymmetry (for example, Q-in-O search is more efficient that O-in-Q search) and testing the null hypothesis that response-inhibition (measured as  Go/No-go accuracy) when the efficient target (e.g., *Q*) is used as a go-signal, is equal to or lower than response-inhibition for when the inefficient target is used as a go-signal (e.g., for the case of *Q*/*O*, $H_o=Acc_{Q}\leq Acc_O$).  -->
+
+
+<!-- 3. **Hypothesis 3** (conditioned on the results of Hypothesis 2): The positive association between search- and metacongitive- asymmetries is mediated by the sigma-ratio, extracted from confidence ratings in the discrimination task. -->
+
+<!-- The sigma-ratio is a measure of the relative variance for the two stimulus types, that will be estimated from the zROC slopes extracted from confidence ratings in the discrimination task [@wickens2002elementary section 3.4]. This hypothesis will be tested by comparing the correlation between search and metacognitive asymmetries with the part correlation, after removing variance that is explained by the sigma-ratio from the metacognitive asymmetry score.  -->
+
+### Dependent variables and analysis plan
+
+Response conditional ROC curves will be extracted by plotting the empirical cumulative distribution of confidence ratings for correct responses against the same cumulative distribution for incorrect responses. This will be done separately for the two responses $S_1$ and $S_2$, resulting in two curves. The area under the response-conditional ROC curve is a measure of metacognitive sensitivity [@fleming2014measure]. The difference between the areas for the two responses is a measure of metacognitive asymmetry [@meuwese2014subjective]. This difference will be used to test Hypothesis 2. 
+
+In order to test hypothesis 3, SDT-derived response-conditional ROC curves will be plotted in the following way. For each response, we will plot the empirical cumulative distribution for incorrect responses on the x axis against the cumulative distribution for correct responses that would be expected in an equal-variance SDT model with matching sensitivity and response bias on the y axis. The difference between the areas of these theoretically derived response-conditional ROC curves will be compared against the difference between the true response-conditional ROC curves.
+
+For visualization purposes only, confidence ratings will be divided into 20 bins, tailored for each participant to cover their dynamic range of confidence ratings. 
+
+
+<!-- 2. The difference between search slopes for the two visual search tasks: $\Delta_s$.  -->
+
+<!-- For each visual search task, the slope will be extracted for target present and target absent trials separately (correct trials only), and the average value will be taken. The difference between these average slopes is a measure of search asymmetry. This difference will be used to test Hypotheses 1 (REPLICATION) and 2 (TASK-GENERALITY).  -->
+
+<!-- 4. The relative difference between the area under the response-conditional type-2 ROC curves for the two responses ($\Delta^{rel}_m$) will be defined as the area between the two curves, divided by the sum of the areas under the two curves.  -->
+
+<!-- This relative difference will be used to test Hypothesis 3 (TASK-CORRELATION). -->
+
+<!-- 5. The relative difference between search slopes for the two visual search tasks ($\Delta^{rel}_s$) will be defined as the difference between the two search slopes, divided by the sum of their absolute values.  -->
+
+<!-- This relative difference will be used to test Hypotheses 3 (TASK-CORRELATION) and 4 (SEARCH-CORRELATION). -->
+
+<!-- 6. The relative difference between search slopes for the two visual search responses: $\Delta^{rel}_{r}$.  -->
+
+<!-- For each visual search response ('present' and 'absent'; correct trials only), the slope will be extracted for the two stimulus assignments separately, and the average value will be taken. The relative difference between search slopes for the two visual search responses ($\Delta^{rel}_{r}$) will be defined as the difference between the two search slopes, divided by the sum of their absolute values.  -->
+
+<!-- This relative difference will be used to test Hypothesis 4 (SEARCH-CORREALTION). -->
+
+<!-- 5. The sigma-ratio ($Q_\sigma$) will be defined as the ratio between the estimated variance associated with the feature-positive (or deviant) and feature-negative stimuli. -->
+
+<!-- The sigma-ratio will be estimated for each participant, in the following way. First, a zROC curve will be extracted from the confidence and response data in the discrimination task. Then, a linear regression model with free slope and intercept parameters will be fit to the zROC curve, to estimate its slope. The slope of the zROC curve will be then taken as an estimate of the relative variance associated with the two stimulus types [@wickens2002elementary].  -->
+
+For each of the six experiments, Hypotheses 1-4 will be tested using a one tailed t-test at the group level with $\alpha=0.05$. The summary statistic at the single subject level will be difference in mean confidence between $S_1$ and $S_2$ responses for Hypothesis 1, difference in area under the response-conditional ROC curve between $S_1$ and $S_2$ responses ($\Delta AUC$) for Hypothesis 2, difference in $\Delta AUC$ between true confidence distributions and SDT-derived confidence distributions for hypothesis 3, and difference in mean log response time between $S_1$ and $S_2$ responses for Hypothesis 4. 
+
+
+<!-- In addition, a two one-sided equivalence test [TOST procedure; @schuirmann1987comparison] will be adopted to test the null hypothesis that $|\Delta_s|$ is higher than the smallest effect size of interest (1 millisecond/item).  -->
+
+
+<!-- In addition, a two one-sided equivalence test [TOST procedure; @schuirmann1987comparison] will be adopted to test the null hypothesis that $|\Delta_m|$ is higher than the smallest effect size of interest (0.05 in AUC units, ranging from 0 to 1).  -->
+
+<!-- Hypothesis 3 (TASK-CORRELATION) will be tested for each experiment by testing the Pearson correlation between $\Delta^{rel}_m$ and $\Delta^{rel}_s$, across participants. We will also test the Pearson correlation between $\Delta^{rel}_m$ and $\Delta^{rel}_s$ pooled across participants from all 6 experiments, and controlling for experiment-specific intercept effects (by mean-centering both variables at the experiment level prior to computing a correlation).   -->
+
+<!-- Hypothesis 4 (RESPONSE-GENERAL) will be tested for each experiment by testing the Pearson correlation between $\Delta^{rel}_s$ and $\Delta^{rel}_r$, across participants. We will also test the Pearson correlation between $\Delta^{rel}_s$ and $\Delta^{rel}_r$ pooled across participants from all 6 experiments, and controlling for experiment-specific intercept effects.  -->
+
+In addition, a Bayes factor will be computed using the BayesFactor R package [@morey2015package] and using a Jeffrey-Zellner-Siow (Cauchy) Prior with an rscale parameter of 0.65, representative of the similar standardized effect sizes we observe for Hypotheses 1-4 in our pilot data. 
+
+We will base our inference on the resulting Bayes Factors. 
+
+<!-- For each Hypothesis, in cases where the effect size falls within the region [-0.5,0.5], a two one-sided equivalence test [TOST procedure; @schuirmann1987comparison] will be adopted to test the null hypothesis that the absolute standardized effect size is higher than the smallest effect size of interest (0.5 in standard deviation units). The choice of a 'smallest effect size of interest' is not based on theory, but instead reflects the effect size for which our sample size affords sufficient statistical power to reject $H_0$ in the case that the true effect size is 0 [@lakens2017equivalence]. -->
+<!-- n -->
+<!-- Conditioned on that we observe a significant result for Hypothesis 2, we will test Hypothesis 3 by comparing the correlation $r(\Delta^{rel}_s, \Delta^{rel}_m)$ and the part-correlation after regressing out the contribution of the sigma ratio to the metacognitive asymmetry $r(\Delta^{rel}_s, \Delta^{rel}_m.log(Q_\sigma)$. The comparison between the two correlations will be carried out using the Hotelling-Williams test for comparing dependent correlations [@williams1959comparison]. In case of a null result, a two one-sided test [TOST procedure; @schuirmann1987comparison] will be adopted to test the null hypothesis that $|r(\Delta^{rel}_s, \Delta^{rel}_m)-r(\Delta^{rel}_s, \Delta^{rel}_m.log(Q_\sigma)|$ is higher than the smallest effect size of interest (0.05).  -->
+
+### Statistical power
+
+Statistical power calculations were performed using the R-pwr packages pwr [@R-pwr] and PowerTOST [@labes2020package]. 
+
+1. Hypothesis 1 (MEAN CONFIDENCE): With 106 participants, we will have a statistical power of 95% to detect effects of size `r printnum(pwr.t.test(power=0.95,n=106,sig.level=0.05, type='paired', alternative='greater')%>%'$'(d))`, which is less than the standardized effect size we observed for confidence in our pilot sample ($d=0.66$). 
+
+2. Hypothesis 2 (METACOGNITIVE ASYMMETRY): With 106 participants, we will have a statistical power of 95% to detect effects of size `r printnum(pwr.t.test(power=0.95,n=106,sig.level=0.05, type='paired', alternative='greater')%>%'$'(d))`, which is less than the standardized effect size we observed for metacognitive sensitivity in our pilot sample ($d=0.73$). 
+
+2. Hypothesis 3 (METACOGNITIVE ASYMMETRY: CONTROL): With 106 participants, we will have a statistical power of 95% to detect effects of size `r printnum(pwr.t.test(power=0.95,n=106,sig.level=0.05, type='paired', alternative='greater')%>%'$'(d))`, which is less than the standardized effect size we observed for metacognitive sensitivity, controlling for response bias, in our pilot sample ($d=0.81$). 
+
+3. Hypothesis 4 (RESPONSE TIME): With 106 participants, we will have a statistical power of 95% to detect effects of size `r printnum(pwr.t.test(power=0.95,n=106,sig.level=0.05, type='paired', alternative='greater')%>%'$'(d))`, which is less than the standardized effect size we observed for response time in our pilot sample ($d=0.61$).
+
+Finally, in case that the true effect size equals 0, a Bayes Factor with our chosen prior for the alternative hypothesis will support the null in 95 out of 100 repetitions, and will support the null with a $BF_{01}$ higher than 3 in 79 out of 100 repetitions. In a case where the true effect size is sampled from a Cauchy distribution with a scale factor of 0.65, a Bayes Factor with our chosen prior for the alternative hypothesis will support the alternative hypothesis in 76 out of 100 repetitions, support the alternative hypothesis with a $BF_{10}$ higher than 3 in 70 out of 100 repetitions, and support the null hypothesis with a $BF_{01}$ higher than 3 in 15 out of 100 hypotheses [based on an adaptation of simulation code from @lakens_2016].  
+
+
+
+<!-- 3. Hypothesis 3 (TASK-CORRELATION): For each stimulus pair, will have a statistical power of 95% to detect a Pearson correlation of `r pwr.r.test(power=0.95,n=318,sig.level=0.05)%>%'$'(r)` between search and metacognitive asymmetries. Across all six stimulus pairs, we will have a statistical power of 95% to detect a Pearson correlation of `r pwr.r.test(power=0.95,n=318*6,sig.level=0.05)%>%'$'(r)`.  -->
+
+<!-- 4. Hypothesis 4 (SEARCH-CORRELATION): For each stimulus pair, will have a statistical power of 95% to detect a Pearson correlation of `r pwr.r.test(power=0.95,n=318,sig.level=0.05)%>%'$'(r)` between search type and search response asymmetries. Across all six stimulus pairs, we will have a statistical power of 95% to detect a Pearson correlation of `r pwr.r.test(power=0.95,n=318*6,sig.level=0.05)%>%'$'(r)`.  -->
+
+<!-- 3. Hypothesis 3: Using Monte-Carlo simulations, we estimate a statistical power of 0.97 to test Hypothesis 3 at the single-experiment level, assuming a modest correlation of 0.2 between $Q_\sigma$ and $\Delta^{rel}_m$, and assuming that the correlation between $\Delta^{rel}_m$ and $\Delta^{rel}_s$ is completely mediated by $Q_\sigma$. -->
+
+### Rejection criteria
+
+Participants will be excluded for performing below 60% accuracy, for having extremely fast or slow reaction times (below 250 milliseconds or above 5 seconds in more than 25% of the trials), and for failing the comprehension check. Finally, for type-2 ROC curves to be generated, some responses must be incorrect. Thus, only participants who committed at least two errors of each error type (for example, mistaking a *Q* of *O* and mistaking an *O* for *Q*), will be included. 
+
+Trials with response time below 250 milliseconds or above 5 seconds will be excluded.
+
+
+## Data availability
+
+All raw data will be made fully available on OSF and on the study's GitHub respository: https://github.com/matanmazor/asymmetry. 
+Pilot data is available at: https://github.com/matanmazor/asymmetry/blob/master/Experiments/Q_in_O/results/pilot/jatos_results_batch3.csv
+
+## Code availability
+
+All analysis code will be openly shared on the study's GitHub repository: https://github.com/matanmazor/asymmetry. For complete reproducibility, the RMarkdown file used to generate the final version of the manuscript, including the generation of all figures and extraction of all test statistics, will be available on our GitHub repository.
+
+
+<!-- ## Acknowledgements -->
+
+<!-- ## Author contributions -->
+
+## Competing interests
+
+The authors declare no competing interests.
+
+<!-- ## Table 1: Design Table -->
+<!-- Hypothesis 2 (search and metacognitive asymmetries covary) will be tested globally for the 6 experiments by fitting a mixed-effects linear model using the `brms` package [@burkner2016package]. The following mixed-effects linear model will be fitted to the data: $\Delta^{rel}_s \sim 1+\Delta^{rel}_m+(1+\Delta^{rel}_m | exp)$ where $exp$ denoted the specific experiment in which the subject participated. The population-level coefficient for $\Delta^{rel}_s$ will be compared against 0. We will conclude that the two effects are correlated at the population level if the lower bound of the 95% credible interval for this coefficient will by higher than 0.05. We will conclude that the correlation falls within our Region of Practical Equivalence [@kruschke2013much] if the entire credible interval will fall within  the region $[-0.05, 0.05]$.  -->
+
+
+\newpage
+
+# References
+
+\begingroup
+\setlength{\parindent}{-0.5in}
+\setlength{\leftskip}{0.5in}
+
+<div id="refs" custom-style="Bibliography"></div>
+\endgroup
+
+\newpage
+
+# Supplementary information
+
+# Pilot data and analysis
+
+## Pilot Experiment
+
+```{r load_pilot_data, echo=FALSE, cache=TRUE}
+
+df <- read_csv('../Experiments/Q_in_O/results/pilot/jatos_results_batch3.csv') %>%
+  rename('subj_id' = 'subject_identifier') %>%
+  mutate(subj_id=factor(subj_id))
+
+N_total <- df$subj_id%>%unique()%>%length()
+
+search_df <- df %>%
+  filter((test_part=='Q_in_O_vs') | (test_part=='O_in_Q_vs')) %>%
+  select('subj_id','test_part','set_size','target_present','correct','RT') %>%
+  mutate(target= ifelse(test_part=='Q_in_O_vs', 1, 2),
+         response = ifelse(correct==1, target_present, 1-target_present)) %>%
+  mutate(target= factor(target, levels=c(1,2)),
+                        response = factor(response,levels=c(0,1)),
+         trial = sequence(rle(as.character(subj_id))$lengths))
+
+disc_df <- df %>%
+  filter(test_part=='disc') %>%
+  select('subj_id','which_stimulus','SOA','correct','RT','confidence','conf_RT') %>%
+  mutate(response = ifelse(correct==1, which_stimulus, 3-which_stimulus)) %>%
+  mutate(response= factor(response, levels=c(1,2)),
+         which_stimulus = factor(which_stimulus, levels=c(1,2))) %>%
+  group_by(subj_id) %>%
+  mutate(trial=row_number())
+
+minRT <- 250
+maxRT <- 5000
+min_acc_search <- 0.7
+min_acc_disc <- 0.6
+
+##exclude subjects
+bad_search <- search_df %>%
+  group_by(subj_id,target) %>%
+  summarise(acc = mean(correct),
+            RTlow = quantile(RT,0.25),
+            RThigh = quantile(RT,0.75))%>%
+  filter(acc<min_acc_search | RTlow<minRT | RThigh>maxRT) %>%
+  select('subj_id')
+
+bad_disc <- disc_df %>%
+  group_by(subj_id) %>%
+  summarise(acc = mean(correct),
+            RTlow = quantile(RT,0.25),
+            RThigh = quantile(RT,0.75))%>%
+  filter(acc<min_acc_disc | RTlow<minRT| RThigh>maxRT) %>%
+  select('subj_id')
+
+failed_test <- df %>%
+  group_by(subj_id) %>%
+  summarise(fi=all(followed_instructions)) %>%
+  filter(fi==FALSE) %>%
+  select('subj_id')
+
+excluded <- union(failed_test,union(bad_disc,bad_search))
+ N <- N_total-length(excluded$subj_id)
+```
+
+`r N_total` participants were recruited from Prolific for our pilot experiment. We followed a similar procedure to the one described in the Methods section, using *Q* and *O* as our stimuli. In this pilot study we also replicated the visual-search asymmetry for these stimuli. To keep the experiment short and participants engaged, participants only completed 32 discrimination trials. The experiment took about 13.5 minutes to complete. Subjects were paid £1.25 for their participation. 
+
+Mean accuracy was `r disc_df$correct%>%mean()` in the discrimination task, `r search_df%>%filter(target==1)%$%correct%>%mean()` in the Q-in-O search task, and `r search_df%>%filter(target==2)%$%correct%>%mean()` in the O-in-Q search task. We excluded participants for performing below `r min_acc_search*100`% accuracy in one or two of the search tasks, for performing below `r min_acc_disc*100`% accuracy in the discrimination task, for having extremely fast or slow reaction times in one or more of the tasks (below `r minRT` milliseconds or above `r maxRT/1000` seconds in more than 25% of the trials), and for failing the comprehension check. Overall we excluded `r nrow(excluded)` participants, leaving `r N` participants for the main analysis.
+
+```{r search_analysis, echo=FALSE, cache=TRUE}
+median_search_times <- search_df %>%
+  filter(!subj_id%in%excluded$subj_id & correct==1 & RT>minRT & RT<maxRT) %>%
+  group_by(subj_id,set_size,target,response) %>%
+  summarise_at(c('RT'),median) %>%
+  mutate(response=ifelse(response==1,'present','absent') %>%
+          factor(levels = c('present','absent')), 
+         target=ifelse(target==1,'Q-in-O','O-in-Q') %>%
+           factor(levels=c('Q-in-O','O-in-Q')))%>%
+  group_by(set_size,target,response)%>%
+  summarise(median_RT= median(RT), sem_RT=se(RT)*1.2533) 
+
+search_slopes <- search_df %>%
+  filter(!subj_id%in%excluded$subj_id & correct==1 & RT>minRT & RT<maxRT) %>%
+  group_by(subj_id,target,response) %>%
+  do(model=lm(RT~set_size,data=.)) %>%
+  tidy(model) %>%
+  filter(term=='set_size') %>%
+  mutate(response=ifelse(response==1,'present','absent') %>%
+          factor(levels = c('present','absent')), 
+         target=ifelse(target==1,'Q','O') %>%
+           factor(levels=c('Q','O')))
+
+search_slopes_by_target <- search_df %>%
+  filter(!subj_id%in%excluded$subj_id & correct==1 & RT>minRT & RT<maxRT) %>%
+  group_by(subj_id,target) %>%
+  do(model=lm(RT~set_size,data=.)) %>%
+  tidy(model) %>%
+  filter(term=='set_size') %>%
+  mutate(target=ifelse(target==1,'Q','O') %>%
+           factor(levels=c('Q','O')))
+
+mean_search_slopes <- search_slopes %>%
+  group_by(target,response) %>%
+  summarise('mean_slope'=mean(estimate,na.rm=TRUE),
+            'se_slope' = se(estimate, na.rm=TRUE))
+
+slopes_by_target <- search_slopes %>%
+  group_by(target) %>%     
+  summarise('mean_slope'=mean(estimate,na.rm=TRUE)) %>%
+  spread(target, mean_slope)
+
+slopes_by_response <- search_slopes %>%
+  group_by(response) %>%     
+  summarise('mean_slope'=mean(estimate,na.rm=TRUE)) %>%
+  spread(response, mean_slope)
+
+search_cost <- search_slopes %>%
+  filter(response=='absent') %>%
+  spread(target,estimate) %>%
+  group_by(subj_id) %>%
+  summarise(cost=mean(O,na.rm=TRUE)- mean(Q,na.rm=TRUE))
+
+anv <- aov(estimate ~ target * response, data = search_slopes)
+
+asymmetry_df <- search_slopes_by_target %>%
+  group_by(subj_id,target) %>%
+  summarise(slope=mean(estimate)) %>%
+  spread(target,slope) %>%
+  mutate(asymmetry=(O-Q))
+```
+## Visual search task: search asymmetry replication
+Search time analysis was performed on correct trials with reaction time between `r minRT` and `r maxRT` milliseconds. Search slopes for the response time/set size function were extracted for each participant, task and response, and then subjected to a two-way analysis of variance. As expected, we observed significant effects for target identity (mean search slope  for *Q-in-O* search: `r slopes_by_target$Q` ms/item; mean search slope  for *O-in-Q* search: `r slopes_by_target$O` ms/item; `r apa_print(anv)$statistic$target`) and response (mean search slope for target absent responses: `r slopes_by_response$absent`; mean search slope for target present responses: `r slopes_by_response$present`; `r apa_print(anv)$statistic$response`; see Figure \ref{fig:RT-pilot}). An interaction  effect was also significant (`r apa_print(anv)$statistic$target_response`). These results match previous reports of steeper search slopes for searching a circle among circles crossed by a line than for the inverse search [e.g., @treisman1985search]. 
+
+<!-- `r apa_table(apa_print(anv)$table, caption = 'Search time ANOVA results')` -->
+
+```{r RT-pilot, echo=FALSE, fig.cap="A: Median search time by distractor set size for the two search tasks and two responses. Correct responses only. Error bars represent the standard error of the median. B: mean search slope per target (Q or O) and response (present or absent). Error bars represent the standard error of the mean. ", fig.width=6}
+
+rtcurves <- ggplot(data=median_search_times, 
+       aes(x=set_size, y=median_RT, group=response, color=target)) +
+  geom_line(aes(linetype = response),size=1) +
+  geom_point(aes(shape = response), size=4) +
+  facet_grid(cols = vars(target)) +
+  geom_errorbar(aes(ymin=median_RT-sem_RT,ymax=median_RT+sem_RT)) +
+  facet_grid(cols = vars(target))+
+  labs(x='set size',y='median RT (seconds)', title='Search time curves') + 
+  theme_bw()+ 
+  scale_x_continuous(breaks = c(1,2,4,8))+
+  theme(legend.position=c(0.15, 0.85),
+        legend.background = element_rect(fill=NA))+
+  guides(color = FALSE, linetype=FALSE)  
+
+barp <- ggplot(data=mean_search_slopes, aes(x=response, y=mean_slope))+
+  geom_bar(aes(fill=target), stat="identity",show.legend = FALSE)+
+  geom_errorbar(aes(ymin=mean_slope-se_slope, ymax=mean_slope+se_slope), width=.2)+
+  facet_grid(cols=vars(target))+
+  labs(y='mean slope (ms/item)', title='Search slopes')+
+  theme_minimal()
+
+plot_grid(rtcurves, barp, labels = "AUTO", rel_widths=c(3,2))
+
+
+```
+
+
+```{r extract_confidence_distributions, echo=FALSE, cache=TRUE}
+
+disc_df <- disc_df %>%
+  filter(!subj_id%in%excluded$subj_id & 
+           RT>minRT & 
+           RT<maxRT) %>%
+  group_by(subj_id) %>%
+  mutate(
+    conf_discrete = ntile(confidence,20) %>%
+      factor(levels=1:21),
+    correct = factor(correct, levels=c(0,1)),
+    conf_bi = ifelse(
+      response==1, 
+      as.numeric(confidence),
+      -1*as.numeric(confidence)),
+    logRT = log(RT)
+    )
+
+# GENERAL STATS
+disc_subj_stats <- disc_df %>%
+  group_by(subj_id) %>%
+  summarise(
+    bias = mean(ifelse(response==1,1,0)),
+    acc = mean(ifelse(correct==1,1,0)),
+    hit_rate = sum(correct==1 & which_stimulus==1)/sum(which_stimulus==1),
+    false_alarm_rate=sum(correct==0 & which_stimulus==2)/sum(which_stimulus==2),
+    dprime=qnorm(hit_rate)-qnorm(false_alarm_rate),
+    conf=mean(confidence))
+
+# TO REPORT SOA ON FINAL TRIAL
+final_trial <- disc_df%>%filter(trial==32);
+
+# STATS AS A FUNCTION OF ACCURACY
+disc_df_by_acc <-
+  disc_df %>%
+  group_by(subj_id, correct) %>%
+  summarise(
+    RT = mean(RT),
+    conf = mean(confidence),
+    conf_RT = mean(conf_RT)
+  )
+
+conf_by_acc <-
+  t.test(
+    disc_df_by_acc %>%
+      filter(correct==1) %>%
+      "$"(conf),
+    disc_df_by_acc %>%
+      filter(correct==0) %>%
+      "$"(conf),
+    paired=TRUE)
+
+# STATS PER RESPONSE
+disc_df_by_response <-
+  disc_df %>%
+  group_by(subj_id, response) %>%
+  summarise(
+    RT = mean(RT),
+    logRT = mean(logRT),
+    conf = mean(confidence),
+    conf_RT = mean(conf_RT),
+    count = n()
+  )
+
+# HYPOTHESIS 1
+conf_by_resp <-
+  t.test(
+    disc_df_by_response %>%
+      filter(response==1) %>%
+      "$"(conf),
+    disc_df_by_response %>%
+      filter(response==2) %>%
+      "$"(conf),
+    paired=TRUE)
+
+conf_by_resp_d <-
+  cohensD(
+    disc_df_by_response %>%
+      filter(response==1) %>%
+      "$"(conf),
+    disc_df_by_response %>%
+      filter(response==2) %>%
+      "$"(conf),
+    method='paired')
+
+# HYPOTHESIS 2
+
+enough_errors <- disc_df %>%
+  group_by(subj_id, response, correct,.drop=FALSE) %>%
+  tally() %>%
+  group_by(subj_id) %>%
+  summarise(enough=min(n)>1) %>%
+  filter(enough) 
+
+eps <- 10^-10;
+
+conf_counts <- disc_df %>%
+  filter(subj_id%in%enough_errors$subj_id) %>%
+  mutate(subj_id=factor(subj_id)) %>%
+  group_by(subj_id, response, correct, confidence, .drop=FALSE) %>%
+  tally() %>%
+  spread(correct, n, sep='', fill=0) %>%
+  merge(disc_subj_stats%>%select(subj_id,dprime, hit_rate, false_alarm_rate))%>%
+  arrange(desc(confidence), by_group=TRUE) %>%  
+  group_by(subj_id, response)%>%
+  mutate(cs_correct=cumsum(correct1)/sum(correct1),
+         cs_incorrect=cumsum(correct0)/sum(correct0),
+         miss_rate=1-hit_rate,
+         cr_rate=1-false_alarm_rate,
+         cs_correct_from_sdt= ifelse(response==1,
+           pnorm(qnorm(false_alarm_rate*cs_incorrect), mean=-dprime)/hit_rate,
+           pnorm(qnorm(miss_rate*cs_incorrect), mean=-dprime)/cr_rate),
+         epsilon=eps, # for ROC analysis
+         epsilon = cumsum(epsilon),
+         cs_incorrect=cs_incorrect+epsilon)
+
+AUC <- conf_counts %>%
+  group_by(subj_id, response,.drop=TRUE) %>%
+  summarise(AUC = auc(cs_incorrect, cs_correct)) %>%
+  spread(response, AUC, sep='')%>%
+  mutate(metacognitive_asymmetry=(response1-response2))
+
+sdtAUC <- conf_counts %>%
+  group_by(subj_id, response,.drop=TRUE) %>%
+  summarise(AUC = auc(cs_incorrect, cs_correct_from_sdt)) %>%
+  spread(response, AUC, sep='')%>%
+  mutate(metacognitive_asymmetry_from_sdt=(response1-response2))
+
+AUC <- AUC %>%
+  merge(sdtAUC%>%select(subj_id,metacognitive_asymmetry_from_sdt)) %>%
+          mutate(metacognitive_asymmetry_control = metacognitive_asymmetry-metacognitive_asymmetry_from_sdt)
+
+disc_subj_stats <-merge( disc_subj_stats,
+                         AUC) %>%
+  mutate(bias=bias-0.5)
+
+# HYPOTHESIS 3
+RT_by_resp <-
+  t.test(
+    disc_df_by_response %>%
+      filter(response==1) %>%
+      "$"(RT),
+    disc_df_by_response %>%
+      filter(response==2) %>%
+      "$"(RT),
+    paired=TRUE);
+
+logRT_by_resp <-
+  t.test(
+    disc_df_by_response %>%
+      filter(response==1) %>%
+      "$"(logRT),
+    disc_df_by_response %>%
+      filter(response==2) %>%
+      "$"(logRT),
+    paired=TRUE);
+
+
+logRT_by_resp_d <-
+  cohensD(
+    disc_df_by_response %>%
+      filter(response==1) %>%
+      "$"(logRT),
+    disc_df_by_response %>%
+      filter(response==2) %>%
+      "$"(logRT),
+     method='paired')
+
+```
+
+## Discrimination task: metacognitive asymmetry
+
+Mean accuracy in the discrimination task was `r mean(disc_subj_stats$acc)` (`r apa_print(disc_subj_stats$acc%>%t.test())$estimate`). mean SOA in the 32th trial was `r apa_print(t.test(final_trial$SOA))$estimate`. Participants showed no consistent bias in their responses (`r apa_print(disc_subj_stats$bias%>%t.test())$estimate`). On a scale of 0 to 1, mean confidence level was `r mean(disc_subj_stats$conf)` (`r apa_print(disc_subj_stats$conf%>%t.test())$estimate`). Confidence was higher for correct than for incorrect responses (`r apa_print(conf_by_acc)$full_result`). 
+
+*Hypothesis 1*: In line with our hypothesis, confidence was generally higher for *Q* (feature present) responses than for *O* (feature absent) responses (`r apa_print(conf_by_resp)$full_result`; Cohen's d = `r printnum(conf_by_resp_d)`).
+
+*Hypothesis 2*: In order to measure metacognitive asymmetry, we extracted the response-conditional type-2 ROC (rc-ROC) curves for the two responses (*Q* and *O*) in the discrimination task. This was done by plotting the cumulative distribution of confidence ratings (high to low) for correct responses against the same distribution for incorrect responses. The area under the rc-ROC curve (auROC) was then taken as a measure of metacognitive sensitivity [@kanai2010subjective; @meuwese2014subjective]. In line with our hypothesis, auROC for *Q* responses (`r apa_print(t.test(AUC$response1))$estimate`) was higher than for *O* responses (`r apa_print(t.test(AUC$response2))$estimate`; `r apa_print(t.test(AUC$response1, AUC$response2, paired=TRUE))$statistic`; Cohen's d = `r printnum(cohensD(AUC$response1, AUC$response2,method='paired'))`; see Figure \@ref(fig:rc-ROC-pilot)), mirroring the metacognitive asymmetry for detection judgments. 
+
+*Hypothesis 3*: Metacognitive asymmetry was significantly higher than what would be expected based on an equal-variance SDT model with the same response bias and sensitivity (`r apa_print(t.test(AUC$metacognitive_asymmetry_control))$statistic`, Cohen's d=`r printnum(cohensD(AUC$metacognitive_asymmetry_control))`).
+
+*Hypothesis 4*: In line with our hypothesis, *Q* responses were faster on average than *O* responses (`r apa_print(logRT_by_resp)$statistic` ; Cohen's d = 
+`r printnum(logRT_by_resp_d)`). 
+
+```{r rc-ROC-pilot, echo=FALSE, fig.cap="Response conditional ROC curves for the two discrimination responses. The area under the curve is a measure of metacognitive sensitivity. Bottom right inset: distributions of the area under the curve for the two responses, across participants. Overall, participants had lower metacognitive insight into the accuracy of their 'O' responses."}
+
+conf_discrete_counts <- disc_df %>%
+  filter(subj_id%in%enough_errors$subj_id) %>%
+  mutate(subj_id=factor(subj_id),
+         conf_discrete = conf_discrete%>% 
+            fct_rev()) %>%
+  group_by(subj_id, response, correct, conf_discrete, .drop=FALSE) %>%
+  tally() %>%
+  spread(correct, n, sep='') %>%
+  arrange(conf_discrete, by_group=TRUE) %>% 
+  group_by(subj_id,response)%>%
+  mutate(cs_correct=cumsum(correct1)/sum(correct1),
+         cs_incorrect=cumsum(correct0)/sum(correct0)) 
+
+conf_discrete_counts_group <- conf_discrete_counts %>%
+  group_by(response, conf_discrete)%>%
+  summarise(conf_incorrect = mean(cs_incorrect, na.rm=TRUE),
+            conf_correct = mean(cs_correct, na.rm=TRUE),
+            conf_incorrect_sem = se(cs_incorrect, na.rm=TRUE),
+            conf_correct_sem  = se(cs_correct, na.rm=TRUE))
+
+
+rcROC <- ggplot(data=conf_discrete_counts_group%>%mutate(response=ifelse(response==1,'Q','O')%>%factor(levels=c('Q','O'))),
+       aes(x=conf_incorrect, y=conf_correct, color=response)) +
+  geom_line(size=1) +
+  geom_point(aes(shape = response))+ 
+  geom_errorbar(aes(ymin = conf_correct-conf_correct_sem,ymax = conf_correct+conf_correct_sem)) + 
+  geom_errorbar(aes(xmin = conf_incorrect-conf_incorrect_sem,xmax = conf_incorrect+conf_incorrect_sem)) + 
+  geom_abline(slope=1)+
+  theme_bw() + coord_fixed() + 
+  labs(x='p(conf | incorrect)', y='p(conf | correct)', title='Response conditional ROC curves')
+
+AUClong <- AUC %>%
+  gather('response','rcAUC',2:3) %>%
+  mutate(response=fct_recode(response,'Q'='response1','O'='response2'))
+
+AUCplot <- ggplot(AUClong,aes(x=response, y=rcAUC,group=subj_id))+
+  geom_line()+geom_point(aes(colour=response), size=2, fill="white", show.legend = FALSE)
+
+ggdraw(rcROC)+draw_plot(AUCplot,0.55,0.13,0.2,0.5,hjust=0, vjust=0)
+
+```
+
+```{r zROC, echo=FALSE}
+# ZROC ANALYSIS
+
+conf_var <- disc_df %>%
+  group_by(subj_id, which_stimulus) %>%
+  summarise(var=var(confidence))%>%
+  group_by(subj_id)%>%
+  summarise(enough=min(var)>0) %>%
+  filter(enough) 
+
+r1_curves <- data_frame(x=c(),y=c(),name=c())
+r2_curves <- data_frame(x=c(),y=c(),name=c())
+
+for (s in conf_counts$subj_id%>%unique()) {
+  r1_conf<-conf_counts%>%filter(subj_id==s && response==1);
+  r1_curve<-approx(c(0,r1_conf$cs_incorrect,1),
+            c(0,r1_conf$cs_correct,1),
+            n=100)
+  r1_curve$subj_id=s;
+  r1_curve$x=linspace(0,1,100)
+  r1_curves <- rbind(r1_curves,data.frame(r1_curve))
+
+  r2_conf<-conf_counts%>%filter(subj_id==s && response==2);
+  r2_curve<-approx(c(0,r2_conf$cs_incorrect,1),
+            c(0,r2_conf$cs_correct,1),
+            n=100)
+  r2_curve$subj_id=s;
+  r2_curve$x=linspace(0,1,100)
+  r2_curves <- rbind(r2_curves,data.frame(r2_curve))
+}
+
+
+conf_bi_counts <- disc_df %>%
+  mutate(subj_id=factor(subj_id)) %>%
+  group_by(subj_id, which_stimulus, conf_bi, .drop=FALSE) %>%
+  tally() %>%
+  spread(which_stimulus, n, sep='', fill=0) %>%
+  arrange(conf_bi) %>%
+  mutate(cs_1=cumsum(which_stimulus1)/sum(which_stimulus1),
+         cs_2=cumsum(which_stimulus2)/sum(which_stimulus2),
+         z_1 = qnorm(cs_1),
+         z_2 = qnorm(cs_2)) %>%
+  ungroup() %>%
+  filter(!is.infinite(rowSums(.[,7])) &
+           !is.infinite(rowSums(.[,8])))
+
+  zROC_slopes <- conf_bi_counts %>%
+    filter(subj_id%in%conf_var$subj_id)%>%
+    group_by(subj_id) %>%
+    do(model=lm(z_2~z_1,data=.)) %>%
+    tidy(model) %>%
+    filter(term=='z_1')%>%
+    mutate(zROC_slope=estimate)%>%
+    select('subj_id','zROC_slope')
+  
+  
+AUC$search_asymmetry <- asymmetry_df%>%filter(subj_id%in%enough_errors$subj_id)%>%"$"(asymmetry)
+AUC <- merge(AUC, zROC_slopes%>%filter(subj_id%in%enough_errors$subj_id))
+```
+<!-- This metacognitive asymmetry was not significantly correlated with the search asymmetry in this sample (`r apa_print(cor.test(AUC$metacognitive_asymmetry,AUC$search_asymmetry))$estimate`). -->
+<!-- Similar to @vincent2011search, we observed shallow standardized ROC (zROC) curves ($M=$ `r printnum(mean(zROC_slopes$zROC_slope))` `r apa_print(t.test(log(zROC_slopes$zROC_slope)))$statistic` for a t test on the log slopes). Shallow zROC curves are typical of situations where the signal distribution for one category is broader than for the other [@vincent2011search;  @kellij2018foundations].   -->
+

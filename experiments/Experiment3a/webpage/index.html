@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Q_in_O</title>
+        <script src="jatos.js"></script>
+        <script src="jquery/jquery.min.js"></script>
+        <script src="jspsych-6.1.0/jspsych.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-preRNG.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-fullscreen.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-html-keyboard-response.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-disc.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-instructions.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-p5text.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-call-function.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-survey-text.js"></script>
+        <script src="jspsych-6.1.0/plugins/jspsych-survey-multi-choice.js"></script>
+        <script src="p5/p5.min.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Corben&family=Quicksand&display=swap" rel="stylesheet">
+        <link href="style.css" rel="stylesheet" type="text/css"></link>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.0.0/crypto-js.min.js"></script>
+        <script src="mersenne-twister.js"></script>
+    </head>
+    <body></body>
+    <script>
+
+    window.SOA = 100;
+    window.last_two_trials = [false, false]; //for online calibration
+    const calibration_factor = 0.9;
+    window.block_number=0;
+
+    // response mapping is counterbalanced across participants
+    window.response_mapping = [{'tilted':'w','straight':'e'},{'tilted':'e','straight':'w'}][Math.random()>0.5?1:0];
+    window.stimuli = ['','tilted','straight'];
+    // These variables count the number of times the participant has visited
+    // the practice loop
+    window.disc_loop = 0;
+    window.followed_instructions = false;
+    window.ready_to_start = false;
+    window.instruction_repetitions = 1;
+
+    function makeTimeline() {
+
+      timeline = [];
+
+       timeline.push({
+         type: 'fullscreen',
+         fullscreen_mode: true
+       });
+
+
+       var wellcome = {
+         type: "instructions",
+         pages: [
+           `<h1>Welcome</h1>
+           <p>This experiment investigates how you make decisions about what you see, and what makes you feel more or less confident in your decisions.\nIt should take about 10 minutes to complete.</p>
+           `
+         ],
+         show_clickable_nav: true
+       }
+       timeline.push(wellcome);
+
+       var instructions_timeline = [];
+
+       var introduce_disc= {
+         type: "instructions",
+         pages: function() {
+           if (window.disc_loop==0) {
+             var title = '<h1>Your challenge</h1>'
+           } else {
+             var title='<h1>Let\'s try again</h1>'
+         }
+         return [
+           `${title}
+           <p>At the beginning of each trial, you will see a gray circle in the centre of the screen.</p>
+           <p>The circle will then be replaced by a ${window.stimuli[1]} line on half of the trials and a ${window.stimuli[2]} line on the other half.</p>
+           <p>Your task is to decide if the line was tilted or not. To make it difficult, we will flash random shapes on the screen immediately after the line. You can ignore them. Just concentrate on the orientation of the line.</p>`,
+           `<div class='instruct-left'><p>Put the middle and index fingers of your left hand on the W and E keys on your keyboard.</p>
+           <p>Now, pay close attention and press '${window.response_mapping[window.stimuli[1]].toUpperCase()}' if the line was ${window.stimuli[1]} or '${window.response_mapping[window.stimuli[2]].toUpperCase()}' if it was ${window.stimuli[2]}.</p><p>Let's start with four practice trials.</p></div>
+           <div class='instruct-right'><img src='img/keyboard_${getKeyByValue(window.response_mapping,'w')}.png'></div>`
+         ]},
+         show_clickable_nav: true
+       }
+
+      // A generic function the outputs a function that prints a letter to the screen
+         function drawLetter(letter) {
+           return function(p,t,du) {
+             p.textAlign(p.CENTER,p.CENTER);
+             p.fill(255)
+             p.textStyle(p.BOLD)
+             p.textSize(50)
+             p.textFont('arial')
+             p.stroke(128)
+             p.text(letter,0,0)
+           }
+         };
+
+         function drawStraightLine(p,t,du) {
+           p.push()
+           p.stroke(255)
+           p.strokeWeight(4)
+           p.line(0,-20,0,20)
+           p.pop()
+         }
+
+         function drawTiltedLine(p,t,du) {
+           p.push()
+           p.angleMode(p.DEGREES);
+           p.stroke(255);
+           p.strokeWeight(4);
+           p.rotate(10);
+           p.line(0,-20,0,20);
+           p.pop();
+         }
+
+         function drawCurvedLine(p,t,du) {
+           p.push()
+           p.stroke(255)
+           p.strokeWeight(4)
+           p.curve(-40,-20,0,-20,0,20,-40,20)
+           p.pop()
+         }
+
+         function drawCube(p,t,du) {
+          p.push()
+          var longEdge =30;
+          var shortEdge=15;
+          var x = -(longEdge+shortEdge)/2;
+          var y = shortEdge/2-longEdge/2;
+          p.stroke(255);
+          p.strokeWeight(4);
+          p.noFill()
+          p.beginShape();
+          p.vertex(x, y);
+          p.vertex(x+shortEdge, y-shortEdge);
+          p.vertex(x+longEdge+shortEdge, y-shortEdge);
+          p.vertex(x+longEdge+shortEdge, y+longEdge-shortEdge);
+          p.vertex(x+longEdge,y+longEdge);
+          p.vertex(x, y+longEdge);
+          p.endShape(p.CLOSE);
+          p.line(x,y,x+longEdge,y);
+          p.line(x+longEdge,y+longEdge,x+longEdge,y);
+          p.line(x+longEdge,y,x+longEdge+shortEdge,y-shortEdge);
+          p.pop()
+         }
+
+         function drawInvertedCube(p,t,du) {
+          p.push()
+          var longEdge =30;
+          var shortEdge=15;
+          var x = -(longEdge+shortEdge)/2;
+          var y = shortEdge/2-longEdge/2;
+          p.stroke(255);
+          p.strokeWeight(4);
+          p.noFill()
+          p.beginShape();
+          p.vertex(x, y);
+          p.vertex(x+shortEdge, y-shortEdge);
+          p.vertex(x+longEdge+shortEdge, y-shortEdge);
+          p.vertex(x+longEdge+shortEdge, y+longEdge-shortEdge);
+          p.vertex(x+longEdge,y+longEdge);
+          p.vertex(x, y+longEdge);
+          p.endShape(p.CLOSE);
+          p.line(x+shortEdge,y-shortEdge,x+shortEdge,y+longEdge-shortEdge);
+          p.line(x+shortEdge,y+longEdge-shortEdge,x+longEdge+shortEdge,y+longEdge-shortEdge);
+          p.line(x,y+longEdge,x+shortEdge,y+longEdge-shortEdge);
+          p.pop()
+         }
+
+
+         function drawMask(p,t,du) {
+           drawInvertedCube(p,t,du);
+           drawCube(p,t,du);
+           drawStraightLine(p,t,du);
+           drawTiltedLine(p,t,du);
+           drawCurvedLine(p,t,du);
+           drawLetter('N')(p,t,du);
+           p.scale(-1,1);
+           drawLetter('N')(p,t,du);
+         }
+
+
+         // A discrimination practice trial
+            var disc_practice_trial = {
+             type: 'disc',
+             stimulus1_function: drawTiltedLine,
+             stimulus2_function: drawStraightLine,
+             mask_function: drawMask,
+             choices: function() {return [window.response_mapping[window.stimuli[1]],
+               window.response_mapping[window.stimuli[2]]]},
+             which_stimulus: jsPsych.timelineVariable('which_stimulus'),
+             data: jsPsych.timelineVariable('data'),
+             SOA: 150,
+             rate_confidence: jsPsych.timelineVariable('rate_confidence'),
+             on_finish: function(data){
+               data.correct = data.response == data.correct_response;
+             }
+           };
+
+       // Discrimination parameters: two trial types. tilted and straight.
+         var disc_practice_vars = [
+           {which_stimulus:1,
+            rate_confidence: false,
+            data: {
+              correct_response: window.response_mapping[window.stimuli[1]],
+              test_part: 'disc_practice'}},
+           {which_stimulus:2,
+            rate_confidence: false,
+            data: {
+              correct_response: window.response_mapping[window.stimuli[2]],
+              test_part: 'disc_practice'}}
+         ];
+
+
+         var feedback = {
+           type: 'html-keyboard-response',
+           stimulus: function(){
+             var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+             if(last_trial_correct){
+               return "<div style=\"width:150px;height:56px;font-size:30px;text-align:center;\">correct!</div>";
+             } else {
+               return "<div style=\"width:150px;height:56px;border:0px;font-size:30px;text-align:center\">wrong.</div>"
+             }
+           },
+           trial_duration: function(){
+             var last_trial_correct = jsPsych.data.get().last(1).values()[0].correct;
+             if(last_trial_correct){
+               return 1000;
+             } else {
+               return 1500
+             }
+           },
+           response_ends_trial: false
+         };
+
+         var disc_practice_procedure = {
+           timeline: [disc_practice_trial, feedback],
+           timeline_variables: disc_practice_vars,
+           repetitions: 2,
+           randomize_order: true
+         };
+
+         var disc_practice_loop_node = {
+             timeline: [introduce_disc,disc_practice_procedure],
+             loop_function: function(data){
+                 // get the data from the previous trial,
+                 // and check which key was pressed
+                 var num_correct = data.filter({correct: true}).count();
+                 window.disc_loop+=1
+                 if(num_correct==4){
+                    window.SOA=60
+                     return false;
+                 } else {
+                     return true;
+                 }
+             }
+         };
+         instructions_timeline.push(disc_practice_loop_node);
+
+         var lets_practice_confidence= {
+           type: "instructions",
+           pages:[
+             `<h1>Confidence Ratings</h1>
+             <p>Immediately after deciding whether the line was tilted or not you will indicate your confidence in your decision. You will do this by controlling the size of a colored circle with your mouse: a large circle means you are certain that you got it right, and a small circle means there's a good chance you might be wrong.</p>
+             <p>The task is going to be more difficult from now, so pay close attention. It's a real challenge.</p>
+             <p>Let's practice.</p>
+             `],
+           show_clickable_nav: true
+         }
+
+        instructions_timeline.push(lets_practice_confidence);
+
+        // A discrimination trial: was the first letter's identity
+        // tilted or straight?
+           var disc_trial = {
+            type: 'disc',
+            stimulus1_function: drawTiltedLine,
+            stimulus2_function: drawStraightLine,
+            mask_function: drawMask,
+            choices: function() {return [window.response_mapping[window.stimuli[1]],
+              window.response_mapping[window.stimuli[2]]]},
+            which_stimulus: jsPsych.timelineVariable('which_stimulus'),
+            data: jsPsych.timelineVariable('data'),
+            SOA: function() {return window.SOA},
+            rate_confidence: jsPsych.timelineVariable('rate_confidence'),
+
+            //staircasing procedure
+            on_finish: function(data){
+              data.correct = data.response == data.correct_response;
+              //if error, make SOA longer (calibration factor is <1)
+              if (!data.correct) {
+                window.SOA /= calibration_factor;
+                window.last_two_trials = [false, false]
+             // else, if the last two trials were correct, make SOA shorter
+              } else if (last_two_trials[1]) {
+                window.SOA *= calibration_factor;
+                window.last_two_trials = [false, false]
+             // else (last trial was correct, the one before was error), update last_two_trials
+              } else {
+                window.last_two_trials = [window.last_two_trials[1],
+                                            data.correct]
+              }
+            }
+          };
+
+       // Discrimination parameters: two trial types. tilted and straight.
+         var disc_conf_vars = [
+           {which_stimulus:1,
+            rate_confidence: true,
+            data: {
+              correct_response: window.response_mapping[window.stimuli[1]],
+              test_part: 'disc_practice_conf'}},
+           {which_stimulus:2,
+           rate_confidence: true,
+            data: {
+              correct_response: window.response_mapping[window.stimuli[2]],
+              test_part: 'disc_practice_conf'}}
+         ];
+
+        var disc_vars = [
+           {which_stimulus:1,
+            rate_confidence: true,
+            data: {
+              correct_response: window.response_mapping[window.stimuli[1]],
+              test_part: 'disc'}},
+           {which_stimulus:2,
+           rate_confidence: true,
+            data: {
+              correct_response: window.response_mapping[window.stimuli[2]],
+              test_part: 'disc'}}
+         ];
+
+          //
+         var disc_conf_procedure = {
+           timeline: [disc_trial, feedback],
+           timeline_variables: disc_conf_vars,
+           repetitions: 2,
+           randomize_order: true
+         };
+        instructions_timeline.push(disc_conf_procedure);
+
+        var options =  [`very confident that the line was ${window.stimuli[2]}`,
+                  `guessing that the line was ${window.stimuli[2]}`,
+                  `very confident that the line was ${window.stimuli[1]}`,
+                  `guessing that the line was ${window.stimuli[1]}`];
+
+        var comprehension_questions = [
+          {prompt: "If I pressed "+window.response_mapping[window.stimuli[1]].toUpperCase()+" and made the circle very large, it means that I am:",
+          options: options,
+          correct: options[2]},
+
+          {prompt: "If I pressed "+window.response_mapping[window.stimuli[2]].toUpperCase()+" and made the circle very large, it means that I am:",
+          options: options,
+          correct: options[0]},
+
+          {prompt: "If I pressed "+window.response_mapping[window.stimuli[1]].toUpperCase()+" and made the circle very small, it means that I am:",
+          options: options,
+          correct: options[3]}
+        ];
+
+         var multichoice_discrimination = {
+           type: 'survey-multi-choice',
+           questions: function() {
+             window.question = shuffle(comprehension_questions)[0];
+             return [{
+               prompt: `<p>${window.question.prompt}</p>
+               <img src='img/keyboard_${getKeyByValue(window.response_mapping,'w')}.png' height='200px'>`,
+               options: shuffle(window.question.options),
+               name: 'multichoice_discrimination'
+             }]},
+           required: true,
+           on_finish: function(data){
+             window.ready_to_start =
+             JSON.parse(data.responses)['multichoice_discrimination']==window.question.correct
+         }
+       };
+      instructions_timeline.push(multichoice_discrimination);
+
+      var instructions_loop_node = {
+          timeline: instructions_timeline,
+          loop_function: function(data){
+            if (!window.ready_to_start) {
+              window.instruction_repetitions++
+            }
+            return (!window.ready_to_start & window.instruction_repetitions<4)
+          }
+      };
+
+      timeline.push(instructions_loop_node)
+
+         var task_timeline = [];
+
+         var block_timeline=[];
+
+         var block_count = ['first','second','third','fourth','fifth','sixth'];
+
+         var interblock_message = {
+               type: "p5Text",
+               title: function() {
+                 if (window.block_number==0) {
+                   return('We are ready to start')}
+                 else {
+                   return('Starting the '+block_count[window.block_number]+' block (out of six)')
+                 }
+               },
+               text: function() {
+                 if (window.block_number==0) {
+                   return(`This main part of the experiment will comprise 96 repetitions of the tilted or straight line challenge in blocks of 16 repetitions, with short breaks in between.\nThis time you will not get any feedback about your accuracy.\nLet's start the first block.`)}
+                 else {
+                   return(`Rest your eyes, breathe deep, and press the space bar when you are ready to continue to the ${block_count[window.block_number]} block out of 6.`)}
+               }
+             };
+
+         var disc_procedure = {
+           timeline: [disc_trial],
+           timeline_variables: disc_vars,
+           repetitions: 8,
+           randomize_order: true
+         };
+
+       var debrief_disc = {
+           type: "p5Text",
+           text: function() {
+
+             var trials = jsPsych.data.get().last(16).filter({test_part: 'disc'});
+             var correct_trials = trials.filter({correct: true});
+             var incorrect_trials = trials.filter({correct: false});
+             var accuracy = Math.round(correct_trials.count() / trials.count() * 100);
+             var confidence_correct = Math.round(correct_trials.select('confidence').mean()*100);
+             var confidence_incorrect = Math.round(incorrect_trials.select('confidence').mean()*100);
+
+             if (isNaN(confidence_incorrect)) {
+               incorrect_string=''
+             } else {
+               incorrect_string = `When you were wrong, your average confidence level was ${confidence_incorrect} on a scale of 0 to 100.`
+             }
+
+             return `You responded correctly on ${accuracy}% of the trials.\nWhen you were correct, your average confidence level was ${confidence_correct} on a scale of 0 to 100.\n${incorrect_string}\nYou can now take a short break before we continue.`
+           }
+         };
+
+
+         var loop_node = {
+           timeline: [interblock_message,disc_procedure, debrief_disc],
+           loop_function: function(data) {
+             if (window.block_number<5) {
+               window.block_number++
+               return true;
+             } else {
+               return false;
+             }
+           }
+         };
+
+         task_timeline.push(loop_node);
+
+      var final_comprehension_question = {
+           prompt: "If I pressed "+window.response_mapping[window.stimuli[2]].toUpperCase()+" and made the circle very small, it means that I am:",
+           options: options,
+           correct: options[1]
+       }
+
+       var final_multichoice_discrimination = {
+         type: 'survey-multi-choice',
+         questions: function() {
+           window.question = final_comprehension_question;
+           return [{
+             prompt: `<h1>One final question</h1>
+             <p>${window.question.prompt}</p>
+             <img src='img/keyboard_${getKeyByValue(window.response_mapping,'w')}.png' height='200px'>`,
+             options: shuffle(window.question.options),
+             name: 'final_multichoice_discrimination'
+           }]},
+        required: true,
+         on_finish: function(data){
+           window.followed_instructions =
+           JSON.parse(data.responses)['final_multichoice_discrimination']==window.question.correct
+       }
+     };
+
+     task_timeline.push(final_multichoice_discrimination);
+
+     timeline.push({
+       timeline: task_timeline,
+       conditional_function: ()=>{return(window.ready_to_start)}
+     })
+
+         var worker_comments = {
+           type: 'survey-text',
+           preamble: '<h1>Your Thoughts<h1>',
+           questions: [{
+           prompt: `Before we thank you, we would appreciate if you could share any thoughts you had about the experiment, or anything we should take into account when analyzing your data.`,
+           pleaceholder: "your comments here",
+           rows:8,
+           columns:60,
+           name: 'worker_comments'
+         }]
+         }
+         timeline.push(worker_comments);
+
+         var thank_you = {
+           type: 'p5Text',
+           title: "Thank you!",
+           text: `Thanks for your time and effort. Your contribution will help us learn about the way people make and form confidence in their decisions.`
+         };
+
+         timeline.push(thank_you)
+          return timeline
+        };
+
+        function hexToBytes(hex) {
+            for (var bytes = [], c = 0; c < hex.length; c += 2)
+            bytes.push(parseInt(hex.substr(c, 2), 16));
+            return bytes;
+        };
+
+        function getKeyByValue(object, value) {
+          return Object.keys(object).find(key => object[key] === value);
+        }
+
+        function shuffle(array) {
+          var currentIndex = array.length, temporaryValue, randomIndex;
+
+          // While there remain elements to shuffle...
+          while (0 !== currentIndex) {
+
+            // Pick a remaining element...
+            randomIndex = Math.floor(Math.random() * currentIndex);
+            currentIndex -= 1;
+
+            // And swap it with the current element.
+            temporaryValue = array[currentIndex];
+            array[currentIndex] = array[randomIndex];
+            array[randomIndex] = temporaryValue;
+          }
+
+          return array;
+        }
+
+      /* start the experiment */
+      jatos.onLoad(function () {
+        console.log('version 1')
+        var m = new MersenneTwister();
+        Math.random = function() {return m.random()};
+        var protocol_sum = jatos.batchSession.get("protocol_sum");
+        var subject_identifier = jatos.urlQueryParameters.PROLIFIC_PID;
+        subject_sum = hexToBytes(
+          CryptoJS.SHA256(
+            protocol_sum+subject_identifier).toString()
+          );
+        m.init_by_array(subject_sum, subject_sum.length);
+        jsPsych.data.addProperties({'protocol_sum':protocol_sum,
+        'subject_identifier':subject_identifier, 'subject_sum':subject_sum});
+        timeline=makeTimeline();
+          jsPsych.init({
+              timeline: timeline,
+              on_finish: function() {
+                  jsPsych.data.addProperties(jatos.urlQueryParameters);
+                  jsPsych.data.addProperties({followed_instructions: window.followed_instructions,
+                  instruction_repetitions: window.instruction_repetitions,
+                  response_mapping: window.response_mapping});
+                  var resultJson = jsPsych.data.get().json();
+                  jatos.submitResultData(resultJson, jatos.startNextComponent);
+              }
+          });
+      });
+
+    </script>
+</html>
