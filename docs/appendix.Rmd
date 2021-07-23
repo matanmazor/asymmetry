@@ -1,0 +1,5 @@
+## Robustness Region
+
+```{r RR, echo=FALSE, fig.cap="A Robustness Region plot, visualizing Bayes Factors for hypothetical effect sizes and scale factors on the prior, for our sample size of 106 participants. Points above the horizontal line are significant in a one-tailed t-test. The dashed line indicates our choice of a scale factor on the prior.", out.width = '60%'}
+knitr::include_graphics("figures/RR.png")
+```
