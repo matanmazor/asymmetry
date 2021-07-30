@@ -37,7 +37,7 @@ output            : bookdown::gitbook
 ---
 
 ```{r setup, include = FALSE}
-  
+
 library("papaja")
 r_refs("r-references.bib")
 
@@ -70,11 +70,11 @@ At any given moment, there are many more things that are not there than things t
 
 An overarching difficulty in representing absence may reflect the metacognitive nature of absence representations; to represent something as absent, one must assume that they would have detected it had it been present. In philosophical writings, this form of higher-order, metacognitive inference-about-absence is known as *argument from epistemic closure*, or *argument from self-knowledge* [*If it was true, I would have known it*; @walton1992nonfallacious; @de1988knowing]. Strikingly, quantitative measures of metacognitive insight are consistently found to be lower for decisions about absence than for decisions about presence. When asked to rate their subjective confidence following near-threshold detection decisions, subjective confidence ratings following 'target absent' judgments are commonly lower, and less aligned with objective accuracy, than following 'target present' judgments [Fig. \@ref(fig:asymmetry); @kanai2010subjective; @meuwese2014subjective; @kellij2018foundations; @mazor2020distinct]. 
 
-Metacognitive asymmetries have not only been observed for judgments about the presence or absence of whole physical objects and stimuli, but also for the presence or absence of cognitive variables such as memory traces. For instance, in recognition memory, subjects typically show poor metacognitive sensitivity for judgments about the absence of memories [such as when judging that they haven’t seen a study item before; @higham2009investigating]. Unlike the absence of a visual stimulus, the absence of a memory is not localized in space and does not correspond with a specific representation of ‘nothing’. 
+Metacognitive asymmetries have not only been observed for judgments about the presence or absence of whole physical objects and stimuli, but also for the presence or absence of cognitive variables such as memory traces. For instance, in recognition memory, subjects typically show poor metacognitive sensitivity for judgments about the absence of memories [such as when judging that they haven't seen a study item before; @higham2009investigating]. Unlike the absence of a visual stimulus, the absence of a memory is not localized in space and does not correspond with a specific representation of 'nothing'. 
 
-One way of conceptualizing these findings is that absence asymmetries emerge as a function of default reasoning – absences are considered the “default”, and information about perceptual or mnemonic presence is accumulated and tested against this default. For instance, an asymmetry may emerge in recognition memory because the presence of memories is actively represented, and the absence of memories is assumed as the default unless evidence is available for the contrary. In the same way, other visual features that are not typically treated as presences or absences may still be coded relative to a default – assuming one state unless evidence is available for the contrary (e.g., assuming that a cookie is sweet rather than salty). However, whether a metacognitive asymmetry in processing presence and absence generalizes to these more abstract violations of default expectations remains unknown. Here we set out to map out the structure of absence representations by testing for metacognitive asymmetries in the presence and absence of attributes at different levels of representation – from concrete objects, to visual features, to violations of default expectations.
+One way of conceptualizing these findings is that absence asymmetries emerge as a function of default reasoning - absences are considered the 'default', and information about perceptual or mnemonic presence is accumulated and tested against this default. For instance, an asymmetry may emerge in recognition memory because the presence of memories is actively represented, and the absence of memories is assumed as the default unless evidence is available for the contrary. In the same way, other visual features that are not typically treated as presences or absences may still be coded relative to a default, assuming one state unless evidence is available for the contrary (e.g., assuming that a cookie is sweet rather than salty). However, whether a metacognitive asymmetry in processing presence and absence generalizes to these more abstract violations of default expectations remains unknown. Here we set out to map out the structure of absence representations by testing for metacognitive asymmetries in the presence and absence of attributes at different levels of representation - from concrete objects, to visual features, to violations of default expectations.
 
-Our choice of stimuli draws inspiration from visual search – a field where asymmetries are observed for a variety of stimulus types and features. In visual search, participants typically take longer to search for a target that is marked by the absence of a distinguishing feature, as compared to searching for a target that is marked by the presence of a feature relative to distractors [@treisman1985search; @treisman1988feature]. Interestingly, *search asymmetries* have been demonstrated not only for the absence or presence of concrete physical features, but also for the presence or absence of deviations from a more abstract default state, which can be based on experience, culture, and contextual expectations [see methods; @von1994visual; @frith1974acurious; @wang1994familiarity; @gandolfo2020asymmetric]. Of special interest for our study are these latter symmetries due to expectation violations, and their relation with asymmetries induced by the presence or absence of local and global features. Observing a metacognitive asymmetry for expectation violations as well as for the presence and absence of objects features would support a strong link between the representation of absence and default reasoning, where differences in metacognitive sensitivity reflect differences in the processing of information that agrees or contrasts with the expected default state.
+Our choice of stimuli draws inspiration from visual search - a field where asymmetries are observed for a variety of stimulus types and features. In visual search, participants typically take longer to search for a target that is marked by the absence of a distinguishing feature, as compared to searching for a target that is marked by the presence of a feature relative to distractors [@treisman1985search; @treisman1988feature]. Interestingly, *search asymmetries* have been demonstrated not only for the absence or presence of concrete physical features, but also for the presence or absence of deviations from a more abstract default state, which can be based on experience, culture, and contextual expectations [see methods; @von1994visual; @frith1974acurious; @wang1994familiarity; @gandolfo2020asymmetric]. Of special interest for our study are these latter symmetries due to expectation violations, and their relation with asymmetries induced by the presence or absence of local and global features. Observing a metacognitive asymmetry for expectation violations as well as for the presence and absence of objects features would support a strong link between the representation of absence and default reasoning, where differences in metacognitive sensitivity reflect differences in the processing of information that agrees or contrasts with the expected default state.
 
 ```{r asymmetry, echo=FALSE, fig.cap="In visual detection, subjective confidence ratings following judgments about target absence are typically lower, and less correlated with objective accuracy than following judgments about target presence. Top panel: a typical detection experiment. The participant reports whether a visual grating was present or absent, and then rates their subjective decision confidence. Bottom left: typically, mean confidence in 'yes' responses (blue) is higher than in 'no' responses (red). This effect is much more pronounced in correct trials. Bottom right: the interaction between accuracy and response type on confidence (metacognitive asymmetry) manifests as a lower area under the response-conditional ROC curve for 'no' responses compared with 'yes' responses. Plots do not directly correspond to a specific dataset, but portray typical results in visual detection.", out.width = '60%'}
 knitr::include_graphics("figures/asymmetry.png")
@@ -86,7 +86,7 @@ While traditional accounts interpreted visual search asymmetries as reflecting a
 
 # Methods
 
-We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study. <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) -->
+We report how we determined our sample size, all data exclusions (if any), all manipulations, and all measures in the study. <!-- 21-word solution (Simmons, Nelson & Simonsohn, 2012; retrieved from http://ssrn.com/abstract=2160588) --> The full registered protocol is available at osf.io/ed8n7.
 
 We ran six experiments, that were identical except for the identity of the two stimuli $S_1$ and $S_2$ (and of the stimulus used for backward masking; see section \@ref(deviations) for details). Our choice of stimuli for this study was based on the visual search literature. For some stimulus pairs $S_1$ and $S_2$, searching for one $S_1$ among multiple $S_2$s is more efficient than searching for one $S_2$ among multiple $S_1$s. Such *search asymmetries* have been reported for stimulus pairs that are identical except for the presence and absence of a distinguishing feature. Importantly, distinguishing features vary in their level of abstraction, from concrete *local features* [finding a Q among Os is easier than the inverse search; @treisman1985search], through *global features* [finding a curved line among straight lines is easier than the inverse search; @treisman1988feature], and up to the presence or absence of abstract *expectation violations* [searching for an upward-tilted cube among downward-tilted cubes is easier than the inverse search, in line with a general expectation to see objects on the ground rather than floating in space; @von1994visual]. We treat these three types of asymmetries as reflecting a default-reasoning mode of representation, where the absence of features and/or the adherence of objects to prior expectations is tentatively accepted as a default by the visual system, unless evidence is available for the contrary [@treisman1985search; @treisman1988feature]. In this study, we test for metacognitive asymmetries for two stimulus features in each category, in six separate experiments with different participants (Fig. \@ref(fig:trialstructure)). For each of the following stimulus pairs, searching for $S_1$ among multiple instances of $S_2$ has been found to be more efficient than the inverse search:
 
@@ -101,7 +101,7 @@ The experiments quantified participants' metacognitive sensitivity for discrimin
 
 ## Participants
 
-The research complied with all relevant ethical regulations, and was approved by the Research Ethics Committee of University College London (study ID number 1260/003). Participants were recruited via Prolific, and gave informed consent prior to their participation. They were selected based on their acceptance rate (>95%) and for being native English speakers. For each of the six experiments, we aimed to collected data until we reached 106 included participants (after applying our pre-registered exclusion criteria). The entire experiment took 10-15 minutes to complete. Participants were paid between £1.25 to £2 for their participation, maintaining a median hourly wage of £7 or higher.
+The research complied with all relevant ethical regulations, and was approved by the Research Ethics Committee of University College London (study ID number 1260/003). Participants were recruited via Prolific, and gave informed consent prior to their participation. They were selected based on their acceptance rate (>95%) and for being native English speakers. For each of the six experiments, we aimed to collected data until we reached 106 included participants (after applying our pre-registered exclusion criteria). The entire experiment took 10-15 minutes to complete. Participants were paid between \£1.25 to \£2 for their participation, maintaining a median hourly wage of \£6 or higher.
 
 
 ## Procedure
@@ -110,9 +110,9 @@ Experiments were programmed using the jsPsych and P5 JavaScript packages [@de201
 
 After instructions, a practice phase, and a multiple-choice comprehension check, the main part of the experiment started. It comprised 96 trials separated into 6 blocks. Only the last 5 blocks were analyzed. 
 
-On each trial, participants made discrimination judgments on masked stimuli, and rated their subjective decision confidence on a continuous scale. After a fixation cross (500 ms), the target stimulus ($S_1$ or $S_2$) was presented in the center of the screen for 50 ms, followed by a mask (100 ms). Stimulus onset asynchrony was calibrated online in a 1-up-2-down procedure [@levitt1971transformed], with a multiplicative step factor of 0.9, and starting at 30 milliseconds. Participants then used their keyboard to make a discrimination judgment. Stimulus-key mapping was counterbalanced between participants. Following response, subjective confidence ratings were given on an analog scale by controlling the size of a colored circle with the computer mouse. High confidence was mapped to a big, blue circle, and low confidence to a small, red circle. We chose a continuous (rather than a more typical discrete) confidence scale in order to ensure sufficient variation in confidence ratings within the dynamic range of individual participants. This variation is useful for the extraction of response conditional ROC curves. The confidence rating phase terminated once participants clicked their mouse, but not before 2000 ms. No trial-specific feedback was delivered about accuracy. In order to keep participants motivated and engaged, block-wise feedback was delivered between experimental blocks about overall accuracy, mean confidence in correct responses, and mean confidence in incorrect responses.
+On each trial, participants made discrimination judgments on masked stimuli, and rated their subjective decision confidence on a continuous scale. After a fixation cross (500 ms), the target stimulus ($S_1$ or $S_2$) was presented in the center of the screen for 50 ms, followed by a mask (100 ms). Stimulus onset asynchrony was calibrated online in a 1-up-2-down procedure [@levitt1971transformed], with a multiplicative step factor of 0.9, and starting at 30 milliseconds. Participants then used their keyboard to make a discrimination judgment. Stimulus-key mapping was counterbalanced between participants. Following response, subjective confidence ratings were given on an analog scale by controlling the size of a colored circle with the computer mouse. High confidence was mapped to a big, blue circle, and low confidence to a small, red circle. We chose a continuous (rather than a more typical discrete) confidence scale in order to ensure sufficient variation in confidence ratings within the dynamic range of individual participants. This variation is useful for the extraction of response conditional ROC curves. The confidence rating phase terminated once participants clicked their mouse, but not before 2000 ms. No trial-specific feedback was delivered about accuracy. In order to keep participants motivated and engaged, block-wise feedback was delivered between experimental blocks about overall accuracy, mean confidence in correct responses, and mean confidence in incorrect responses. Online demos the experiments can be accessed at matanmazor.github.io/asymmetry.
 
-```{r trialstructure, echo=FALSE, fig.cap= "Experiment design. Metacognitive asymmetry effects were tested for six stimulus features in six separate experiments, ecompassing three levels of abstraction: local features, global features, and expectation violations. The presented trial corresponds to the first stimulus pair, were *Q* and *O* are used as stimuli.", out.width = '100%'}
+```{r trialstructure, echo=FALSE, fig.cap= "Experiment design. Metacognitive asymmetry effects were tested for six stimulus features in six separate experiments, encompassing three levels of abstraction: local features, global features, and expectation violations. The presented trial corresponds to the first stimulus pair, with *Q* and *O* as the two stimuli.", out.width = '100%'}
 knitr::include_graphics("figures/trial_structure_noVS.png")
 ```
 
@@ -180,7 +180,7 @@ Finally, in case that the true effect size equals 0, a Bayes Factor with our cho
 
 ### Rejection criteria
 
-Participants were excluded for performing below 60% accuracy, for having extremely fast or slow reaction times (below 250 milliseconds or above 5 seconds in more than 25% of the trials), and for failing the comprehension check. Finally, for type-2 ROC curves to be generated, some responses must be incorrect. and for them to be inforating some variability in confidence ratings is necessary. Thus, participants who committed less than two of each error type (for example, mistaking a *Q* of *O* and mistaking an *O* for *Q*), or that reported less than two different confidence levels for each of the two responses were excluded from all analyses. 
+Participants were excluded for performing below 60% accuracy, for having extremely fast or slow reaction times (below 250 milliseconds or above 5 seconds in more than 25% of the trials), and for failing the comprehension check. Finally, for type-2 ROC curves to be generated, some responses must be incorrect, and for them to be informative some variability in confidence ratings is necessary. Thus, participants who committed less than two of each error type (for example, mistaking a *Q* of *O* and mistaking an *O* for *Q*), or who reported less than two different confidence levels for each of the two responses were excluded from all analyses. 
 
 Trials with response time below 250 milliseconds or above 5 seconds were excluded.
 
@@ -195,13 +195,12 @@ All analysis code is openly shared on the study's GitHub repository: https://git
 
 ## Deviations from pre-registration {#deviations}
 
-We aimed to follow our pre-specified methods as close as possible. The following is an exhaustive list of deviations from our pre-registered plan.
 
-- *Stimulus used for backward masking*: We planned to use the same stimulus (the letter *Z*) for backward masking in all six experiments. This mask was effective in Experiments 1 and 2, but in Experiment 3 overly high accuracy levels indicated that for these stimuli the mask was not salient enough.  For a subset of participants in Exp. 3, an overlay of all 10 stimuli from all 6 experiments (*Q*, *O*, *C*, vertical, tilted, and curved lines, upward-tilted and downward-tilted cubes, and normal and flipped Ns) was used. For the remaining participants and experiments, we used four dollar signs as our mask.
+- *Stimulus used for backward masking*: We planned to use the same stimulus (the letter *Z*) for backward masking in all six experiments. This mask was effective in Experiments 1 and 2, but in Experiment 3 overly high accuracy levels indicated that for these stimuli the mask was not salient enough.  For a subset of participants in Exp. 3, an overlay of all 7 stimuli from experiments 3-6 (vertical, tilted, and curved lines, upward-tilted and downward-tilted cubes, and normal and flipped Ns) was used. For the remaining participants and experiments, we used four dollar signs as our mask. See Fig. \@ref(fig:trialstructure) for depictions of the three masks.
 
 - *Rejection criteria*: In our pre-registration we explain that informative response-conditional ROC curves can only be generated if participants make errors. When analyzing the data we came to realize that an additional prerequisite for response-conditional ROC curves to be informative is that the variance in confidence ratings is higher than zero, otherwise the curve is diagonal. We therefore required that participants report at least two different confidence levels for each response. Participants that did not meet this additional criterion were excluded from all analyses. 
 
-- *Monetary compensation*: For some of the experiments, we noticed that that participants completed the experiment more quickly than what we had originally estimated. We therefore reduced our offered payment for some of the experiments, while maintaining a median hourly wage of £7 or higher.
+- *Monetary compensation*: For some of the experiments, we noticed that participants completed the experiment more quickly than what we had originally estimated. We therefore reduced our offered payment for some of the experiments, while maintaining a median hourly wage of \£6 or higher.
 
 # Results
 
@@ -209,8 +208,7 @@ A summary of the results from all six experiments is available in section \@ref(
 
 ## Experiment 1: *Q* vs. *O*
 
-In Experiment 1, we examined discrimination judgments between the two letters *Q* and *O*. Based on a search asymmetry for these letters [*Q*s are found faster than *O*s than vice-versa; @treisman1985search], we hypothesized that a similar asymmetry would emerge in subjective confidence judgments, such that metacognitive sensitivity for *Q* responses will be higher than for *O* responses. We used the letter *Z* as our backward mask.
-
+In Experiment 1, we examined discrimination judgments between the two letters *Q* and *O*. Based on a search asymmetry for these letters [*Q*s are found faster than *O*s than vice-versa; @treisman1985search], we hypothesized that a similar asymmetry would emerge in subjective confidence judgments, such that metacognitive sensitivity for *Q* responses will be higher than for *O* responses. We used the letter *Z* as our backward mask. 
 
 
 ```{r load_e1, echo=FALSE, cache=TRUE}
@@ -291,23 +289,25 @@ filterDataFrame <- function(e) {
     filter(!enough_errors)%>%
     dplyr::select(subj_id) 
 
-  e$no_variance <- disc_df_half_filtered %>%
+  excluded2 <- e$not_enough_errors%>%pull()
+  
+  e$included <- setdiff(setdiff(e$all_subjects,excluded),excluded2)
+
+  disc_df_almost_filtered <- disc_df_half_filtered %>%
+    filter(subj_id %in% e$included);
+  
+  e$no_variance <- disc_df_almost_filtered %>%
     group_by(subj_id, response) %>%
     summarise(varconf=var(confidence))%>%
     group_by(subj_id)%>%
     summarise(no_var=min(varconf)==0)%>%
     filter(no_var)%>%
     dplyr::select(subj_id)
-
-
-  excluded2 <- union(e$no_variance,e$not_enough_errors)%>%pull()
   
-  e$included <- setdiff(setdiff(e$all_subjects,excluded),excluded2)
-
-  e$disc_df <- disc_df_half_filtered %>%
-    filter(subj_id %in% e$included)
+  e$disc_df <- disc_df_almost_filtered %>%
+    filter(!subj_id %in% e$no_variance$subj_id);
   
-  e$N <- e$included%>%length()
+  e$N <- e$disc_df$subj_id%>%unique()%>%length()
 
   return(e)
 }
@@ -319,7 +319,7 @@ this.expt <- e1;
 ```
 `r this.expt$N_total` participants were recruited from Prolific for Experiment 1.
 
-Median completion time was `r printnum(this.expt$median_completion_time)` minutes. Mean accuracy was `r printnum(this.expt$disc_df_unfiltered$correct%>%mean())`. Participants reported seeing an *O* on `r printnum(this.expt$disc_df_unfiltered$response%>%as.numeric()%>%mean()-1)` of the trials. Overall we excluded `r this.expt$N_total-this.expt$N` participants based on our exclusion criteria, leaving `r this.expt$N` participants for the main analysis. Due to a technical error in data collection, this figure is higher than that specified in our preregistration document (N=106). Going forward, only data from included participants is analyzed.
+Median completion time was `r printnum(this.expt$median_completion_time)` minutes. Mean accuracy was `r printnum(this.expt$disc_df_unfiltered$correct%>%mean())`. Participants reported seeing an *O* on `r printnum(this.expt$disc_df_unfiltered$response%>%as.numeric()%>%mean()-1)` of the trials. In a deviation from our pre-registration, we excluded `r this.expt$no_variance$subj_id%>%length()` participants for having zero variance in their confidence ratings for at least one of the two responses (see Section \@ref(deviations)). Overall we excluded `r this.expt$N_total-this.expt$N` participants based on our exclusion criteria, leaving `r this.expt$N` participants for the main analysis. Due to a technical error in data collection, this figure is higher than that specified in our preregistration document (N=106). Going forward, only data from included participants is analyzed.
 
 ```{r analyze_e1, echo=FALSE, cache=TRUE}
 
@@ -334,6 +334,7 @@ generalStats <- function(e) {
       hit_rate = sum(correct==1 & which_stimulus==1)/sum(which_stimulus==1),
       false_alarm_rate=sum(correct==0 & which_stimulus==2)/sum(which_stimulus==2),
       dprime=qnorm(hit_rate)-qnorm(false_alarm_rate),
+      criterion=-0.5*(qnorm(hit_rate)+qnorm(false_alarm_rate)),
       conf=mean(confidence),
       RT=mean(RT),
       SOA=mean(measured_SOA, na.rm=TRUE),
@@ -660,26 +661,50 @@ e$rcROC <- ggplot(data=e$conf_discrete_counts_group%>%mutate(response=ifelse(res
               filter(as.integer(subj_id)<20) %>%
               mutate(response=ifelse(response==1,labels[1],labels[2]) %>%
                        factor(levels=labels)),
-            aes(x=cs_incorrect,y=cs_correct, group=interaction(subj_id,response), color=response),alpha=0.2)
+            aes(x=cs_incorrect,y=cs_correct, group=interaction(subj_id,response), color=response),alpha=0.2)+
+  theme(legend.position='none')
 
 e$AUClong <- e$AUC %>%
   gather('response','rcAUC',2:3) %>%
   mutate(response=ifelse(response=='response1',labels[1],labels[2])%>%factor(levels=labels))
 
-e$AUCplot <-ggplot(e$AUClong, aes(x=response,y=rcAUC, color=response)) + 
-  geom_violin() +
-  geom_line(data=e$AUClong,aes(x=response, y=rcAUC,group=subj_id), color='black',alpha=0.2) +
-  geom_point(aes(x=response,y=rcAUC, color=response), size=2, fill="white", alpha=0.5, show.legend = FALSE) +  scale_color_manual(values=detection_colors)+
-  scale_fill_manual(values=detection_colors)+
-  theme_classic()+
-  theme(
-    legend.position='none',
-    plot.margin=unit(c(0, 25, 0, 25),'pt'),
-    axis.title.y=element_blank(),
-    axis.ticks.y=element_blank(),
-    axis.line.y = element_blank(),
-    axis.text.y=element_blank())+
-  coord_flip();
+e$AUCplot <- ggplot(e$AUClong,aes(x=response,y=rcAUC,group=response,fill=response,color=response)) +
+        geom_boxplot(size=1,fill='white',outlier.alpha=0)+
+        geom_jitter(alpha=0.3,size=2, width=0.2) +
+        geom_path(data=e$AUClong%>%group_by(response)%>%summarise(rcAUC=median(rcAUC)),
+                  aes(x=response,y=rcAUC,group=1),
+                  color='black',size=0.7)+
+        scale_color_manual(values=detection_colors) +
+        scale_color_manual(values=detection_colors) + 
+        scale_y_continuous(limits=c(0,1),breaks=c(0,0.2,0.4,0.6,0.8,1))+
+        scale_x_discrete(limits = rev)+
+        theme_classic() +
+        coord_flip() +
+        labs(x='rcAUC')+
+        theme(axis.title.y=element_blank(),
+              axis.text.y=element_blank(),
+              axis.ticks.y=element_blank(),
+              axis.line.y=element_blank(),
+              legend.position='none')
+  
+  
+  
+  # ggplot(e$AUClong, aes(x=response,y=rcAUC, color=response)) + 
+  # geom_flat_violin() +
+  # # geom_line(data=e$AUClong,aes(x=response, y=rcAUC,group=subj_id), color='black',alpha=0.2) +
+  # # geom_point(aes(x=response,y=rcAUC, color=response), size=1, fill="white", alpha=0.2, show.legend = FALSE) +  
+  # scale_color_manual(values=detection_colors)+
+  # scale_fill_manual(values=detection_colors)+
+  # theme_classic()+
+  # # scale_x_continuous(limits = c(0, 1))+
+  # theme(
+  #   legend.position='none',
+  #   plot.margin=unit(c(0, 25, 0, 25),'pt'),
+  #   axis.title.y=element_blank(),
+  #   axis.ticks.y=element_blank(),
+  #   axis.line.y = element_blank(),
+  #   axis.text.y=element_blank())+
+  # coord_flip();
 
 full_plot <- grid.arrange(e$rcROC,e$AUCplot+theme(plot.margin=unit(c(0, 130, 0, 110),'pt')),heights=c(1,0.3));
 
@@ -692,11 +717,16 @@ return(e)
 e1 <- plotROC(e1, c('Q','O'), 'figures/exp1.png')
 
 ```
-```{r all-distributions, echo=FALSE, fig.cap= "Reaction time and confidence distributions for Experiments 1-6. Box edges and central lines represent the 25, 50 and 75 quantiles. Whiskers cover data points within four inter-quartile ranges around the median. Black lines connect the median values for the two responses. Stars reprsent significance in a two-sided t-test: **: p<0.01, ***: p<0.001", out.width = '100%'}
+
+(ref:hists-cap) Reaction time and confidence distributions for Experiments 1-6. Box edges and central lines represent the 25, 50 and 75 quantiles. Whiskers cover data points within four inter-quartile ranges around the median. Black lines connect the median values for the two responses. Stars represent significance in a two-sided t-test: \*\*: p<0.01, \*\*\*: p<0.001
+
+```{r all-distributions, echo=FALSE, fig.cap= "(ref:hists-cap)", out.width = '100%'}
 knitr::include_graphics("figures/hists.png")
 ```
 
-```{r all-rcROCs, echo=FALSE, fig.cap= "Response conditional ROC curves for Experiments 1-6. The area under the curve is a measure of metacognitive sensitivity. Error bars stand for the standard error of the mean. For illustration, the response-conditional ROC curves of the first 20 participants of each Experiment are plotted in low opacity. Below each ROC: distributions of the area under the curve for the two responses, across participants. Each line corresponds to a participant. Stars reprsent significance in a two-sided t-test: *: p<0.05, **: p<0.01, ***: p<0.001", out.width = '100%'}
+(ref:ROC-cap) Response conditional ROC curves for Experiments 1-6. The area under the curve is a measure of metacognitive sensitivity. Error bars stand for the standard error of the mean. For illustration, the response-conditional ROC curves of the first 20 participants of each Experiment are plotted in low opacity. Below each ROC: distributions of the area under the curve for the two responses, across participants. Same conventions as Fig. \@ref(fig:all-distributions). Stars represent significance in a two-sided t-test: \*: p<0.05, \*\*: p<0.01, \*\*\*: p<0.001
+
+```{r all-rcROCs, echo=FALSE, fig.cap= "(ref:ROC-cap)", out.width = '100%'}
 knitr::include_graphics("figures/rcROCs.png")
 ```
 
@@ -732,7 +762,7 @@ this.expt <- e2;
 
 `r this.expt$N_total` participants were recruited from Prolific for Experiment 2.
 
-Median completion time was `r printnum(this.expt$median_completion_time)` minutes. Mean accuracy was `r printnum(this.expt$disc_df_unfiltered$correct%>%mean())`, and participants reported seeing an *O* on `r printnum(this.expt$disc_df_unfiltered$response%>%as.numeric()%>%mean()-1)` of the trials. Overall we excluded `r this.expt$N_total-this.expt$N` participants, leaving `r this.expt$N` participants for the main analysis. Going forward, only data from included participants is analyzed.
+Median completion time was `r printnum(this.expt$median_completion_time)` minutes. Mean accuracy was `r printnum(this.expt$disc_df_unfiltered$correct%>%mean())`, and participants reported seeing an *O* on `r printnum(this.expt$disc_df_unfiltered$response%>%as.numeric()%>%mean()-1)` of the trials. In a deviation from our pre-registration, we excluded `r this.expt$no_variance$subj_id%>%length()` participants for having zero variance in their confidence ratings for at least one of the two responses (see Section \@ref(deviations)). Overall we excluded `r this.expt$N_total-this.expt$N` participants, leaving `r this.expt$N` participants for the main analysis. Going forward, only data from included participants is analyzed.
 
 Mean accuracy among included participants was `r apa_print(this.expt$disc_subj_stats$acc%>%t.test())$estimate`. The mean SOA of the last trial was `r apa_print(t.test(this.expt$final_trial$measured_SOA))$estimate`. Participants showed a consistent bias toward reporting a *C* rather than an *O* (`r apa_print(this.expt$disc_subj_stats$bias%>%t.test())$estimate`). On a scale of 0 to 1, mean confidence level was `r apa_print(this.expt$disc_subj_stats$conf%>%t.test())$estimate`. Confidence was higher for correct than for incorrect responses (`r apa_print(this.expt$conf_by_acc)$full_result`). 
 
@@ -740,7 +770,7 @@ Mean accuracy among included participants was `r apa_print(this.expt$disc_subj_s
 
 *Hypothesis 2*: Opposite to our prediction, auROC for *C* responses (`r apa_print(t.test(this.expt$AUC$response1))$estimate`) was *lower* than for *O* responses (`r apa_print(t.test(this.expt$AUC$response2))$estimate`; `r apa_print(this.expt$H2$t.test)$statistic`; Cohen's d = `r printnum(this.expt$H2$d)`; see Figure \@ref(fig:all-rcROCs), panel 2.). Bayes Factor strongly supported the alternative (`r apa_print(this.expt$H2$BF)$statistic`). Note that our prior on effect sizes was symmetric around zero, such that support for the alternative is obtained for negative, as well as positive effects. 
 
-*Hypothesis 3*: Metacognitive sensitivity for *C* responses was still significantly higher than for *O* responses after controlling for bias (Cohen's d=`r printnum(this.expt$H3$d)`; `r apa_print(this.expt$H3$BF)$statistic`).
+*Hypothesis 3*: Metacognitive sensitivity for *C* responses was still higher than for *O* responses after controlling for bias (Cohen's d=`r printnum(this.expt$H3$d)`; `r apa_print(this.expt$H3$BF)$statistic`).
 
 *Hypothesis 4*: Contrary to our hypothesis, response times for *C* and for *O* responses were highly similar, with a median difference of `r e2$H4$raw_es%>%abs()%>%round()` ms. (`r apa_print(this.expt$H4$t.test)$statistic` ; Cohen's d = `r printnum(this.expt$H4$d)`; `r apa_print(this.expt$H4$BF)$statistic`; see Figure \@ref(fig:all-rcROCs), panel 2).
 
@@ -748,7 +778,7 @@ In summary, in Experiment 2 we found a dissociation between our two confidence-r
 
 ## Experiment 3: tilted vs. vertical lines
 
-In Experiment 3, we examind discrimination judgments between tilted and vertical lines. Based on a search asymmetry for these stimuli [tilted lines are found faster among vertical lines than vice versa; @treisman1988feature], we hypothesized that a similar asymmetry would emerge in subjective confidence judgments, such that metacognitive sensitivity for perceiving a tilted line will be higher than for perceiving a vertical line. As described in section \@ref(deviations), overly high accuracy in the first few participants led us to change our masking stimulus, first to an overlay of all stimuli and then to four dollar signs. We present here the combined results from these last two cohorts of participants. The results were qualitatively similar in the two cohorts. 
+In Experiment 3, we examind discrimination judgments between tilted and vertical lines. Based on a search asymmetry for these stimuli [tilted lines are found faster among vertical lines than vice versa; @treisman1988feature], we hypothesized that a similar asymmetry would emerge in subjective confidence judgments, such that metacognitive sensitivity for perceiving a tilted line will be higher than for perceiving a vertical line. As described in section \@ref(deviations), overly high accuracy in the first few participants led us to change our masking stimulus, first to an overlay of all stimuli and then to four dollar signs. We present here the combined results from these last two cohorts of participants (94 and 210 participants, respectively). The results were qualitatively similar in the two cohorts. 
 
 ```{r e3, echo=FALSE, fig.show='hide', cache=TRUE}
 
@@ -775,21 +805,36 @@ this.expt <- e3;
 
 ```
 
-`r this.expt$N_total` participants were recruited from Prolific for Experiment 3. 
+```{r RobustnessRegionFunction, echo=FALSE, fig.show='hide', cache=TRUE}
 
-Median completion time was `r printnum(this.expt$median_completion_time)` minutes. Mean accuracy was `r printnum(this.expt$disc_df_unfiltered$correct%>%mean())`, and participants reported seeing a vertical line on `r printnum(this.expt$disc_df_unfiltered$response%>%as.numeric()%>%mean()-1)` of the trials. Overall we excluded `r this.expt$N_total-this.expt$N` participants, leaving `r this.expt$N` participants for the main analysis. Going forward, only data from included participants is analyzed. 
+getRobustnessRegion <- function(x,scale) {
+  
+  BF = c();
+  for (s in scale) {
+    BF = c(BF, ttestBF(x,rscale=s)%>%as.vector())
+  }
+  df <- tibble(rscale=scale,BF=BF);
+};
+
+# e3$H2$RR<-getRobustnessRegion(e3$AUC$response1-e3$AUC$response2,seq(0.001,2,0.001))
+
+```
+
+`r this.expt$N_total` participants were recruited from Prolific for Experiment 3. Due to shorter than expected completion times in the first 94 participants, the remaining participants were paid \£1.25, equivalent to an hourly wage of \£6.
+
+Median completion time was `r printnum(this.expt$median_completion_time)` minutes. Mean accuracy was `r printnum(this.expt$disc_df_unfiltered$correct%>%mean())`, and participants reported seeing a vertical line on `r printnum(this.expt$disc_df_unfiltered$response%>%as.numeric()%>%mean()-1)` of the trials. In a deviation from our pre-registration, we excluded `r this.expt$no_variance$subj_id%>%length()` participants for having zero variance in their confidence ratings for at least one of the two responses (see Section \@ref(deviations)). Overall we excluded `r this.expt$N_total-this.expt$N` participants, leaving `r this.expt$N` participants for the main analysis. Going forward, only data from included participants is analyzed. 
 
 Mean accuracy among included participants was `r apa_print(this.expt$disc_subj_stats$acc%>%t.test())$estimate`. The mean SOA of the last trial was `r apa_print(t.test(this.expt$final_trial$measured_SOA))$estimate`. Participants showed a consistent bias toward reporting a tilted rather than a vertical line (`r apa_print(this.expt$disc_subj_stats$bias%>%t.test())$estimate`). On a scale of 0 to 1, mean confidence level was `r apa_print(this.expt$disc_subj_stats$conf%>%t.test())$estimate`. Confidence was higher for correct than for incorrect responses (`r apa_print(this.expt$conf_by_acc)$full_result`). 
 
 *Hypothesis 1*: In line with our hypothesis, confidence was generally higher for tilted lines (feature present) responses than for vertical lines (feature absent) responses (`r apa_print(this.expt$H1$t.test)$full_result`; Cohen's d = `r printnum(this.expt$H1$d)`; `r apa_print(this.expt$H1$BF)$statistic`; see Figure \@ref(fig:all-rcROCs), panel 3).
 
-*Hypothesis 2*: Contrary to our prediction, auROC for reports of seeing a tilted line (`r apa_print(t.test(this.expt$AUC$response1))$estimate`) was similar to auROC for reports of seeing a vertical line according to Bayes Factor analysis (`r apa_print(t.test(this.expt$AUC$response2))$estimate`; Cohen's d = `r printnum(this.expt$H2$d)`; `r apa_print(this.expt$H2$BF)$statistic`; see Figure \@ref(fig:all-rcROCs), panel 3.). This difference in metacognitive sensitivity was however significant in a standard t-test (`r apa_print(this.expt$H2$t.test)$statistic`).
+*Hypothesis 2*: Contrary to our prediction, Bayes Factor analysis did not provide evidence for or against a difference in auROC between reports of seeing a tilted line (`r apa_print(t.test(this.expt$AUC$response1))$estimate`) and reports of seeing a vertical line (`r apa_print(t.test(this.expt$AUC$response2))$estimate`; Cohen's d = `r printnum(this.expt$H2$d)`; `r apa_print(this.expt$H2$BF)$statistic`; see Figure \@ref(fig:all-rcROCs), panel 3.). A difference in metacognitive sensitivity was however significant in a standard t-test (`r apa_print(this.expt$H2$t.test)$statistic`). With a sample size of 106, a one-tailed t-test is significant for observed effect sizes of `r printnum(qt(0.95,105)/sqrt(106))` standard deviations or higher. In contrast, for our choice of a scale factor, a Bayes Factor is higher than 3 for observed standardized effect sizes of $0.26$ standard deviations or higher. Effect sizes that fall between `r printnum(qt(0.95,105)/sqrt(106))` and $0.26$ are then significant in a t-test, with no conclusive evidence in a Bayes Factor analysis. A robustness region analysis revealed that no scale factor would have led to the conclusion that auROCs for the two responses are different with $BF_{10}>3$. See Supplementary Figure \@ref(fig:RR) for a full Robustness Region plot [@dienes2019know].
 
-*Hypothesis 3*: (The lack of) metacognitive asymmetry was not different from what would be expected based on an equal-variance SDT model with the same response bias and sensitivity (`r apa_print(this.expt$H3$t.test)$statistic`; Cohen's d=`r printnum(this.expt$H3$d)`; `r apa_print(this.expt$H3$BF)$statistic`). 
+*Hypothesis 3*: A Bayes Factor analysis did not provide evidence for or against metacognitive asymmetry when controlling for response bias and sensitivity (`r apa_print(this.expt$H3$t.test)$statistic`; Cohen's d=`r printnum(this.expt$H3$d)`; `r apa_print(this.expt$H3$BF)$statistic`). 
 
-*Hypothesis 4*: In line with our hypothesis, response times for 'tilted' responses were significantly faster than response times for 'vertical' responses, with a median difference of `r e3$H4$raw_es%>%abs()%>%round()` ms. (`r apa_print(this.expt$H4$t.test)$statistic` ; Cohen's d = `r printnum(this.expt$H4$d)`; `r apa_print(this.expt$H4$BF)$statistic`; see Figure \@ref(fig:all-rcROCs), panel 3).
+*Hypothesis 4*: In line with our hypothesis, response times for 'tilted' responses were faster than response times for 'vertical' responses, with a median difference of `r e3$H4$raw_es%>%abs()%>%round()` ms. (`r apa_print(this.expt$H4$t.test)$statistic` ; Cohen's d = `r printnum(this.expt$H4$d)`; `r apa_print(this.expt$H4$BF)$statistic`; see Figure \@ref(fig:all-rcROCs), panel 3).
 
-In summary, in Experiment 3 we found that 'tilted' (feature present) responses were faster and accompanied by higher subjective confidence that 'vertical' (feature absent) responses, in the absence of a difference in metacognitive sensitivity between the two responses. 
+In summary, in Experiment 3 we found that 'tilted' (feature present) responses were faster and accompanied by higher subjective confidence that 'vertical' (feature absent) responses, with no difference in metacognitive sensitivity between the two responses. 
 
 ## Experiment 4: curved vs. straight lines
 
@@ -819,9 +864,9 @@ this.expt <- e4;
 
 ```
 
-`r this.expt$N_total` participants were recruited from Prolific for Experiment 4. 
+`r this.expt$N_total` participants were recruited from Prolific for Experiment 4. Due to shorter than expected completion times in previous experiments, participants were paid \£1.25, equivalent to an hourly wage of \£6. 
 
-Median completion time was `r printnum(this.expt$median_completion_time)` minutes. Mean accuracy was `r printnum(this.expt$disc_df_unfiltered$correct%>%mean())`, and participants reported seeing a straight line on `r printnum(this.expt$disc_df_unfiltered$response%>%as.numeric()%>%mean()-1)` of the trials. Overall we excluded `r this.expt$N_total-this.expt$N` participants, leaving `r this.expt$N` participants for the main analysis. Going forward, only data from included participants is analyzed. 
+Median completion time was `r printnum(this.expt$median_completion_time)` minutes. Mean accuracy was `r printnum(this.expt$disc_df_unfiltered$correct%>%mean())`, and participants reported seeing a straight line on `r printnum(this.expt$disc_df_unfiltered$response%>%as.numeric()%>%mean()-1)` of the trials. In a deviation from our pre-registration, we excluded `r this.expt$no_variance$subj_id%>%length()` participants for having zero variance in their confidence ratings for at least one of the two responses (see Section \@ref(deviations)). Overall we excluded `r this.expt$N_total-this.expt$N` participants, leaving `r this.expt$N` participants for the main analysis. Going forward, only data from included participants is analyzed. 
 
 Mean accuracy among included participants was `r apa_print(this.expt$disc_subj_stats$acc%>%t.test())$estimate`. The mean SOA of the last trial was `r apa_print(t.test(this.expt$final_trial$measured_SOA))$estimate`. Participants showed a consistent bias toward reporting a curved rather than a vertical line (`r apa_print(this.expt$disc_subj_stats$bias%>%t.test())$estimate`). On a scale of 0 to 1, mean confidence level was `r apa_print(this.expt$disc_subj_stats$conf%>%t.test())$estimate`. Confidence was higher for correct than for incorrect responses (`r apa_print(this.expt$conf_by_acc)$full_result`). 
 
@@ -831,10 +876,10 @@ Mean accuracy among included participants was `r apa_print(this.expt$disc_subj_s
 
 *Hypothesis 3*: (The lack of) metacognitive asymmetry was not different from what would be expected based on an equal-variance SDT model with the same response bias and sensitivity (`r apa_print(this.expt$H3$t.test)$statistic`; Cohen's d=`r printnum(this.expt$H3$d)`; `r apa_print(this.expt$H3$BF)$statistic`). 
 
-*Hypothesis 4*: In line with our hypothesis, response times for 'curved' responses were significantly faster than response times for 'straight' responses, with a median difference of `r e4$H4$raw_es%>%abs()%>%round()` ms (`r apa_print(this.expt$H4$t.test)$statistic` ; Cohen's d = `r printnum(this.expt$H4$d)`; `r apa_print(this.expt$H4$BF)$statistic`; see Figure \@ref(fig:all-rcROCs), panel 4).
+*Hypothesis 4*: In line with our hypothesis, response times for 'curved' responses were faster than response times for 'straight' responses, with a median difference of `r e4$H4$raw_es%>%abs()%>%round()` ms (`r apa_print(this.expt$H4$t.test)$statistic` ; Cohen's d = `r printnum(this.expt$H4$d)`; `r apa_print(this.expt$H4$BF)$statistic`; see Figure \@ref(fig:all-rcROCs), panel 4).
 
 
-In summary, similar to Experiment 3, 'curved' (feature-present) responses were faster and accompanied by higher subjective confidence than 'straight' (feature absent) responses. However, similar to the results of Experiment 3, here also We did not find a metacognitive asymmetry for these stimuli.
+In summary, similar to Experiment 3, 'curved' (feature-present) responses were faster and accompanied by higher subjective confidence than 'straight' (feature absent) responses. However, similar to the results of Experiment 3, here also we did not find a metacognitive asymmetry for these stimuli.
 
 ## Experiment 5: upward-tilted vs. downward-tilted cubes
 
@@ -858,25 +903,27 @@ e5 <- e5%>%
   testH2() %>%
   testH3() %>%
   testH4() %>%
-  plotROC(c('up','down'),'figures/exp5.png')
+  plotROC(c('up','down'),'figures/exp5.png');
 
 this.expt <- e5;
+
+
 
 ```
 
 `r this.expt$N_total` participants were recruited from Prolific for Experiment 5. 
 
-Median completion time was `r printnum(this.expt$median_completion_time)` minutes. Mean accuracy was `r printnum(this.expt$disc_df_unfiltered$correct%>%mean())`, and participants reported seeing a downward-tilted cube on `r printnum(this.expt$disc_df_unfiltered$response%>%as.numeric()%>%mean()-1)` of the trials. Overall we excluded `r this.expt$N_total-this.expt$N` participants, leaving `r this.expt$N` participants for the main analysis. Going forward, only data from included participants is analyzed. 
+Median completion time was `r printnum(this.expt$median_completion_time)` minutes. Mean accuracy was `r printnum(this.expt$disc_df_unfiltered$correct%>%mean())`, and participants reported seeing a downward-tilted cube on `r printnum(this.expt$disc_df_unfiltered$response%>%as.numeric()%>%mean()-1)` of the trials. In a deviation from our pre-registration, we excluded `r this.expt$no_variance$subj_id%>%length()` participants for having zero variance in their confidence ratings for at least one of the two responses (see Section \@ref(deviations)). Overall we excluded `r this.expt$N_total-this.expt$N` participants, leaving `r this.expt$N` participants for the main analysis. Going forward, only data from included participants is analyzed. 
 
 Mean accuracy among included participants was `r apa_print(this.expt$disc_subj_stats$acc%>%t.test())$estimate`. The mean SOA of the last trial was `r apa_print(t.test(this.expt$final_trial$measured_SOA))$estimate`. Participants showed no consistent response bias (`r apa_print(this.expt$disc_subj_stats$bias%>%t.test())$estimate`). On a scale of 0 to 1, mean confidence level was `r apa_print(this.expt$disc_subj_stats$conf%>%t.test())$estimate`. Confidence was higher for correct than for incorrect responses (`r apa_print(this.expt$conf_by_acc)$full_result`). 
 
 *Hypothesis 1*: Contrary to our hypothesis, confidence was similar for upward-tilted (feature present) responses and downward-tilted (feature absent) responses (`r apa_print(this.expt$H1$t.test)$full_result`; Cohen's d = `r printnum(this.expt$H1$d)`; `r apa_print(this.expt$H1$BF)$statistic`; see Figure \@ref(fig:all-rcROCs), panel 5).
 
-*Hypothesis 2*: Contrary to our hypothesis, auROC for reports of seeing an upward-tilted cube (`r apa_print(t.test(this.expt$AUC$response1))$estimate`) was similar to auROC for reports of seeing a downward-tilted cube (`r apa_print(t.test(this.expt$AUC$response2))$estimate`; Cohen's d = `r printnum(this.expt$H2$d)`; `r apa_print(this.expt$H2$BF)$statistic`; see Figure \@ref(fig:all-rcROCs), panel 5.). In contrast with the Bayes Factor analysis, a t-test revealed a significant metacognitive asymmetry, with higher metacognitive sensitivity for perceiving an upward-tilted (default-violating) cube (`r apa_print(this.expt$H2$t.test)$statistic`).
+*Hypothesis 2*: Contrary to our hypothesis, A Bayes Factor analysis did not provide evidence for or against a difference in auROC for reports of seeing an upward-tilted cube (`r apa_print(t.test(this.expt$AUC$response1))$estimate`) and reports of seeing a downward-tilted cube (`r apa_print(t.test(this.expt$AUC$response2))$estimate`; Cohen's d = `r printnum(this.expt$H2$d)`; `r apa_print(this.expt$H2$BF)$statistic`; see Figure \@ref(fig:all-rcROCs), panel 5.). In contrast, a t-test revealed a significant metacognitive asymmetry, with higher metacognitive sensitivity for perceiving an upward-tilted (default-violating) cube (`r apa_print(this.expt$H2$t.test)$statistic`). See Supplementary Figure \@ref(fig:RR) for a full Robustness Region plot [@dienes2019know].
 
 *Hypothesis 3*: (The lack of) metacognitive asymmetry was not different from what would be expected based on an equal-variance SDT model with the same response bias and sensitivity (Cohen's d=`r printnum(this.expt$H3$d)`; `r apa_print(this.expt$H3$BF)$statistic`). Here also, frequentist and Bayesian analyses conflicted, with a t-test revealing a significant metacogntiive advantage for upward-tilted (default violating) responses when controlling for bias (`r apa_print(this.expt$H3$t.test)$statistic`). 
 
-*Hypothesis 4*: Contrary to our hypothesis, response times for 'upward-tilted' responses were similar to response times for 'downward-tilted' responses with a median difference of `r e5$H4$raw_es%>%abs()%>%round()` (`r apa_print(this.expt$H4$t.test)$statistic` ; Cohen's d = `r printnum(this.expt$H4$d)`; `r apa_print(this.expt$H4$BF)$statistic`; see Figure \@ref(fig:all-rcROCs), panel 5).
+*Hypothesis 4*: Contrary to our hypothesis, response times for 'upward-tilted' responses were similar to response times for 'downward-tilted' responses with a median difference of `r e5$H4$raw_es%>%abs()%>%round()` ms. (`r apa_print(this.expt$H4$t.test)$statistic` ; Cohen's d = `r printnum(this.expt$H4$d)`; `r apa_print(this.expt$H4$BF)$statistic`; see Figure \@ref(fig:all-rcROCs), panel 5).
 
 In summary, in Experiment 5 we found no sign of processing asymmetry between upward and downward-tilted cubes in response-times and confidence. A significant metacognitive asymmetry was observed when using null-hypothesis significance testing, but was not supported by our Bayes Factor analysis. In accordance with our pre-registered plan to commit to the Bayes Factor analysis in interpreting the results, in what follows we interpret these findings as providing no support for a metacognitive asymmetry for upward and downward tilted cubes.
 
@@ -907,9 +954,10 @@ e6 <- e6%>%
 this.expt <- e6;
 
 ```
-`r this.expt$N_total` participants were recruited from Prolific for Experiment 6. 
+`r this.expt$N_total` participants were recruited from Prolific for Experiment 6. Due to shorter than expected completion times in previous experiments, participants were paid \£1.25, equivalent to an hourly wage of \£6. 
 
-Median completion time was `r printnum(this.expt$median_completion_time)` minutes. Mean accuracy was `r printnum(this.expt$disc_df_unfiltered$correct%>%mean())`, and participants reported seeing a normal *N* on `r printnum(this.expt$disc_df_unfiltered$response%>%as.numeric()%>%mean()-1)` of the trials. Overall we excluded `r this.expt$N_total-this.expt$N` participants, leaving `r this.expt$N` participants for the main analysis. Going forward, only data from included participants is analyzed. 
+
+Median completion time was `r printnum(this.expt$median_completion_time)` minutes. Mean accuracy was `r printnum(this.expt$disc_df_unfiltered$correct%>%mean())`, and participants reported seeing a normal *N* on `r printnum(this.expt$disc_df_unfiltered$response%>%as.numeric()%>%mean()-1)` of the trials. In a deviation from our pre-registration, we excluded `r this.expt$no_variance$subj_id%>%length()` participants for having zero variance in their confidence ratings for at least one of the two responses (see Section \@ref(deviations)). Overall we excluded `r this.expt$N_total-this.expt$N` participants, leaving `r this.expt$N` participants for the main analysis. Going forward, only data from included participants is analyzed. 
 
 Mean accuracy among included participants was `r apa_print(this.expt$disc_subj_stats$acc%>%t.test())$estimate`. The mean SOA in the last trial was `r apa_print(t.test(this.expt$final_trial$measured_SOA))$estimate`. Participants showed no consistent response bias (`r apa_print(this.expt$disc_subj_stats$bias%>%t.test())$estimate`). On a scale of 0 to 1, mean confidence level was `r apa_print(this.expt$disc_subj_stats$conf%>%t.test())$estimate`. Confidence was higher for correct than for incorrect responses (`r apa_print(this.expt$conf_by_acc)$full_result`). 
 
@@ -919,16 +967,16 @@ Mean accuracy among included participants was `r apa_print(this.expt$disc_subj_s
 
 *Hypothesis 3*: (The lack of) metacognitive asymmetry was not different from what would be expected based on an equal-variance SDT model with the same response bias and sensitivity (`r apa_print(this.expt$H3$t.test)$statistic`; Cohen's d=`r printnum(this.expt$H3$d)`; `r apa_print(this.expt$H3$BF)$statistic`). 
 
-*Hypothesis 4*: Contrary to our hypothesis, response times for 'flipped' responses were significantly *slower* than response times for 'normal' responses, with a median difference of `r e6$H4$raw_es%>%abs()%>%round()` ms. (`r apa_print(this.expt$H4$t.test)$statistic` ; Cohen's d = `r printnum(this.expt$H4$d)`; `r apa_print(this.expt$H4$BF)$statistic`; see Figure \@ref(fig:all-rcROCs), panel 6).
+*Hypothesis 4*: Contrary to our hypothesis, response times for 'flipped' responses were *slower* than response times for 'normal' responses, with a median difference of `r e6$H4$raw_es%>%abs()%>%round()` ms. (`r apa_print(this.expt$H4$t.test)$statistic` ; Cohen's d = `r printnum(this.expt$H4$d)`; `r apa_print(this.expt$H4$BF)$statistic`; see Figure \@ref(fig:all-rcROCs), panel 6).
 
-In summary,in Experiment 6 we found a significant difference in response speed and subjective confidence in the opposite direction to what we expected, with a processing advantage for the default-complying stimulus (*N*) compared to the default-violating stimulus (flipped *N*). We found no metacognitive asymmetry for these stimuli.
+In summary, in Experiment 6 we found a difference in response speed and subjective confidence in the opposite direction to what we expected, with a processing advantage for the default-complying stimulus (*N*) compared to the default-violating stimulus (flipped *N*). We found no metacognitive asymmetry for these stimuli.
 
 
 ## Experiments 1-6: summary {#summary}
 
 Overall, the pattern of results from Experiments 1-6 only partly matched our hypotheses in some cases, and stood in direct contrast to them in other cases (see fig. \@ref(fig:summary)). A reliable metacognitive asymmetry was observed only in Experiment 2, and this asymmetry was in the opposite direction to what we had predicted, with a metacognitive advantage for *O* (feature absent) over *C* (feature present) responses. A metacognitive advantage for reporting *Q* over *O*s (Exp. 1) was not reliably above what is expected based on an equal-variance signal detection model. 
 
-For both local and global visual features (Experiments 1-4) we observed differences in mean confidence and response times that were consistent with our hypothesis of a processing advantage for the representation of the presence compared to the absence of visual features. In Experiments 5 and 6, we tested more abstract expectation violations. In Experiment 5, discrimination between upward-tilted and downward-tilted cubes showed no asymmetry in response time, confidence, or metacognitive sensitivity. In Experiment 6, participants were less confident and slower in their reports of seeing a flipped N, contrary to our prediction that default-violating signals should be easier to perceive. We found no evidence for a metacognitive asymmetry for these stimuli. 
+For both local and global visual features (Experiments 1-4) we observed differences in mean confidence and response times that were consistent with our hypothesis of a processing advantage for the representation of the presence compared to the absence of visual features. In Experiments 5 and 6, we tested more abstract expectation violations. In Experiment 5, discrimination between upward-tilted and downward-tilted cubes showed no asymmetry in response time and confidence. In Experiment 6, participants were less confident and slower in their reports of seeing a flipped N, contrary to our prediction that default-violating signals should be easier to perceive. We found no evidence for or against a metacognitive sensitivity in either of the experiments.
 
 ```{r summary, echo=FALSE, fig.cap= "Summary of results from Experiments 1-6, and exploratory Experiment 7. Rows correspond to our four pre-registered hypotheses: difference in confidence, a difference in metacognitive sensitivity, a difference in metacognitive sensitivity when controlling for response and confidence bias, and a difference in response times.", out.width = '100%'}
 knitr::include_graphics("figures/summary.png")
@@ -971,13 +1019,13 @@ Mean accuracy among included participants was `r apa_print(this.expt$disc_subj_s
 
 *Hypothesis 1*: In line with our hypothesis, confidence was higher for reports of target presence than for reports of target absence (`r apa_print(this.expt$H1$t.test)$full_result`; Cohen's d = `r printnum(this.expt$H1$d)`; `r apa_print(this.expt$H1$BF)$statistic`; see Figure \@ref(fig:rcROC7), right panel).
 
-*Hypothesis 2*: In line with our hypothesis, auROC for reports of target presence (`r apa_print(t.test(this.expt$AUC$response1))$estimate`) was significantly higher than for reports of target absence (`r apa_print(t.test(this.expt$AUC$response2))$estimate`; `r apa_print(this.expt$H2$t.test)$statistic`; Cohen's d = `r printnum(this.expt$H2$d)`; `r apa_print(this.expt$H2$BF)$statistic`; see Figure \@ref(fig:rcROC7), left panel). 
+*Hypothesis 2*: In line with our hypothesis, auROC for reports of target presence (`r apa_print(t.test(this.expt$AUC$response1))$estimate`) was higher than for reports of target absence (`r apa_print(t.test(this.expt$AUC$response2))$estimate`; `r apa_print(this.expt$H2$t.test)$statistic`; Cohen's d = `r printnum(this.expt$H2$d)`; `r apa_print(this.expt$H2$BF)$statistic`; see Figure \@ref(fig:rcROC7), left panel). 
 
-*Hypothesis 3*: In line with our hypothesis, this metacognitive asymmetry was significantly stronger than what is expected based on an equal-variance SDT model with the same response bias and sensitivity (`r apa_print(this.expt$H3$t.test)$statistic`; Cohen's d=`r printnum(this.expt$H3$d)`; `r apa_print(this.expt$H3$BF)$statistic`). 
+*Hypothesis 3*: In line with our hypothesis, this metacognitive asymmetry was stronger than what is expected based on an equal-variance SDT model with the same response bias and sensitivity (`r apa_print(this.expt$H3$t.test)$statistic`; Cohen's d=`r printnum(this.expt$H3$d)`; `r apa_print(this.expt$H3$BF)$statistic`). 
 
-*Hypothesis 4*: In line with our hypothesis, reports of target presence were significantly faster than reports of target absence, with a median difference of `r e7$H4$raw_es%>%abs()%>%round` ms. (`r apa_print(this.expt$H4$t.test)$statistic` ; Cohen's d = `r printnum(this.expt$H4$d)`; `r apa_print(this.expt$H4$BF)$statistic`see Figure \@ref(fig:rcROC7), right panel).
+*Hypothesis 4*: In line with our hypothesis, reports of target presence were faster than reports of target absence, with a median difference of `r e7$H4$raw_es%>%abs()%>%round` ms. (`r apa_print(this.expt$H4$t.test)$statistic` ; Cohen's d = `r printnum(this.expt$H4$d)`; `r apa_print(this.expt$H4$BF)$statistic`; see Figure \@ref(fig:rcROC7), right panel).
 
-```{r rcROC7, echo=FALSE, fig.cap= "Response conditional ROC curves (left panel) and confidence and reaction time distributions (right panel) for Exp. 7 (detection positive control). The strucutre of this figure is similar to Figs 3-4.", out.width = '100%'}
+```{r rcROC7, echo=FALSE, fig.cap= "Response conditional ROC curves (left panel) and confidence and reaction time distributions (right panel) for Exp. 7 (detection positive control). The structure of this figure is similar to Figs 3-4.", out.width = '100%'}
 knitr::include_graphics("figures/results7.png")
 ```
 
@@ -1080,9 +1128,9 @@ testzROC <- function(e) {
     ungroup()
   
   e$zROC_slopes1 <- e$conf_bi_counts %>%
-    nest_by(subj_id) %>%
-    mutate(model=list(lm(z_1~z_2,data=data))) %>%
-    summarise(tidy(model)) %>%
+    group_by(subj_id) %>%
+    do(model=lm(z_1~z_2,data=.)) %>%
+    tidy(model) %>%
     filter(term=='z_2')%>%
     mutate(slope1=estimate)%>%
     dplyr::select('subj_id','slope1') %>%
@@ -1091,9 +1139,9 @@ testzROC <- function(e) {
   # To control for regression to the mean, fit the opposite model and average the two slopes
   # (see Wickens, p. 56)
   e$zROC_slopes2 <- e$conf_bi_counts %>%
-    nest_by(subj_id) %>%
-    mutate(model=list(lm(z_2~z_1,data=data))) %>%
-    summarise(tidy(model)) %>%
+    group_by(subj_id) %>%
+    do(model=lm(z_2~z_1,data=.)) %>%
+    tidy(model) %>%
     filter(term=='z_1')%>%
     mutate(slope2=1/estimate)%>%
     dplyr::select('subj_id','slope2') %>%
@@ -1111,6 +1159,12 @@ testzROC <- function(e) {
        slope=exp(logslope)
     )
   
+  e$zROC_slopes <- merge(
+    e$zROC_slopes,
+    e$AUC %>%
+      dplyr::select(subj_id,metacognitive_asymmetry,metacognitive_asymmetry_control)
+  )
+  
   e$contrast_df <- e$contrast_df %>%
     merge(e$zROC_slopes %>%
             dplyr::select(subj_id, logslope), by='subj_id');
@@ -1122,7 +1176,7 @@ testzROC <- function(e) {
     cohensD();
   
   e$zROCtest$BF <- e$zROC_slopes$logslope %>%
-    ttestBF(rscale=0.65);
+    ttestBF(rscale=0.5);
   
   
   return(e)
@@ -1136,11 +1190,12 @@ e5 <- testzROC(e5);
 e6 <- testzROC(e6);
 e7 <- testzROC(e7);
 
+
 ```
 
-In a signal-detection framework, metacognitive asymmetry appears when the signal distribution has both a higher mean and higher variance than that of the noise distribution. This unequal variance setting produces higher metacognitive sensitivity for judgments of signal presence, compared to judgments of signal absence. A direct measure for the ratio between the variances of the two distributions is the slope of the *type-1 zROC curve*. A zROC curve is constructed by applying the inverse of the normal cumulative density function to false alarm and hit rates for different confidence thresholds. The slope of the zROC curve equals 1 exactly when the variance of the signal and noise distributions are equal. In detection experiments, the slope is often shallower than 1, indicating a wider signal distribution. Indeed, in our positive control experiment (Exp. 7), the median zROC slope was `r printnum(e7$zROC_slopes$slope%>%median())` and significantly shallower than 1 (`r apa_print(e7$zROCtest$t.test)$statistic`; `r apa_print(e7$zROCtest$BF)$statistic` for a t-test on the log-slope against zero). Measuring the slope of the zROC curve in our six pre-registered experiments, we asked whether our 'feature-present' distributions had higher variance than our 'feature-absent' distributions.
+In a signal-detection framework, metacognitive asymmetry appears when the signal distribution has both a higher mean and higher variance than that of the noise distribution. This unequal variance setting produces higher metacognitive sensitivity for judgments of signal presence, compared to judgments of signal absence. A direct measure for the ratio between the variances of the two distributions is the slope of the *type-1 zROC curve*. A zROC curve is constructed by applying the inverse of the normal cumulative density function to false alarm and hit rates for different confidence thresholds. The slope of the zROC curve equals 1 exactly when the variance of the signal and noise distributions are equal. In detection experiments, the slope is often shallower than 1, indicating a wider signal distribution. Indeed, in our positive control experiment (Exp. 7), the median zROC slope was `r printnum(e7$zROC_slopes$slope%>%median())` and significantly shallower than 1 (`r apa_print(e7$zROCtest$t.test)$statistic` for a t-test on the log-slope against zero). Measuring the slope of the zROC curve in our six pre-registered experiments, we asked whether our 'feature-present' distributions had higher variance than our 'feature-absent' distributions. We used the standardized effect size obtained from Experiment 7 as a scaling factor for the prior distribution over effect sizes, reflecting a belief that a difference in slopes should be similar in magnitude to what is observed in a detection task.
 
-zROC slopes were numerically shallower than one in Experiments 1 (Q vs. O; median slope = `r e1$zROC_slopes$slope%>%median%>%printnum()`), 3 (line tilt; median slope = `r e3$zROC_slopes$slope%>%median%>%printnum()`), 4 (line curvature; `r e4$zROC_slopes$slope%>%median%>%printnum()`) and 5 (cube orientation; `r e5$zROC_slopes$slope%>%median%>%printnum()`). This was significant only in Experiment 5 (`r apa_print(e5$zROCtest$t.test)$statistic`). In agreement with the results of our rcROC analysis, the zROC slope in Exp. 2 (C vs. O) was significantly higher than one, suggesting that the representation of the letter 'O' was more variable than that of the letter 'C' (median slope = `r e2$zROC_slopes$slope%>%median%>%printnum()`; `r apa_print(e2$zROCtest$t.test)$statistic`). 
+zROC slopes were numerically shallower than one in Experiments 1 (Q vs. O; median slope = `r e1$zROC_slopes$slope%>%median%>%printnum()`), 3 (line tilt; median slope = `r e3$zROC_slopes$slope%>%median%>%printnum()`), 4 (line curvature; `r e4$zROC_slopes$slope%>%median%>%printnum()`) and 5 (cube orientation; `r e5$zROC_slopes$slope%>%median%>%printnum()`). This was significant only in Experiment 5 (`r apa_print(e5$zROCtest$t.test)$statistic`). In agreement with the results of our rcROC analysis, the zROC slope in Exp. 2 (C vs. O) was significantly higher than one, suggesting that the representation of the letter 'O' was more variable than that of the letter 'C' (median slope = `r e2$zROC_slopes$slope%>%median%>%printnum()`; `r apa_print(e2$zROCtest$t.test)$statistic`). A Bayes Factor analysis did not provide support for or against the null hypothesis for any of the six experiments (all Bayes Factors between 1/3 and 3).
 
 Previous studies reported similar variance structures for these stimuli when presented in visual search arrays. For example, confidence in a vertical/tilted visual search task revealed higher variance in the representation of tilted (feature positive) compared to vertical (feature negative) stimuli [ @vincent2011search]. Similarly, reverse correlation analysis revealed higher variance in the representation of *Q* (feature positive) compared to *O* (feature negative) stimuli [@saiki2008stimulus]. Finally, and in agreement with our results, variance in the representation of *O* (feature negative) was found to be higher than in the representation of *C* (feature positive) [@dosher2004parallel]. Note that for the case of line tilt and *Q* vs. *O*, finding a high-variance target among low-variance distractors is easier than finding a low-variance target among high-variance distractors. However, the opposite is true for *C* vs. *O*, where a low-variance target (*C*) renders the search easier. This last observation challenges the suggestion that variance structure is the determining factor for visual search asymmetries [@treisman1988feature; @dosher2004parallel; @vincent2011search; @saiki2008stimulus]. 
 
@@ -1399,21 +1454,25 @@ knitr::include_graphics("figures/correlations.png")
 
 # Discussion
 
-In perceptual detection, judgments about the presence or absence of a target stimulus differ in several ways: first, participants are more confident in stimulus presence than absence [e.g., @meuwese2014subjective; @kellij2018foundations], second, confidence ratings in judgments of stimulus presence have greater metacognitive sensitivity, being more aligned with objective accuracy [@meuwese2014subjective; @kellij2018foundations; @mazor2020distinct], and finally, participants are faster to report stimulus presence [@mazor2020distinct]. In our positive control detection experiment (Experiment 7) we replicated these effects. We found a mean difference of `r (e7$H1$raw_es*100)%>%round()`\%  confidence between decisions about the presence or absence of a grating, a metacognitive asymmetry of `r e7$H2$raw_es%>%printnum()` in AUC units (ranging from 0 to 1), and a median difference of `r e7$H4$raw_es%>%abs()%>%round()` milliseconds in response time between reports of target presence and absence. In our six pre-registered experiments, we focused on these three behavioural signatures of decisions about the presence and absence of a stimulus, and asked whether they extend to discrimination tasks where stimuli are distinct in the presence or absence of sub-stimulus features such as the presence of an additional line in a letter, the curvature of a line, or more abstractly, the presence of a surprising default-reasoning signal. 
+In perceptual detection, judgments about the presence or absence of a target stimulus differ in several ways. First, participants are more confident in stimulus presence than in stimulus absence [e.g., @meuwese2014subjective; @kellij2018foundations]. Second, confidence ratings in judgments of stimulus presence are more aligned with objective accuracy [@meuwese2014subjective; @kellij2018foundations; @mazor2020distinct]. Finally, participants are faster to report stimulus presence [@mazor2020distinct]. In our positive control detection experiment (Experiment 7) we replicated these detection asymmetries. We found a mean difference of `r (e7$H1$raw_es*100)%>%round()`\%  confidence between decisions about the presence or absence of a grating, a metacognitive asymmetry of `r e7$H2$raw_es%>%printnum()` in AUC units (ranging from 0 to 1), and a median difference of `r e7$H4$raw_es%>%abs()%>%round()` milliseconds in response time between reports of target presence and absence. 
+
+In six pre-registered experiments, we focused on these three behavioural signatures of decisions about the presence and absence of a stimulus, and asked whether they extend to discrimination tasks where stimuli are distinct in the presence or absence of sub-stimulus features such as the presence of an additional line in a letter, the curvature of a line, or more abstractly, the presence of a surprising default-violating signal. Our six stimulus pairs have been shown in previous studies to produce asymmetries in visual search, potentially reflecting differences in the processing of presences and absences of visual features, and of default-complying versus default-violating stimuli. If detection asymmetries also reflect differences in the abstract processing of presences and absences, or of default-complying versus default-violating sensory input, one would expect to find detection-like asymmetries in response time, confidence, and metacognitive sensitivity for discrimination between stimuli that produce asymmetries in a visual search task.
 
 Starting from the end, Experiments 5 and 6 provide evidence against the proposal that asymmetries in confidence, reaction time and metacognitive sensitivity emerge for default-violating signals at all levels of representation. Stimulus pairs in Exp. 5 (cube orientation) and 6 (letter inversion) produced response-conditional ROC curves that were more consistent with the absence of metacognitive asymmetry than with our prior distribution on effect sizes (see section \@ref(analysis-plan) for the specifics of our Bayesian hypothesis testing, including our prior on effect sizes). Given that these stimuli have been shown to produce reliable asymmetries in visual search [@von1994visual; @shen2001visual; @malinowski2001effect; @frith1974acurious; @wang1994familiarity], we can safely conclude that not all default violations that produce an asymmetry in visual search also produce an asymmetry in metacognitive sensitivity.
 
 Moreover, in Exp. 6, default-complying *N* responses were faster, and accompanied by higher levels of subjective confidence, than default-violating flipped-*N* responses. This is in contrast to our prediction of a processing advantage for default-violating signals, and in line with previous reports of a processing advantage for familiar over unfamiliar stimuli in the context of face perception and reading. For example, in a breaking continuous flash suppression (bCFS) paradigm, inverted faces took longer to break into awareness than upright faces [@stein2021dissociating]. A similar processing advantage for familiar stimuli has been documented for the perception of words [@albonico2018perceptual] and Chinese letters [@xue2006language]. One possibility is that the perception of highly familiar stimuli such as letters and faces is supported by specific expert brain systems, affording a processing advantage beyond the general superior processing of default-violating signals [@yovel2005neural; @xue2006language]. Indeed, Exp. 6 was the only experiment in which we observed a processing advantage for familiar over unfamiliar stimuli.  
 
-Next, in Experiments 3 and 4 we looked at two features that have a global effect on stimulus appearance: tilt and curvature. Based on visual search asymmetries, @treisman1988feature proposed that tilt and curvature are represented as positive features in the visual system. This takes us one step closer to typical detection experiments: participants now detect the presence or absence of a basic visual feature. In agreement with our Hypotheses 1 and 4, participants were more confident in identifying tilted and curved lines (mean differences of `r e3$H1$raw_es%>%printnum()` and `r e4$H1$raw_es%>%printnum()` on a 0-1 confidence scale), and were faster in giving these responses (mean differences of `r e3$H4$raw_es%>%abs()%>%printnum()` and `r e4$H4$raw_es%>%abs()%>%printnum()` ms). However, we did not observe a metacognitive asymmetry for these global visual features, further suggesting that the presence of a search asymmetry does not immediately entail the presence of a metacognitive asymmetry. 
+Next, in Experiments 3 and 4 we looked at two features that have a global effect on stimulus appearance: tilt and curvature. Based on visual search asymmetries, @treisman1988feature proposed that tilt and curvature are represented as positive features in the visual system. This takes us one step closer to typical detection experiments: participants now detect the presence or absence of a basic visual feature. In agreement with our Hypotheses 1 and 4, participants were more confident in identifying tilted and curved lines (mean differences of `r e3$H1$raw_es%>%printnum()` and `r e4$H1$raw_es%>%printnum()` on a 0-1 confidence scale), and were faster in giving these responses (mean differences of `r e3$H4$raw_es%>%abs()%>%printnum()` and `r e4$H4$raw_es%>%abs()%>%printnum()` ms). However, we did not find evidence for or against a metacognitive asymmetry for these global visual features. 
 
-Our strongest candidate for a stimulus pair for which we expected to find a presence-absence asymmetry was *Q* vs. *O* (Exp. 1). The difference between these two letters is the presence of an additional line stroke: a concrete stimulus part that is localized in space and is independent of the rest of the stimulus. Theoretically, participants could approach this task as a detection task: ignore the common denominator (*O*) and focus on the presence or absence of the distinctive feature (','). As we hypothesized, participants were more confident in their *Q* responses (mean difference of `r e1$H1$raw_es%>%printnum()` on a 0-1 confidence scale). Participants were also faster in their *Q* responses (median difference of `r e1$H4$raw_es%>%abs()%>%round()` ms). However, unlike stimulus-level detection, a small difference of `r e1$H2$raw_es%>%abs()%>%printnum()` units in the area under the response conditional ROC curves was not significantly different than what is expected based on a null SDT model. 
+Our strongest candidate for a stimulus pair for which we expected to find a presence-absence asymmetry was *Q* vs. *O* (Exp. 1). The difference between these two letters is the presence of an additional line stroke: a concrete stimulus part that is localized in space and is independent of the rest of the stimulus. Theoretically, participants could approach this task as a detection task: ignore the common denominator (*O*) and focus on the presence or absence of the distinctive feature (','). As we hypothesized, participants were more confident in their *Q* responses (mean difference of `r e1$H1$raw_es%>%printnum()` on a 0-1 confidence scale). Participants were also faster in their *Q* responses (median difference of `r e1$H4$raw_es%>%abs()%>%round()` ms). However, unlike stimulus-level detection, a small difference of `r e1$H2$raw_es%>%abs()%>%printnum()` units in the area under the response conditional ROC curves was not different to what is expected based on a null SDT model. 
 
 Finally, In Experiment 2 we looked at discrimination between *C* and *O*s based on evidence from visual search that open edges are represented as a positive feature in the visual system [@treisman1985search; @takeda2000inhibitory; @treisman1988feature]. As we hypothesized, *C* responses were accompanied by higher levels of subjective confidence (mean difference of `r e2$H1$raw_es%>%printnum()` on a 0-1 confidence scale), and were delivered faster than *O* responses (with a modest but significant difference of `r e2$H4$raw_es%>%abs()%>%round()` ms between the two responses). However, in striking contrast to our original hypothesis, metacognitive sensitivity was *lower* for *C* responses (mean difference of `r e2$H2$raw_es%>%abs()%>%printnum()` AUC units), even when controlling for response bias. This result strongly supports different underlying mechanisms behind search and metacognitive asymmetries. Furthermore, the results of Experiment 2 suggest distinct factors mediate the processing advantage for presence over absence (as reflected in shorter response times and higher confidence for *C* responses), and the metacognitive asymmetry between presence and absence (as reflected in improved metacognitive sensitivity for *O* responses). 
 
 *C* and *O* are unique in that the difference between them corresponds to two contrasting notions of presence and absence. On the one hand, *C* is marked by the presence of one additional feature - open edges [@treisman1985search; @treisman1988feature]. On the other hand, it is marked by the absence of a piece: there is simply less of it relative to *O*. These two notions of presence and absence are typically coupled in detection. For example, the presence of a grating on a screen corresponds to the presence of additional features (such as orientation, contrast, and phase) as well as of more 'visual stuff', relative to the blank background. A compelling interpretation of the results of Exp. 2 is that it is the presence or absence of visual features such as open edges that is driving the difference in confidence and response time, whereas a more quantitative notion of presence or absence (the amount of 'visual stuff' presented) is driving the metacognitive asymmetry between these two responses. We note however that based on this interpretation, we would expect a metacognitive sensitivity to operate also in Experiment 1, where *O* is missing a piece relative to *Q*. As described above, Experiment 1 provided no evidence for such a metacognitive asymmetry beyond what is expected from an equal-variance signal-detection model.
 
-When interpreting our findings in a broader context, it is useful to note that in all six experiments we used backward masking for controlling the visibility level of our stimuli. Different visibility manipulations have been shown to affect detection metacognitive sensitivity in different ways. For example, whereas metacognitive sensitivity in detection 'no' responses is at chance when backward masking is used, it is significantly higher than chance when the attentional blink is used to control stimulus visibility [@kanai2010subjective]. Similarly, phase scrambling but not attentional blink produces a metacognitive advantage for 'yes' responses [@kellij2018foundations]. While our positive control (Exp. 7) produced a reliable metacognitive asymmetry between judgments of target presence and absence, it was also the only experiment where stimulus visibility was controlled with low contrast, in addition to backward masking (for the purpose of compatibility with previous experiments; see Fig. \@ref(fig:rcROC7)). Based on our findings alone, we cannot rule out the possibility that using other visibility manipulations may reveal metacognitive asymmetries for the presence or absence of abstract default violations. 
+Notably, not one of the six pre-registered experiments produced a metacognitive asymmetry in the expected direction. This was in contrast to Experiment 7 (grating vs. noise), where metacognitive sensitivity for reporting noise was lower than for reporting a noisy grating (with a difference of `r e7$AUC$metacognitive_asymmetry%>%mean()%>%printnum()` auROC units, `r apa_print(e7$H3$BF)$statistic`). Positive control Experiment 7 was also the only experiment in which we found higher variance for stimulus S1 than for stimulus S2 (with a median variance ratio of `r e7$zROC_slopes$slope%>%median()%>%printnum()`). These two observations are likely to be related: across participants, metacognitive asymmetry and variance ratio were highly correlated (`r apa_print(cor.test(e7$zROC_slopes$logslope,-e7$zROC_slopes$metacognitive_asymmetry))$full_result`). Indeed, previous theoretical work has pointed out that response-dependent asymmetries in metacognition may be driven by an underlying unequal-variance SDT model, and, vice-versa, that findings of unequal variance might be due to a response-dependent metacognitive asymmetry. These two perspectives are interchangeable [@maniscalco2014signal]. However, a correlation between metacognitive asymmetry and variance structure, both estimated from confidence ratings, is not a satisfactory answer for *why* noise and gratings should exhibit a unique asymmetry in metacognitive sensitivity, or in variance structure. More theoretical and experimental work is needed to identify the sources of this asymmetry, perhaps focusing on the role of stimulus complexity and perceptual uncertainty as potential drivers of this effect.
+
+When interpreting our findings in a broader context, it is useful to note that in all six experiments we used backward masking for controlling the visibility level of our stimuli. Different visibility manipulations have been shown to affect detection metacognitive sensitivity in different ways. For example, whereas metacognitive sensitivity in detection 'no' responses is at chance when backward masking is used, it is significantly higher than chance when the attentional blink is used to control stimulus visibility [@kanai2010subjective]. Similarly, phase scrambling but not attentional blink produces a metacognitive advantage for 'yes' responses [@kellij2018foundations]. While our positive control (Exp. 7) produced a reliable metacognitive asymmetry between judgments of target presence and absence, it was also the only experiment where stimulus visibility was controlled with low contrast, in addition to backward masking (for the purpose of compatibility with previous experiments; see Fig. \@ref(fig:rcROC7)). Based on our findings alone, we cannot rule out the possibility that using other visibility manipulations may reveal metacognitive asymmetries for the presence or absence of abstract default violations. Furthermore, it is possible that some of the observed asymmetries for low-level features may reflect asymmetries in the joint perception of target stimulus and backward mask, rather than in the perception of the target stimulus by itself [@kahneman1968method; @jannati2012relative].
 
 Together, our findings weigh against our original proposal that metacognitive asymmetries in perceptual detection are a signature of higher-order default reasoning. Unlike search asymmetries that extend to abstract levels of representations such as familiarity [@wang1994familiarity; @wolfe2001asymmetries] and even social features such as ethnicity and gender [@levin2001visual; @gandolfo2020asymmetric], metacognitive asymmetries in visual discrimination are grounded in concrete visual processing. Furthermore, we provide evidence for a dissociation between asymmetries in metacognition and in response time and confidence, where the latter is linked to activation of basic feature-detectors, for example of orientation, open ends, or curvature. 
 
@@ -1495,13 +1554,58 @@ plotHists = function(e, labels, filename) {
 # e7 <- plotHists(e7, labels=c('',''),filename='figures\\exp7hists.png')
 
 ```
+
+
+``` {r formatData, echo=FALSE }
+formatForConfidenceDatabase <- function(df,stimuli,exp) {
+  df %>%
+    filter(test_part=='disc') %>%
+    dplyr::select('subj_id','which_stimulus','SOA','correct','RT','confidence','conf_RT') %>%
+    group_by(subj_id) %>%
+    mutate(trial=row_number())%>%
+    ungroup()%>%
+    mutate(subj_id=factor(subj_id),
+           Subj_idx = as.numeric(subj_id),
+           Stimulus=which_stimulus,
+           Response=ifelse(correct==1,
+                           which_stimulus,
+                           3-as.numeric(which_stimulus)),
+           RT_dec=RT/1000,
+           Confidence=confidence,
+           RT_conf=conf_RT/1000,
+           Accuracy=correct,
+           Trial=trial)%>%
+    select(Subj_idx, Stimulus, Response, RT_dec, Confidence, RT_conf, SOA, Accuracy, Trial)%>%
+    arrange(Subj_idx, Trial)%>%
+    write.csv(.,file=paste('..\\data\\data_Mazor_2021_Expt',exp,'.csv',sep=''),row.names=FALSE)
+}
+
+formatForConfidenceDatabase(e1$df,c('Q','O'),1);
+formatForConfidenceDatabase(e2$df,c('C','O'),2);
+formatForConfidenceDatabase(e3$df,c('tilted','vertical'),3);
+formatForConfidenceDatabase(e4$df,c('curved','straight'),4);
+formatForConfidenceDatabase(e5$df,c('up','down'),5);
+formatForConfidenceDatabase(e6$df,c('flipped','normal'),6);
+formatForConfidenceDatabase(e7$df,c('grating','noise'),7);
+
+```
 \newpage
 
 # References
-
 \begingroup
 \setlength{\parindent}{-0.5in}
 \setlength{\leftskip}{0.5in}
 
 <div id="refs" custom-style="Bibliography"></div>
 \endgroup
+\newpage
+
+# (APPENDIX) Appendix {-} 
+
+# Appendix A
+
+## Robustness Region
+
+```{r RR, echo=FALSE, fig.cap="A Robustness Region plot, visualizing Bayes Factors for hypothetical effect sizes and scale factors on the prior, for our sample size of 106 participants. Points above the horizontal line are significant in a one-tailed t-test. The dashed line indicates our choice of a scale factor on the prior.", out.width = '60%'}
+knitr::include_graphics("figures/RR.png")
+```
