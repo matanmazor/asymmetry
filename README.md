@@ -1,8 +1,17 @@
 # Metacognitive asymmetries in visual perception
 
-Stage-1 RR (accepted in principle for publication in Neuroscience of Consciousenss) is available here:
 
-Mazor, M., Moran, R., & Fleming, S. M. (2021, January 6). Stage 1 Registered Report: Metacognitive asymmetries in visual perception. [https://doi.org/10.31234/osf.io/av9ns](https://psyarxiv.com/av9ns)
+
+Stage-1 Registered Report is available here:
+
+Mazor, M., Moran, R., & Fleming, S. M. (2021). Metacognitive asymmetries in visual perception. Neuroscience of Consciousness, 2021(1), [niab005](https://doi.org/10.1093/nc/niab005)
+
+Stage-2 Registered Report (accepted for publication in Neuroscience of Consciousness) is available here:
+
+Mazor, M., Moran, R., & Fleming, S. (2021). Stage 2 Registered Report: Metacognitive asymmetries in visual perception. [https://psyarxiv.com/av9ns](https://psyarxiv.com/av9ns)
+
+![Summary of results from all seven experiments](https://github.com/matanmazor/asymmetry/blob/master/docs/figures/summary.png)
+
 
 ## Experiment demos
 
