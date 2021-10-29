@@ -6,7 +6,7 @@ Stage-1 Registered Report is available here:
 
 Mazor, M., Moran, R., & Fleming, S. M. (2021). Metacognitive asymmetries in visual perception. Neuroscience of Consciousness, 2021(1), [niab005](https://doi.org/10.1093/nc/niab005)
 
-Stage-2 Registered Report (accepted for publication in Neuroscience of Consciousness) is available here:
+Stage-2 Registered Report is available here:
 
 Mazor, M., Moran, R., & Fleming, S. M. (2021). Metacognitive asymmetries in visual perception. Neuroscience of Consciousness, 2021(1), [niab005](https://doi.org/10.1093/nc/niab025)
 
