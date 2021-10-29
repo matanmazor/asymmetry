@@ -8,7 +8,7 @@ Mazor, M., Moran, R., & Fleming, S. M. (2021). Metacognitive asymmetries in visu
 
 Stage-2 Registered Report (accepted for publication in Neuroscience of Consciousness) is available here:
 
-Mazor, M., Moran, R., & Fleming, S. (2021). Stage 2 Registered Report: Metacognitive asymmetries in visual perception. [https://psyarxiv.com/av9ns](https://psyarxiv.com/av9ns)
+Mazor, M., Moran, R., & Fleming, S. M. (2021). Metacognitive asymmetries in visual perception. Neuroscience of Consciousness, 2021(1), [niab005](https://doi.org/10.1093/nc/niab025)
 
 ![Summary of results from all seven experiments](https://github.com/matanmazor/asymmetry/blob/master/docs/figures/summary.png)
 
